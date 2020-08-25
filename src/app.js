@@ -1,16 +1,13 @@
 import http from 'http'
 import { env, mongo, port, ip, apiRoot } from './config'
-import mongoose from './services/mongoose'
 import express from './services/express'
+import { dbService } from './services/orbitdb'
+
 import api from './api'
 
 const app = express(apiRoot, api)
 const server = http.createServer(app)
-
-if (mongo.uri) {
-  mongoose.connect(mongo.uri)
-}
-mongoose.Promise = Promise
+dbService()
 
 setImmediate(() => {
   server.listen(port, ip, () => {

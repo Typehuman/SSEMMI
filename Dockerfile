@@ -1,7 +1,7 @@
 FROM node:12
 
 # Create app dir
-WORKDIR /usr/src/orcasound-api
+WORKDIR /usr/src/ssemmi-api
 
 # Install app dependencies
 COPY package*.json ./
