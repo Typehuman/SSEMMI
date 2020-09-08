@@ -15,4 +15,22 @@ setImmediate(() => {
   })
 })
 
+app.route("/spotter/")
+  .get((req, res) => {
+    res.send("GET /spotter/");
+  })
+  .post((req, res) => {
+    console.log(req.body);
+    res.send("POST /spotter/");
+  });
+
+// router
+//   .route("/spotter/:id")
+//   .get((req, res) => {
+//     res.send("GET /spotter/<id>/" + req.params.id);
+//   })
+//   .put((req, res) => {
+//     res.send("PUT /spotter/<id>/" + req.params.id);
+//   });
+
 export default app
