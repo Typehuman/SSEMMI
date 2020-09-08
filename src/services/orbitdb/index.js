@@ -8,9 +8,9 @@ export const dbService = async () => {
   const db = await orbitdb.docs('ssemmi-docs-db', { indexBy: 'spotter' })
 
   //Test to add and retreive a docs
-  await db.put(spotter: "whalistic", total_spotted: 5)
-  await db.put(spotter: "orcawhat", total_spotted: 2)
-  await db.put(spotter: "whalify", total_spotted: 1)
+  await db.put({spotter: "whalistic", total_spotted: 5})
+  await db.put({spotter: "orcawhat", total_spotted: 2})
+  await db.put({spotter: "whalify", total_spotted: 1})
 
   const moreThanTwo = db.query( (doc) => doc.total_spotted >= 2)
 
