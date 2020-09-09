@@ -1,9 +1,9 @@
 import http from 'http'
 import { env, mongo, port, ip, apiRoot } from './config'
 import express from './services/express'
-import { dbService } from './services/orbitdb'
+import { dbService, getAll, getItem, post } from './services/orbitdb'
 
-import api from './api'
+import api from './api/routes'
 
 const app = express(apiRoot, api)
 const server = http.createServer(app)
@@ -15,22 +15,24 @@ setImmediate(() => {
   })
 })
 
+//ROUTING
 app.route("/spotter/")
+  // GET all data
   .get((req, res) => {
-    res.send("GET /spotter/");
+    res.send( getAll() );
   })
+  // POST data
   .post((req, res) => {
-    console.log(req.body);
-    res.send("POST /spotter/");
+    res.send( post(req.body) );
   });
-
-// router
-//   .route("/spotter/:id")
-//   .get((req, res) => {
-//     res.send("GET /spotter/<id>/" + req.params.id);
-//   })
-//   .put((req, res) => {
-//     res.send("PUT /spotter/<id>/" + req.params.id);
-//   });
+  // GET Specific data
+app.route("/spotter/:spotter")
+  .get((req, res) => {
+    res.send( getItem(req.params.spotter) );
+  })
+  // // PUT specific data
+  // .put((req, res) => {
+  //   res.send( post(req.body) );
+  // });
 
 export default app
