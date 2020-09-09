@@ -1,40 +1,6 @@
 import IpfsHttpClient from 'ipfs-http-client'
 import OrbitDb from 'orbit-db'
 
-// export const dbService = async () => {
-//   try {
-//     // Create IPFS instance
-//     const ipfs = IpfsHttpClient({ host: '127.0.0.1', port: '5001' })
-//     // Create orbitdb
-//     const orbitdb = await OrbitDb.createInstance(ipfs)
-//     // Allow write access
-//     const access = {
-//       write: ['*'],
-//     }
-//     const db = await orbitdb.docs('ssemmi-docs-db', access)
-//     // const db = await orbitdb.open('/orbitdb/zdpuAu6TU7MXjoMU4Ny7wPgWTx4TZonxG5tfNwdBUppw7wfXB/ssemmi-docs-db')
-//     await db.load()
-
-//     //Add data into doc db
-//     await db.put({spotter: "whalistic", total_spotted: 5})
-//     await db.put({spotter: "orcawhat", total_spotted: 2})
-//     await db.put({spotter: "whalify", total_spotted: 1})
-
-//     db.events.on('replicated', () => {
-//       console.log(`Database replicated. Check for new spotters.`)
-//     })
-
-//     console.log(`database string: ${db.address.toString()}`)
-//     console.log(db.get(''))
-
-//     return resolve(db);
-
-//   } catch(err) {
-//     return err;
-//   }
-
-// }
-
 // Initial ipfs setup
 console.log("Connecting to IPFS HTTP client.... \n")
 const ipfs = IpfsHttpClient({ host: '127.0.0.1', port: '5001' })
