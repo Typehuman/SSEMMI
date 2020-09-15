@@ -28,11 +28,7 @@ const router = new Router()
  */
 
 //ROUTING
-router.use( (req, res, next) => {
-    console.log(req.url, "@", Date.now());
-    next();
-});
-
+//List-level routes
 router
     .route("/spotter/")
     // GET all data
@@ -43,9 +39,11 @@ router
     .post((req, res) => {
         res.send( post(req.body) );
     });
-    // GET Specific data
+
+//Detail-level routes
 router
     .route("/spotter/:spotter")
+    // GET Specific data
     .get((req, res) => {
         res.send( getItem(req.params.spotter) );
     })
