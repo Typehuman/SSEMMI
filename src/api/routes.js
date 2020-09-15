@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { getAll, getItem, post } from '../services/orbitdb'
 
 const router = new Router()
 
@@ -25,5 +26,32 @@ const router = new Router()
  * @apiParam {String[]} [sort=-createdAt] Order of returned items.
  * @apiParam {String[]} [fields] Fields to be returned.
  */
+
+//ROUTING
+router.use( (req, res, next) => {
+    console.log(req.url, "@", Date.now());
+    next();
+});
+
+router
+    .route("/spotter/")
+    // GET all data
+    .get((req, res) => {
+        res.send( getAll() );
+    })
+    // POST data
+    .post((req, res) => {
+        res.send( post(req.body) );
+    });
+    // GET Specific data
+router
+    .route("/spotter/:spotter")
+    .get((req, res) => {
+        res.send( getItem(req.params.spotter) );
+    })
+    // // PUT specific data
+    // .put((req, res) => {
+    //     res.send( post(req.body) );
+    // });
 
 export default router

@@ -15,24 +15,7 @@ setImmediate(() => {
   })
 })
 
-//ROUTING
-app.route("/spotter/")
-  // GET all data
-  .get((req, res) => {
-    res.send( getAll() );
-  })
-  // POST data
-  .post((req, res) => {
-    res.send( post(req.body) );
-  });
-  // GET Specific data
-app.route("/spotter/:spotter")
-  .get((req, res) => {
-    res.send( getItem(req.params.spotter) );
-  })
-  // // PUT specific data
-  // .put((req, res) => {
-  //   res.send( post(req.body) );
-  // });
+//Using the routes from API to handle endpoints
+app.use("/", api)
 
 export default app
