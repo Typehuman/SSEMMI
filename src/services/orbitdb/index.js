@@ -52,22 +52,22 @@ export const dbService = async () => {
 // DB actions
 
 // Retreive all entries in the db
-export var getAll = () => {
+export var dbGetAll = () => {
   return db.get('')
 }
 
 // Retreive specific entry from the db
-export var getItem = (data) => {
+export var dbGetItem = (data) => {
   return db.get(data)
 }
 
 // Put an entry into the db
-export var post = (data) => {
+export var dbPost = (data) => {
   db.put(data)
-  return getItem(data)
+  return dbGetItem(data)
 }
 
 // Removes the db locally
-export var deleteAll = () => {
-  return db.drop()
+export var dbDeleteAll = (data) => {
+  return db.del(data)
 }

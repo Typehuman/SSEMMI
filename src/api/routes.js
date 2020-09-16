@@ -1,5 +1,6 @@
 import { Router } from 'express'
-import { getAll, getItem, post } from '../services/orbitdb'
+import { dbGetAll, dbGetItem, dbPost, dbDeleteAll } from '../services/orbitdb'
+import request from 'request'
 
 const router = new Router()
 
@@ -27,17 +28,28 @@ const router = new Router()
  * @apiParam {String[]} [fields] Fields to be returned.
  */
 
-//ROUTING
+const conserveApi = 'https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=2020-01-01&end=2020-06-12&species=Orcinus%20orca'
+const loadApi = async (api) => {
+    request(api, (err, resp, body) => {
+        if (!err) {
+            console.log(JSON.parse(body).results)
+        }
+    })
+}
+
+loadApi(conserveApi)
+
+//---ROUTING---
 //List-level routes
 router
     .route("/spotter/")
     // GET all data
     .get((req, res) => {
-        res.send( getAll() );
+        res.send( dbGetAll() );
     })
     // POST data
     .post((req, res) => {
-        res.send( post(req.body) );
+        res.send( dbPost(req.body) );
     });
 
 //Detail-level routes
@@ -45,11 +57,15 @@ router
     .route("/spotter/:spotter")
     // GET Specific data
     .get((req, res) => {
-        res.send( getItem(req.params.spotter) );
+        res.send( dbGetItem(req.params.spotter) );
+    })
+    // DELETE specific data
+    .delete((req, res) => {
+        res.send( dbDeleteAll(req.params.spotter) );
     })
     // // PUT specific data
     // .put((req, res) => {
-    //     res.send( post(req.body) );
+    //     res.send( dbPost(req.body) );
     // });
 
 export default router
