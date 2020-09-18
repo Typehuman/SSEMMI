@@ -20,7 +20,7 @@ export const dbService = async () => {
     // Allow write access
     const access = {
       write: ['*'],
-      indexBy: 'spotter'
+      indexBy: 'id'
     }
 
     // Initialise the db
