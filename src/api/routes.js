@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { dbGetAll, dbGetItem, dbPost, dbDeleteAll } from '../services/orbitdb'
+import { dbGetAll, dbGetItem, dbPost, dbDeleteAll, dbQueryTrusted } from '../services/orbitdb'
 import request from 'request'
 
 const router = new Router()
@@ -83,6 +83,8 @@ loadApi(conserveApi)
 /**
  * List level routes
  */
+
+// List on all sightings
 router
     .route("/sightings/")
     // GET all data
@@ -93,6 +95,14 @@ router
     .post((req, res) => {
         res.send( dbPost(req.body) );
     });
+
+// List sightings from trusted sources
+router
+    .route("/sightings/trusted")
+    // GET all data
+    .get((req, res) => {
+        res.send( dbQueryTrusted() );
+    })
 
 /**
  * Detail level routes

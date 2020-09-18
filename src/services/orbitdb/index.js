@@ -40,7 +40,6 @@ export const dbService = async () => {
 
     // Log message upon successful db setup
     console.log("Database setup succesful! \n")
-    console.log(JSON.stringify(db.get('')) + "\n")
 
   } catch (e) {
     // Log errors
@@ -61,7 +60,7 @@ export var dbGetItem = (data) => {
   return db.get(data)
 }
 
-// Put an entry into the db
+// Post an entry into the db
 export var dbPost = (data) => {
   db.put(data)
   return dbGetItem(data)
@@ -70,4 +69,12 @@ export var dbPost = (data) => {
 // Removes the db locally
 export var dbDeleteAll = (data) => {
   return db.del(data)
+}
+
+// Query the db for trusted sources from conserve.io API
+export var dbQueryTrusted = () => {
+  var res = db.query((data) =>
+    data.trusted == 1
+  )
+  return res
 }
