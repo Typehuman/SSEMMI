@@ -50,7 +50,9 @@ const loadApi = async (api) => {
         if (!err) {
             // Parsing the JSON from the data, parameters are 'count' and 'results'
             var jsonData = JSON.parse(body)
-            for (var i = 0; i < 3; i++ ) {
+
+            // Iterate over the sightings data to fill DB
+            for (var i = 0; i < jsonData.results.length; i++ ) {
                 // Retreive only 'results' as it contains the sighting data
                 var fullEntry = jsonData.results[i]
                 var id = jsonData.results[i].id
@@ -59,14 +61,13 @@ const loadApi = async (api) => {
 
                 // Wrap in a try catch to put into the db
                 try {
-                    console.log(`ID ${id}: ${user} sighted ${numSights}`)
+                    console.log(`${i+1}. ID ${id}: ${user} sighted ${numSights}`)
                     console.log(`Adding data to the DB....`)
                     dbPost(fullEntry)
                     console.log(`${id} successfully added to the db \n`)
                 } catch (error) {
                     console.log(error);
                 }
-                
             }
         }
     })
