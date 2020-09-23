@@ -67,7 +67,7 @@ export var dbPost = (data) => {
 }
 
 // Removes the db locally
-export var dbDeleteAll = (data) => {
+export var dbDelete = (data) => {
   return db.del(data)
 }
 

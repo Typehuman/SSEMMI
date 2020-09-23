@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { dbGetAll, dbGetItem, dbPost, dbDeleteAll, dbQueryTrusted } from '../services/orbitdb'
+import { dbGetAll, dbGetItem, dbPost, dbDelete, dbQueryTrusted } from '../services/orbitdb'
 import request from 'request'
 
 const router = new Router()
@@ -116,7 +116,7 @@ router
     })
     // DELETE specific data
     .delete((req, res) => {
-        res.send( dbDeleteAll(req.params.id) );
+        res.send( dbDelete(req.params.id) );
     })
     // // PUT specific data
     // .put((req, res) => {
