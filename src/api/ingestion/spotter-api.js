@@ -58,10 +58,13 @@ export const loadApi = async (api) => {
 
                 // Wrap in a try catch to put into the db
                 try {
+                    // Add data into SSEMMI decentralised database
                     console.log(`Adding data from date ${currentDayFormat} to the DB....`)
                     dbPost(source_input)
+                    // Tracks the entry count to log/trace
                     count+= 1
                     console.log(`Entry count: ${count}\n`)
+                    // Display data from entry load
                     console.log(source_input)
                     console.log(`SSEMMI ID ${source_input.ssemmi_id} successfully added to the db \n`)
                 } catch (error) {
