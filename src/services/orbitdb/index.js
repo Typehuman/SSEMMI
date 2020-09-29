@@ -20,11 +20,11 @@ export const dbService = async () => {
     // Allow write access
     const access = {
       write: ['*'],
-      indexBy: 'id'
+      indexBy: 'ssemmi_id'
     }
 
     // Initialise the db
-    db = await orbitdb.docs('ssemmi-docs-db', access)
+    db = await orbitdb.docs('ssemmi-api-ingestor', access)
 
     // //Add data into doc db
     // await db.put({spotter: "whalistic", total_spotted: 5})
