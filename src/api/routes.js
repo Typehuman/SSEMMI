@@ -41,8 +41,10 @@ const router = new Router()
  * and the start/end parameter marks the date of sighting, with 7 days range as default
  * species parameter specifies the types of whales, but in our case it should be 'Orcinus orca'
  */
-// Specify the URL
-const conserveApi = 'https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=2020-01-01&end=2020-09-18&species=Orcinus%20orca'
+
+ // Specify the URL
+//const conserveApi = 'https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=2020-01-01&end=2020-09-18&species=Orcinus%20orca'
+const conserveApi = 'https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=2020-09-18&species=Orcinus%20orca'
 
 // Retreive data from the URL
 const loadApi = async (api) => {
@@ -50,21 +52,36 @@ const loadApi = async (api) => {
         if (!err) {
             // Parsing the JSON from the data, parameters are 'count' and 'results'
             var jsonData = JSON.parse(body)
+            var count = 1
 
             // Iterate over the sightings data to fill DB
             for (var i = 0; i < jsonData.results.length; i++ ) {
                 // Retreive only 'results' as it contains the sighting data
-                var fullEntry = jsonData.results[i]
-                var id = jsonData.results[i].id
-                var user = jsonData.results[i].usernm
-                var numSights = jsonData.results[i].number_sighted
+                // var fullEntry = jsonData.results[i]
+
+                // Mapping relevant fields from the data into the ssemmi db
+                var source_input = {
+                    "ssemmi_id": count,
+                    "data_source_name": "Spotter-API",
+                    "data_source_entity": "Conserve.io",
+                    "data_source_id": jsonData.results[i].id,
+                    "created": jsonData.results[i].created,
+                    "photo_url": jsonData.results[i].photo_url,
+                    "no_sighted": jsonData.results[i].number_sighted,
+                    "latitude": jsonData.results[i].latitude,
+                    "longitude": jsonData.results[i].longitude,
+                    "data_source_witness": jsonData.results[i].usernm,
+                    "trusted": jsonData.results[i].trusted
+                }
 
                 // Wrap in a try catch to put into the db
                 try {
-                    console.log(`${i+1}. ID ${id}: ${user} sighted ${numSights}`)
                     console.log(`Adding data to the DB....`)
-                    dbPost(fullEntry)
-                    console.log(`${id} successfully added to the db \n`)
+                    //dbPost(fullEntry)
+                    console.log(`Entry count: ${count}\n`)
+                    console.log(source_input)
+                    console.log(`SSEMMI ID ${source_input.ssemmi_id} successfully added to the db \n`)
+                    count+= 1
                 } catch (error) {
                     console.log(error);
                 }
@@ -94,6 +111,10 @@ router
     })
     // POST data
     .post((req, res) => {
+        if (!req.body) {
+            res.send('Invalid input 400');
+            return;
+        }
         res.send( dbPost(req.body) );
     });
 
