@@ -2,7 +2,7 @@ import request from 'request'
 import { dbPost } from '../../services/orbitdb'
 
 /**
- *----- DATA TO DB LOADING METHODS -----
+ *----- SPOTTER API DATA -> DB (LOADING METHODS) -----
  */
 
 /**
@@ -17,15 +17,19 @@ var currentDate = new Date()
 var dd = String(currentDate.getDate()).padStart(2, '0')
 var mm = String(currentDate.getMonth() + 1).padStart(2, '0') //January is 0
 var yyyy = currentDate.getFullYear()
-var currentDayFormat = `${yyyy}-${mm}-${dd}`
 
-//export const conserveApi = 'https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=2020-01-01&end=2020-09-18&species=Orcinus%20orca'
-//export const conserveApi = `https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=${currentDayFormat}&species=Orcinus%20orca`
-export const conserveApi = `https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=2020-09-18&species=Orcinus%20orca`
+// Convert the current date to string for JSON load - refer to the source_input variable
+currentDate = String(currentDate)
+
+// Formatting on current date for API parameter
+var currentDayFormat = `${yyyy}-${mm}-${dd}`
+export const conserveApi = `https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=${currentDayFormat}&species=Orcinus%20orca`
 
 // Retreive data from the URL
 export const loadApi = async (api) => {
+    // Request connection to the API
     request(api, (err, resp, body) => {
+        console.log("Connecting to Spotter API... \n");
         if (!err) {
             // Parsing the JSON from the data, parameters are 'count' and 'results'
             var jsonData = JSON.parse(body)
@@ -34,6 +38,8 @@ export const loadApi = async (api) => {
             // Iterate over the sightings data to fill DB
             for (var i = 0; i < jsonData.results.length; i++ ) {
                 // Mapping relevant fields from the data into the ssemmi db
+                /** NOTE: ipfs-http doesn't support CBOR tags so the date fields had to be stringified
+                refer to https://github.com/ipfs/js-ipfs/issues/3043 **/
                 var source_input = {
                     "ssemmi_id": "SPOTTER" + jsonData.results[i].id,
                     "entry_id": new Date().getTime(),
@@ -53,7 +59,7 @@ export const loadApi = async (api) => {
                 // Wrap in a try catch to put into the db
                 try {
                     console.log(`Adding data from date ${currentDayFormat} to the DB....`)
-                    //dbPost(source_input)
+                    dbPost(source_input)
                     count+= 1
                     console.log(`Entry count: ${count}\n`)
                     console.log(source_input)
@@ -62,8 +68,8 @@ export const loadApi = async (api) => {
                     console.log(error);
                 }
             }
-            // Show the number of entries
-            console.log(`There were ${count} of entries added from Spotter API`)
+            // Show the number of entries of the day from the Spotter API
+            console.log(`There were ${jsonData.results.length} entries added from Spotter API \n`)
         }
     })
 }

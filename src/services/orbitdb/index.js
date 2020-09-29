@@ -63,7 +63,7 @@ export var dbGetItem = (data) => {
 // Post an entry into the db
 export var dbPost = (data) => {
   db.put(data)
-  return dbGetItem(data)
+  return true
 }
 
 // Removes the db locally
