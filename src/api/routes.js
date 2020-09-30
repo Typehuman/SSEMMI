@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { dbGetAll, dbGetItem, dbPost, dbDelete, dbQueryTrusted } from '../services/orbitdb'
 import { loadApi, conserveApi } from './ingestion/spotter-api'
+import { csLoadSpreadsheet } from './ingestion/citizen-science-api'
 
 const router = new Router()
 
@@ -29,10 +30,17 @@ const router = new Router()
  */
 
 
+/**
+ *----- LOADING DATA FROM API INTO DB METHODS -----
+ */
+// // Load data from CONSERVE.IO
+// loadApi(conserveApi)
 
-// Invoke method to load data into DB before performing requests on routes
-loadApi(conserveApi)
+// Load data from CITIZEN SCIENCE
+csLoadSpreadsheet()
 
+// Load data from ORCA MAP
+// omLoadSpreadsheet()
 
 /**
  *----- ROUTING METHODS -----

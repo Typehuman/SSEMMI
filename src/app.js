@@ -7,7 +7,7 @@ import api from './api/routes'
 
 const app = express(apiRoot, api)
 const server = http.createServer(app)
-dbService()
+// dbService()
 
 setImmediate(() => {
   server.listen(port, ip, () => {

@@ -18,7 +18,7 @@ var dd = String(currentDate.getDate()).padStart(2, '0')
 var mm = String(currentDate.getMonth() + 1).padStart(2, '0') //January is 0
 var yyyy = currentDate.getFullYear()
 
-// Convert the current date to string for JSON load - refer to the source_input variable
+// Convert the current date to string for JSON load - refer to the source_input date variable
 currentDate = String(currentDate)
 
 // Formatting on current date for API parameter
@@ -53,6 +53,7 @@ export const loadApi = async (api) => {
                     "longitude": jsonData.results[i].longitude,
                     "data_source_witness": jsonData.results[i].usernm,
                     "trusted": jsonData.results[i].trusted,
+                    "data_source_comments": jsonData.results[i].comments,
                     "ssemmi_date_added": currentDate
                 }
 
