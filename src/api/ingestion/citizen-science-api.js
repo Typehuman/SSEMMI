@@ -18,35 +18,24 @@ const citizenSciDoc = process.env.CITIZEN_SCIENCE_GOOGLE_ID
 // Method to map relevant fields from the data into the ssemmi db
 /** NOTE: ipfs-http doesn't support CBOR tags so the date fields had to be stringified
 refer to https://github.com/ipfs/js-ipfs/issues/3043 **/
-
-function ssemmiFormatting (entryData) {
-    // var source_input = {
-    //     "ssemmi_id": "CITISCI" + entryData.id,
-    //     "entry_id": new Date().getTime(),
-    //     "data_source_name": "Citizen-Science",
-    //     "data_source_entity": "resolveconservation.com",
-    //     "data_source_id": entryData.id,
-    //     "created": entryData.created,
-    //     "photo_url": entryData.photo_url,
-    //     "no_sighted": entryData.number_sighted,
-    //     "latitude": entryData.latitude,
-    //     "longitude": entryData.longitude,
-    //     "data_source_witness": entryData.usernm,
-    //     "trusted": entryData.trusted,
-    //     "data_source_comments": entryData.comments,
-    //     "ssemmi_date_added": String(new Date())
-    // }
-    // return source_input
-
-    var bogus = {
-        "Record#": entryData,
-        "Date": 2,
-        "Time": 3,
-        "OrcaId": 4,
-        "NumberandBehaviorof": 5
+function ssemmiFormatting (entryData, count) {
+    var source_input = {
+        "ssemmi_id": "CITISCI" + count,
+        "entry_id": new Date().getTime(),
+        "data_source_name": "Citizen-Science",
+        "data_source_entity": "Resolve Conservation",
+        "data_source_id": count,
+        "created": `${entryData['Date']} ${entryData['Time']}`,
+        "photo_url": "N/A",
+        "no_sighted": "N/A",
+        "latitude": entryData['latitude'],
+        "longitude": entryData['longitude'],
+        "data_source_witness": entryData['Initial Sighting Source'],
+        "trusted": "N/A",
+        "data_source_comments": `${entryData['Number and Behavior of Whales']}`,
+        "ssemmi_date_added": String(new Date())
     }
-
-    console.log(bogus)
+    console.log(source_input)
 }
 
 // Method to load spreadsheet from Google
@@ -64,24 +53,18 @@ export const csLoadSpreadsheet = async () => {
     var i = 0, gSheets = gDoc.sheetCount
     while (i < 1) {
         // Set current worksheet
-        const sheet = gDoc.sheetsByIndex[i]
+        const sheet = gDoc.sheetsByIndex[1]
         // Load all rows (skipping the header with the offset)
         const sheetRows = await sheet.getRows( {offset: 0} )
 
-        sheetRows.forEach( (index) => {
-            console.log(`index: ${index.NumberandBehaviorof} \n`);
+        // Map all row values from current workbook as JSON payload
+        sheetRows.forEach( (entry, count) => {
+            // Assign row index by adding the row count as it starts from zero
+            const rowIndex = count + 1
+            ssemmiFormatting(entry, rowIndex)
         })
 
-        // sheetRows.forEach(entry => {
-        //     ssemmiFormatting(entry)
-        // })
-
-        // for (let index = 1; index < 3; index++) {
-        //     console.log(`Date: ${sheetRows[index].date} \n`)
-        //     console.log(`Orca ID: ${sheetRows[index].orcaid} \n`)
-        // }
-
-        // console.log(`Title: ${sheet.title} and Rows: ${sheet.rowCount} \n`)
+        // Increment to advance to next workbook
         i++
     }
 }
