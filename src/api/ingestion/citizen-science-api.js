@@ -15,11 +15,25 @@ const gKey = process.env.GOOGLE_SPREADSHEET_KEY
 const gClientEmail = process.env.GOOGLE_SPREADSHEET_CLIENT_EMAIL
 const citizenSciDoc = process.env.CITIZEN_SCIENCE_GOOGLE_ID
 
-// Method to map relevant fields from the data into the ssemmi db
+/** 
+ * Method to map CITIZEN SCIENCE data fields from the data into the ssemmi db
+ */
+
+// Validations before JSON mapping
+function undefinedStrChecks (field) {
+    if(field == undefined) {
+        return "N/A"
+    }
+    else {
+        return field
+    }
+}
+
+// Formatting data into a JSON payload
 /** NOTE: ipfs-http doesn't support CBOR tags so the date fields had to be stringified
 refer to https://github.com/ipfs/js-ipfs/issues/3043 **/
 function ssemmiFormatting (entryData, count) {
-    var source_input = {
+    const source_input = {
         "ssemmi_id": "CITISCI" + count,
         "entry_id": new Date().getTime(),
         "data_source_name": "Citizen-Science",
@@ -28,8 +42,8 @@ function ssemmiFormatting (entryData, count) {
         "created": `${entryData['Date']} ${entryData['Time']}`,
         "photo_url": "N/A",
         "no_sighted": "N/A",
-        "latitude": entryData['latitude'],
-        "longitude": entryData['longitude'],
+        "latitude": undefinedStrChecks(entryData['latitude']),
+        "longitude": undefinedStrChecks(entryData['longitude']),
         "data_source_witness": entryData['Initial Sighting Source'],
         "trusted": "N/A",
         "data_source_comments": `${entryData['Number and Behavior of Whales']}`,
@@ -50,7 +64,7 @@ export const csLoadSpreadsheet = async () => {
     await gDoc.loadInfo()
 
     // Iterate through the sheets within the documents using length caching for optimum speed
-    var i = 0, gSheets = gDoc.sheetCount
+    let i = 0, gSheets = gDoc.sheetCount
     while (i < 1) {
         // Set current worksheet
         const sheet = gDoc.sheetsByIndex[2]
@@ -62,13 +76,17 @@ export const csLoadSpreadsheet = async () => {
             try {
                 console.log(`Adding data from CITIZEN SCIENCE documents to the DB....`)
 
-                // Map Google sheets data to fit SSEMMI DB fields and formatting
-                const entryFormatted = ssemmiFormatting(entry)
-                // // Add data into the decentralised database
-                // dbPost(entryFormatted)
                 // Tracks the entry count to log/trace
                 const count = index + 1
+
+                // Map Google sheets data to fit SSEMMI DB fields and formatting
+                const entryFormatted = ssemmiFormatting(entry, index)
+
+                // // Add data into the decentralised database
+                // dbPost(entryFormatted)
+
                 console.log(`Entry count: ${count}\n`)
+
                 // Display success alert of entry added to the db
                 console.log(entryFormatted)
                 console.log(`SSEMMI ID ${entryFormatted.ssemmi_id} successfully added to the db \n`)

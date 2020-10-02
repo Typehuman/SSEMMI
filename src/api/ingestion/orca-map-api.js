@@ -20,9 +20,9 @@ const orcaMapDoc = process.env.ORCA_MAP_GOOGLE_ID
 refer to https://github.com/ipfs/js-ipfs/issues/3043 **/
 function ssemmiFormatting (entryData) {
     // Set trusted field to lower case and whitespace free verified field from entry
-    var trustedEntry = entryData['verified?'].trim().toLowerCase()
+    const trustedEntry = entryData['verified?'].trim().toLowerCase()
     // Check if truly verified before assigning entry as trusted
-    var trustedInput
+    let trustedInput
     if(trustedEntry == 'yes') {
         trustedInput = 1
     }
@@ -30,14 +30,28 @@ function ssemmiFormatting (entryData) {
         trustedInput = 0
     }
 
-    var source_input = {
+    // Validations before JSON mapping
+    function undefinedStrChecks (field) {
+        if(field == undefined) {
+            return "N/A"
+        }
+        else if (field.trim().toLowerCase() == "") {
+            return "N/A"
+        }
+        else {
+            return field
+        }
+    }
+
+    // Map entries into a SSEMMI compliant JSON format
+    const source_input = {
         "ssemmi_id": "ORCAMAP" + entryData['timestamp'],
         "entry_id": new Date().getTime(),
         "data_source_name": "Orca Map",
         "data_source_entity": "Orca Map",
         "data_source_id": entryData['timestamp'],
-        "created": `${String(entryData['humantime'])}}`,
-        "photo_url": entryData['Photo link'],
+        "created": `${String(entryData['humantime'])}`,
+        "photo_url": undefinedStrChecks(entryData['Photo link']),
         "no_sighted": "N/A",
         "latitude": entryData['latitude'],
         "longitude": entryData['longitude'],
@@ -63,7 +77,7 @@ export const omLoadSpreadsheet = async () => {
     await gDoc.loadInfo()
 
     // Iterate through the sheets within the documents using length caching for optimum speed
-    var i = 0, gSheets = gDoc.sheetCount
+    let i = 0, gSheets = gDoc.sheetCount
     while (i < 1) {
         // Set current worksheet
         const sheet = gDoc.sheetsByIndex[2]
@@ -89,7 +103,7 @@ export const omLoadSpreadsheet = async () => {
                 console.log(error)
             }
         })
-        
+
         // Increment to advance to next workbook
         i++
     }
