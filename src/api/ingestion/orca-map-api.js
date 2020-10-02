@@ -1,7 +1,5 @@
-import request from 'request'
 import { dbPost } from '../../services/orbitdb'
-import GSpreadsheet from 'google-spreadsheet'
-import { promisify } from 'util'
+import { GoogleSpreadsheet } from 'google-spreadsheet'
 
 /**
  *----- ORCA MAP GOOGLE SHEET API DATA -> DB (LOADING METHODS) -----
@@ -10,3 +8,78 @@ import { promisify } from 'util'
 /**
  * orcaMapSheet is the URL to retreive data from Orca Map Project google spreadsheet entries
  */
+
+
+// Load environment variables for details
+const gKey = process.env.GOOGLE_SPREADSHEET_KEY
+const gClientEmail = process.env.GOOGLE_SPREADSHEET_CLIENT_EMAIL
+const orcaMapDoc = process.env.ORCA_MAP_GOOGLE_ID
+
+// Method to map relevant fields from the data into the ssemmi db
+/** NOTE: ipfs-http doesn't support CBOR tags so the date fields had to be stringified
+refer to https://github.com/ipfs/js-ipfs/issues/3043 **/
+function ssemmiFormatting (entryData) {
+    var source_input = {
+        "ssemmi_id": "ORCAMAP" + entryData['timestamp'],
+        "entry_id": new Date().getTime(),
+        "data_source_name": "Orca Map",
+        "data_source_entity": "Orca Map",
+        "data_source_id": entryData['timestamp'],
+        "created": `${String(entryData['humantime'])}}`,
+        "photo_url": entryData['Photo link'],
+        "no_sighted": "N/A",
+        "latitude": entryData['latitude'],
+        "longitude": entryData['longitude'],
+        "data_source_witness": entryData['user'],
+        "trusted": "N/A",
+        "data_source_comments": `${entryData['type']} entry: ${entryData['Notes']}`,
+        "ssemmi_date_added": String(new Date())
+    }
+    
+    // Return the JSON payload to advance to the next step
+    return source_input
+}
+
+// Method to load spreadsheet from Google
+export const omLoadSpreadsheet = async () => {
+    // Authenticating access to specified Google spreadsheets
+    const gDoc = new GoogleSpreadsheet(orcaMapDoc)
+    await gDoc.useServiceAccountAuth({
+        client_email: gClientEmail,
+        private_key: gKey
+    })
+    // Loads document properties and worksheets
+    await gDoc.loadInfo()
+
+    // Iterate through the sheets within the documents using length caching for optimum speed
+    var i = 0, gSheets = gDoc.sheetCount
+    while (i < 1) {
+        // Set current worksheet
+        const sheet = gDoc.sheetsByIndex[2]
+        // Load all rows (skipping the header with the offset)
+        const sheetRows = await sheet.getRows( {offset: 0} )
+
+        // Map all row values from current workbook as JSON payload
+        sheetRows.forEach( (entry, index) => {
+            try {
+                console.log(`Adding data from ORCA MAP documents to the DB....`)
+
+                // Map Google sheets data to fit SSEMMI DB fields and formatting
+                const entryFormatted = ssemmiFormatting(entry)
+                // // Add data into the decentralised database
+                // dbPost(entryFormatted)
+                // Tracks the entry count to log/trace
+                const count = index + 1
+                console.log(`Entry count: ${count}\n`)
+                // Display success alert of entry added to the db
+                console.log(entryFormatted)
+                console.log(`SSEMMI ID ${entryFormatted.ssemmi_id} successfully added to the db \n`)
+            } catch (error) {
+                console.log(error)
+            }
+        })
+
+        // Increment to advance to next workbook
+        i++
+    }
+}

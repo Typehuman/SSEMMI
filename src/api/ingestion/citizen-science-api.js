@@ -35,7 +35,7 @@ function ssemmiFormatting (entryData, count) {
         "data_source_comments": `${entryData['Number and Behavior of Whales']}`,
         "ssemmi_date_added": String(new Date())
     }
-    console.log(source_input)
+    return source_input
 }
 
 // Method to load spreadsheet from Google
@@ -53,15 +53,28 @@ export const csLoadSpreadsheet = async () => {
     var i = 0, gSheets = gDoc.sheetCount
     while (i < 1) {
         // Set current worksheet
-        const sheet = gDoc.sheetsByIndex[1]
+        const sheet = gDoc.sheetsByIndex[2]
         // Load all rows (skipping the header with the offset)
         const sheetRows = await sheet.getRows( {offset: 0} )
 
         // Map all row values from current workbook as JSON payload
-        sheetRows.forEach( (entry, count) => {
-            // Assign row index by adding the row count as it starts from zero
-            const rowIndex = count + 1
-            ssemmiFormatting(entry, rowIndex)
+        sheetRows.forEach( (entry, index) => {
+            try {
+                console.log(`Adding data from CITIZEN SCIENCE documents to the DB....`)
+
+                // Map Google sheets data to fit SSEMMI DB fields and formatting
+                const entryFormatted = ssemmiFormatting(entry)
+                // // Add data into the decentralised database
+                // dbPost(entryFormatted)
+                // Tracks the entry count to log/trace
+                const count = index + 1
+                console.log(`Entry count: ${count}\n`)
+                // Display success alert of entry added to the db
+                console.log(entryFormatted)
+                console.log(`SSEMMI ID ${entryFormatted.ssemmi_id} successfully added to the db \n`)
+            } catch (error) {
+                console.log(error)
+            }
         })
 
         // Increment to advance to next workbook

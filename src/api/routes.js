@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { dbGetAll, dbGetItem, dbPost, dbDelete, dbQueryTrusted } from '../services/orbitdb'
 import { loadApi, conserveApi } from './ingestion/spotter-api'
 import { csLoadSpreadsheet } from './ingestion/citizen-science-api'
+import { omLoadSpreadsheet } from './ingestion/orca-map-api'
 
 const router = new Router()
 
@@ -36,11 +37,11 @@ const router = new Router()
 // // Load data from CONSERVE.IO
 // loadApi(conserveApi)
 
-// Load data from CITIZEN SCIENCE
-csLoadSpreadsheet()
+// // Load data from CITIZEN SCIENCE
+// csLoadSpreadsheet()
 
 // Load data from ORCA MAP
-// omLoadSpreadsheet()
+omLoadSpreadsheet()
 
 /**
  *----- ROUTING METHODS -----
