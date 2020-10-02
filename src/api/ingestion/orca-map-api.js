@@ -19,6 +19,17 @@ const orcaMapDoc = process.env.ORCA_MAP_GOOGLE_ID
 /** NOTE: ipfs-http doesn't support CBOR tags so the date fields had to be stringified
 refer to https://github.com/ipfs/js-ipfs/issues/3043 **/
 function ssemmiFormatting (entryData) {
+    // Set trusted field to lower case and whitespace free verified field from entry
+    var trustedEntry = entryData['verified?'].trim().toLowerCase()
+    // Check if truly verified before assigning entry as trusted
+    var trustedInput
+    if(trustedEntry == 'yes') {
+        trustedInput = 1
+    }
+    else {
+        trustedInput = 0
+    }
+
     var source_input = {
         "ssemmi_id": "ORCAMAP" + entryData['timestamp'],
         "entry_id": new Date().getTime(),
@@ -31,7 +42,7 @@ function ssemmiFormatting (entryData) {
         "latitude": entryData['latitude'],
         "longitude": entryData['longitude'],
         "data_source_witness": entryData['user'],
-        "trusted": "N/A",
+        "trusted": trustedInput,
         "data_source_comments": `${entryData['type']} entry: ${entryData['Notes']}`,
         "ssemmi_date_added": String(new Date())
     }
@@ -78,7 +89,7 @@ export const omLoadSpreadsheet = async () => {
                 console.log(error)
             }
         })
-
+        
         // Increment to advance to next workbook
         i++
     }
