@@ -51,29 +51,29 @@ export const dbService = async () => {
 // DB actions
 
 // Retreive all entries in the db
-export var dbGetAll = () => {
+export const dbGetAll = () => {
   return db.get('')
 }
 
 // Retreive specific entry from the db
-export var dbGetItem = (data) => {
+export const dbGetItem = (data) => {
   return db.get(data)
 }
 
 // Post an entry into the db
-export var dbPost = (data) => {
+export const dbPost = (data) => {
   db.put(data)
   return true
 }
 
 // Removes the db locally
-export var dbDelete = (data) => {
+export const dbDelete = (data) => {
   return db.del(data)
 }
 
 // Query the db for trusted sources from conserve.io API
-export var dbQueryTrusted = () => {
-  var res = db.query((data) =>
+export const dbQueryTrusted = () => {
+  const res = db.query((data) =>
     data.trusted == 1
   )
   return res
