@@ -2,6 +2,8 @@
   "generator-rest": {
     "srcDir": "src",
     "apiDir": "api",
-    "authMethods": []
+    "authMethods": [
+      "password"
+    ]
   }
 }
