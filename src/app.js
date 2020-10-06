@@ -5,8 +5,6 @@ import express from './services/express'
 import api from './api'
 import { dbService, getAll, getItem, post } from './services/orbitdb'
 
-import api from './api/routes'
-
 const app = express(apiRoot, api)
 const server = http.createServer(app)
 
