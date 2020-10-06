@@ -16,7 +16,7 @@ if (mongo.uri) {
 }
 mongoose.Promise = Promise
 
-// dbService()
+dbService()
 
 setImmediate(() => {
   server.listen(port, ip, () => {
