@@ -62,7 +62,7 @@ export const dbGetItem = (data) => {
 
 // Post an entry into the db
 export const dbPost = (data) => {
-  db.put(data)
+  db.put(data, { pin: true })
   return true
 }
 

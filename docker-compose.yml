@@ -1,12 +1,22 @@
 version: '3'
+volumes:
+  ipfs_data:
+
 services:
+  web:
+    build: .
+    ports: 
+      - "9000:9000"
+    depends_on: ['ipfs']
+    links: 
+      - ipfs
   ipfs:
     image: ipfs/go-ipfs:latest
     environment:
       - IPFS_PROFILE=server
       - IPFS_PATH=/ipfsdata
     volumes:
-      - ./data/ipfs:/ipfsdata
+      - ipfs_data:/ipfsdata
     ports:
       - "4001:4001"
       - "127.0.0.1:8080:8080"

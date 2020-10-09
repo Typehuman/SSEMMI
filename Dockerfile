@@ -4,6 +4,12 @@ FROM node:12
 WORKDIR /usr/src/ssemmi-api
 
 # Install app dependencies
-COPY package*.json ./
+COPY ["package*.json", "./"]
 
-RUN npm i
+RUN npm i && npm i -g nodemon
+
+COPY [".", "./"]
+
+EXPOSE 9000
+
+CMD [ "npm", "run", "dev" ]

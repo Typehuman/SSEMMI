@@ -1,7 +1,7 @@
 {
   "name": "orcasound-api",
   "version": "0.0.0",
-  "main": "src",
+  "main": "src/index.js",
   "private": true,
   "scripts": {
     "start": "node .",
