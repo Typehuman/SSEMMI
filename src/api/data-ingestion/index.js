@@ -4,9 +4,7 @@ import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
 import { create, index, show, update, destroy } from './controller'
 import { schema } from './model'
-import { dbPost } from '../../services/orbitdb'
 export DataIngestion, { schema } from './model'
-import { dbGetAll } from '../../services/orbitdb'
 
 const router = new Router()
 const { entry_id, data_source_name, data_source_entity, data_source_id, created, photo_url, no_sighted, latitude, longitude, data_source_witness, trusted, data_source_comments, ssemmi_data_added } = schema.tree
@@ -35,16 +33,6 @@ const { entry_id, data_source_name, data_source_entity, data_source_id, created,
  * @apiError 404 Data ingestion not found.
  * @apiError 401 user access only.
  */
-
-// List on all sightings
-router
-    .route("/sightings/")
-    // GET all data
-    .get((req, res) => {
-        token({require: true, roles: ['admin']})
-        res.send( dbGetAll() )}
-    )
-
 router.post('/',
   token({ required: true }),
   body({ entry_id, data_source_name, data_source_entity, data_source_id, created, photo_url, no_sighted, latitude, longitude, data_source_witness, trusted, data_source_comments, ssemmi_data_added }),
