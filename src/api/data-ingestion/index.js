@@ -44,17 +44,40 @@ router.post('/',
 router
     .route("/sightings/")
     // GET all data
-    .get(token({ required: true }),(req, res) => {
+    .get(token({ required: true }), (req, res) => {
         res.send( dbGetAll() );
     })
     // POST data
-    .post(token({ required: true }),(req, res) => {
+    .post(token({ required: true }), (req, res) => {
       if (!req.body) {
           res.send('Invalid input 400');
           return;
       }
       res.send( dbPost(req.body) );
   });
+
+router
+  .route("/sightings/:id")
+  // GET Specific data
+  .get(token({ required: true }), (req, res) => {
+      res.send( dbGetItem(req.params.id) );
+  })
+  // DELETE specific data
+  .delete(token({ required: true }), (req, res) => {
+      res.send( dbDelete(req.params.id) );
+  })
+// // PUT specific data
+// .put((req, res) => {
+//     res.send( dbPost(req.body) );
+// });
+
+// List sightings from trusted sources
+router
+  .route("/sightings/trusted")
+  // GET all data
+  .get(token({ required: true }), (req, res) => {
+      res.send( dbQueryTrusted() );
+  })
 
 /**
  * @api {get} /ingestions Retrieve data ingestions
