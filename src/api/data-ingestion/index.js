@@ -6,6 +6,8 @@ import { create, index, show, update, destroy } from './controller'
 import { schema } from './model'
 export DataIngestion, { schema } from './model'
 
+import { dbGetAll, dbGetItem, dbPost, dbDelete, dbQueryTrusted } from '../../services/orbitdb'
+
 const router = new Router()
 const { entry_id, data_source_name, data_source_entity, data_source_id, created, photo_url, no_sighted, latitude, longitude, data_source_witness, trusted, data_source_comments, ssemmi_data_added } = schema.tree
 
@@ -37,6 +39,22 @@ router.post('/',
   token({ required: true }),
   body({ entry_id, data_source_name, data_source_entity, data_source_id, created, photo_url, no_sighted, latitude, longitude, data_source_witness, trusted, data_source_comments, ssemmi_data_added }),
   create)
+
+// List on all sightings with token restrictions
+router
+    .route("/sightings/")
+    // GET all data
+    .get(token({ required: true }),(req, res) => {
+        res.send( dbGetAll() );
+    })
+    // POST data
+    .post(token({ required: true }),(req, res) => {
+      if (!req.body) {
+          res.send('Invalid input 400');
+          return;
+      }
+      res.send( dbPost(req.body) );
+  });
 
 /**
  * @api {get} /ingestions Retrieve data ingestions
