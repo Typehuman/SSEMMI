@@ -6,6 +6,7 @@ import { omLoadSpreadsheet } from './ingestion/orca-map-api'
 import user from './user'
 import auth from './auth'
 import passwordReset from './password-reset'
+import dataIngestion from './data-ingestion'
 
 const router = new Router()
 
@@ -40,6 +41,7 @@ const router = new Router()
 router.use('/users', user)
 router.use('/auth', auth)
 router.use('/password-resets', passwordReset)
+router.use('/ingestions', dataIngestion)
 
 /**
  *----- LOADING DATA FROM API INTO DB METHODS -----
@@ -47,11 +49,17 @@ router.use('/password-resets', passwordReset)
 // // Load data from CONSERVE.IO
 // loadApi(conserveApi)
 
-// // Load data from CITIZEN SCIENCE
-// csLoadSpreadsheet()
-
-// Load data from ORCA MAP
+// // GOOGLE SHEETS DATA LOAD
+// // Load data from ORCA MAP
 // omLoadSpreadsheet()
+//     .then( () => console.log("---------Preparing to load next Google Sheets data------- \n") )
+//     .then( () => {
+//         setTimeout( () => {
+//             // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
+//             // as Google has a maximum request calls with the same API.
+//             csLoadSpreadsheet()
+//         }, 5000)
+//     })
 
 /**
  *----- ROUTING METHODS -----
@@ -98,9 +106,9 @@ router
     .delete((req, res) => {
         res.send( dbDelete(req.params.id) );
     })
-    // // PUT specific data
-    // .put((req, res) => {
-    //     res.send( dbPost(req.body) );
-    // });
+// // PUT specific data
+// .put((req, res) => {
+//     res.send( dbPost(req.body) );
+// });
 
 export default router
