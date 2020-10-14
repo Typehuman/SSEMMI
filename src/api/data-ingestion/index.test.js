@@ -17,7 +17,7 @@ beforeEach(async () => {
   dataIngestion = await DataIngestion.create({ ssemmi_creator: user })
 })
 
-test('POST /ingestions 201 (user)', async () => {
+test('POST /sightings 201 (user)', async () => {
   const { status, body } = await request(app())
     .post(`${apiRoot}`)
     .send({ access_token: userSession, entry_id: 'test', data_source_name: 'test', data_source_entity: 'test', data_source_id: 'test', created: 'test', photo_url: 'test', no_sighted: 'test', latitude: 'test', longitude: 'test', data_source_witness: 'test', trusted: 'test', data_source_comments: 'test', ssemmi_data_added: 'test' })
@@ -39,13 +39,13 @@ test('POST /ingestions 201 (user)', async () => {
   expect(typeof body.ssemmi_creator).toEqual('object')
 })
 
-test('POST /ingestions 401', async () => {
+test('POST /sightings 401', async () => {
   const { status } = await request(app())
     .post(`${apiRoot}`)
   expect(status).toBe(401)
 })
 
-test('GET /ingestions 200', async () => {
+test('GET /sightings 200', async () => {
   const { status, body } = await request(app())
     .get(`${apiRoot}`)
   expect(status).toBe(200)
@@ -53,7 +53,7 @@ test('GET /ingestions 200', async () => {
   expect(Number.isNaN(body.count)).toBe(false)
 })
 
-test('GET /ingestions/:id 200', async () => {
+test('GET /sightings/:id 200', async () => {
   const { status, body } = await request(app())
     .get(`${apiRoot}/${dataIngestion.id}`)
   expect(status).toBe(200)
@@ -61,13 +61,13 @@ test('GET /ingestions/:id 200', async () => {
   expect(body.id).toEqual(dataIngestion.id)
 })
 
-test('GET /ingestions/:id 404', async () => {
+test('GET /sightings/:id 404', async () => {
   const { status } = await request(app())
     .get(apiRoot + '/123456789098765432123456')
   expect(status).toBe(404)
 })
 
-test('PUT /ingestions/:id 200 (user)', async () => {
+test('PUT /sightings/:id 200 (user)', async () => {
   const { status, body } = await request(app())
     .put(`${apiRoot}/${dataIngestion.id}`)
     .send({ access_token: userSession, entry_id: 'test', data_source_name: 'test', data_source_entity: 'test', data_source_id: 'test', created: 'test', photo_url: 'test', no_sighted: 'test', latitude: 'test', longitude: 'test', data_source_witness: 'test', trusted: 'test', data_source_comments: 'test', ssemmi_data_added: 'test' })
@@ -90,47 +90,47 @@ test('PUT /ingestions/:id 200 (user)', async () => {
   expect(typeof body.ssemmi_creator).toEqual('object')
 })
 
-test('PUT /ingestions/:id 401 (user) - another user', async () => {
+test('PUT /sightings/:id 401 (user) - another user', async () => {
   const { status } = await request(app())
     .put(`${apiRoot}/${dataIngestion.id}`)
     .send({ access_token: anotherSession, entry_id: 'test', data_source_name: 'test', data_source_entity: 'test', data_source_id: 'test', created: 'test', photo_url: 'test', no_sighted: 'test', latitude: 'test', longitude: 'test', data_source_witness: 'test', trusted: 'test', data_source_comments: 'test', ssemmi_data_added: 'test' })
   expect(status).toBe(401)
 })
 
-test('PUT /ingestions/:id 401', async () => {
+test('PUT /sightings/:id 401', async () => {
   const { status } = await request(app())
     .put(`${apiRoot}/${dataIngestion.id}`)
   expect(status).toBe(401)
 })
 
-test('PUT /ingestions/:id 404 (user)', async () => {
+test('PUT /sightings/:id 404 (user)', async () => {
   const { status } = await request(app())
     .put(apiRoot + '/123456789098765432123456')
     .send({ access_token: anotherSession, entry_id: 'test', data_source_name: 'test', data_source_entity: 'test', data_source_id: 'test', created: 'test', photo_url: 'test', no_sighted: 'test', latitude: 'test', longitude: 'test', data_source_witness: 'test', trusted: 'test', data_source_comments: 'test', ssemmi_data_added: 'test' })
   expect(status).toBe(404)
 })
 
-test('DELETE /ingestions/:id 204 (user)', async () => {
+test('DELETE /sightings/:id 204 (user)', async () => {
   const { status } = await request(app())
     .delete(`${apiRoot}/${dataIngestion.id}`)
     .query({ access_token: userSession })
   expect(status).toBe(204)
 })
 
-test('DELETE /ingestions/:id 401 (user) - another user', async () => {
+test('DELETE /sightings/:id 401 (user) - another user', async () => {
   const { status } = await request(app())
     .delete(`${apiRoot}/${dataIngestion.id}`)
     .send({ access_token: anotherSession })
   expect(status).toBe(401)
 })
 
-test('DELETE /ingestions/:id 401', async () => {
+test('DELETE /sightings/:id 401', async () => {
   const { status } = await request(app())
     .delete(`${apiRoot}/${dataIngestion.id}`)
   expect(status).toBe(401)
 })
 
-test('DELETE /ingestions/:id 404 (user)', async () => {
+test('DELETE /sightings/:id 404 (user)', async () => {
   const { status } = await request(app())
     .delete(apiRoot + '/123456789098765432123456')
     .query({ access_token: anotherSession })

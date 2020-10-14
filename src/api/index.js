@@ -41,7 +41,7 @@ const router = new Router()
 router.use('/users', user)
 router.use('/auth', auth)
 router.use('/password-resets', passwordReset)
-router.use('/ingestions', dataIngestion)
+router.use('/sightings', dataIngestion)
 
 /**
  *----- LOADING DATA FROM API INTO DB METHODS -----
@@ -60,55 +60,5 @@ router.use('/ingestions', dataIngestion)
 //             csLoadSpreadsheet()
 //         }, 5000)
 //     })
-
-/**
- *----- ROUTING METHODS -----
- */
-
-/**
- * List level routes
- */
-
-// List on all sightings
-router
-    .route("/sightings/")
-    // GET all data
-    .get((req, res) => {
-        res.send( dbGetAll() );
-    })
-    // POST data
-    .post((req, res) => {
-        if (!req.body) {
-            res.send('Invalid input 400');
-            return;
-        }
-        res.send( dbPost(req.body) );
-    });
-
-// List sightings from trusted sources
-router
-    .route("/sightings/trusted")
-    // GET all data
-    .get((req, res) => {
-        res.send( dbQueryTrusted() );
-    })
-
-/**
- * Detail level routes
- */
-router
-    .route("/sightings/:id")
-    // GET Specific data
-    .get((req, res) => {
-        res.send( dbGetItem(req.params.id) );
-    })
-    // DELETE specific data
-    .delete((req, res) => {
-        res.send( dbDelete(req.params.id) );
-    })
-// // PUT specific data
-// .put((req, res) => {
-//     res.send( dbPost(req.body) );
-// });
 
 export default router
