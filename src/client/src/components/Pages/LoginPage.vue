@@ -76,12 +76,12 @@ fieldset {
   background: white;
   box-shadow: inset 0 0 2px 0 #EEEEEE;
   outline: none;
-  border: 1px solid #3F51B5;
+  border: 1px solid darkblue;
   padding: .3rem 1rem .4rem;
   cursor: pointer;
   border-radius: .25rem;
   margin-top: 1rem;
-  color: #3F51B5;
+  color: darkblue;
 }
 
 .btn:active {
@@ -90,6 +90,7 @@ fieldset {
 
 input {
   width: 100%;
+  border: groove;
   text-align: center;
   outline: none;
   padding: .5rem 1rem;
