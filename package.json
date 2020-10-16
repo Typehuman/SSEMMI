@@ -60,6 +60,7 @@
     "google-spreadsheet": "^3.0.13",
     "ipfs-http-client": "^46.0.0",
     "jsonwebtoken": "^8.5.1",
+    "mdbvue": "^6.7.1",
     "mongoose": "^5.9.4",
     "mongoose-keywords": "^0.4.0",
     "morgan": "^1.9.1",
