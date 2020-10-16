@@ -21,10 +21,19 @@
       </form>
     </section>
   </div>
+  <RegisterForm/>
 </div>
 </template>
 
 <script>
+import RegisterForm from './RegisterPage'
+
+export default {
+  name: 'App',
+  components: {
+    RegisterForm
+  }
+}
 </script>
 
 <style scoped>
