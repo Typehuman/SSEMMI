@@ -8,12 +8,12 @@
       <span>LOGIN</span>
     </header>
     <section class="login--section">
-      <form class='login--form'>
+      <form class='login--form' @submit="login">
         <fieldset>
-          <input type="text" placeholder='Username' required />
+          <input type="text" v-model.trim="loginData.email" placeholder='Email' name="email" required />
         </fieldset>
         <fieldset>
-          <input type="password" placeholder='Password' required/>
+          <input type="password" v-model.trim="loginData.password" placeholder='Password' name="password" required/>
         </fieldset>
         <fieldset>
           <button type='submit' class='btn'>Submit</button>
@@ -27,11 +27,33 @@
 
 <script>
 import RegisterForm from './RegisterPage'
+import axios from 'axios'
 
 export default {
-  name: 'App',
+  name: 'Login',
   components: {
     RegisterForm
+  },
+  data() {
+    return {
+      loginData: {
+        access_token: 'masterKey'
+      }
+    }
+  },
+  methods: {
+    login(event) {
+      event.preventDefault()
+      this.loginData.access_token = process.env.access_token
+      axios.post('http://localhost:9000/auth/', this.loginData)
+      .then( resp => {
+        localStorage.setItem('jwtToken', resp.data.token)
+        this.$router.push({name: 'Dashboard'})
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
   }
 }
 </script>

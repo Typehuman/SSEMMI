@@ -3,8 +3,8 @@
   
         <mdb-btn @click.native="showModal = true" color="info">New and want to register?</mdb-btn>
         <mdb-modal :show="showModal" @close="showModal = false" cascade class="text-left">
-          <mdb-modal-header class="primary-color white-text">
-            <h4 class="title"><fa class="fas fa-pencil-alt" /> Register a new account</h4>
+          <mdb-modal-header class="primary-color white-text title">
+            <h4>Register a new account</h4>
           </mdb-modal-header>
           <mdb-modal-body class="grey-text">
             <mdb-input size="sm" label="Your name" icon="user" group type="text" validate error="wrong" success="right"/>
@@ -23,7 +23,7 @@
 <script>
   import { mdbInput, mdbBtn, mdbModal, mdbModalHeader, mdbModalBody, mdbModalFooter } from 'mdbvue';
   export default {
-    name: 'FormsPage',
+    name: 'Register',
     components: {
       mdbInput,
       mdbBtn,
