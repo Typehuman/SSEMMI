@@ -53,11 +53,9 @@ export default {
 
       //Header post method to pass user details by passing created user details
       axios.post('http://localhost:9000/users/', regUserRequst)
-      // Retreive token and redirect to requested page
+      // Redirect to requested page
       .then( regUser => {
-        // localStorage.setItem('access_token', user.data.token)
-        console.log('authenticadddddd')
-        console.log(regUser.data)
+        console.log(`Successfully added ${regUser.data}`)
         this.$router.push({name: 'Dashboard'})
       })
       // Check for request errors
