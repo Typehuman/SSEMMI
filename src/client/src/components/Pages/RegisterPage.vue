@@ -7,7 +7,7 @@
     </header>
     <section class="register--section">
       <!-- UI for passing register details -->
-      <form class='register--form' @submit="login">
+      <form class='register--form' @submit="register">
         <fieldset>
           <mdb-input placeholder="email" name="Email" icon="envelope" type="email" required/>
         </fieldset>
@@ -51,7 +51,7 @@ export default {
         'access_token': process.env.MASTER_KEY
       }
 
-      //Header post method to pass user details by passing login details
+      //Header post method to pass user details by passing created user details
       axios.post('http://localhost:9000/users/', regUserRequst)
       // Retreive token and redirect to requested page
       .then( regUser => {
