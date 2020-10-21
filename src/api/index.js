@@ -7,6 +7,7 @@ import user from './user'
 import auth from './auth'
 import passwordReset from './password-reset'
 import dataIngestion from './data-ingestion'
+import cors from 'cors'
 
 const router = new Router()
 
@@ -44,7 +45,7 @@ router.route("/")
  */
 
 router.use('/users', user)
-router.use('/auth', auth)
+router.use('/auth', cors({origin: 'http://localhost:8082'}),auth)
 router.use('/password-resets', passwordReset)
 router.use('/sightings', dataIngestion)
 

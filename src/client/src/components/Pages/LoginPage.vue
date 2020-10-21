@@ -3,11 +3,13 @@
 <template>
 <div class="container" id='app'>
   <div class="login">
+    <!-- Title and header on the UI -->
     <header class="login--header">
       <h1>SSEMMI CLIENT</h1>
       <span>LOGIN</span>
     </header>
     <section class="login--section">
+      <!-- UI for passing login details -->
       <form class='login--form' @submit="login">
         <fieldset>
           <input type="text" v-model.trim="loginData.email" placeholder='Email' name="email" required />
@@ -36,20 +38,33 @@ export default {
   },
   data() {
     return {
-      loginData: {
-        access_token: 'masterKey'
-      }
+      loginData: {}
     }
   },
   methods: {
     login(event) {
+      // Check for event error to prevent propagation
       event.preventDefault()
-      this.loginData.access_token = process.env.access_token
-      axios.post('http://localhost:9000/auth/', this.loginData)
-      .then( resp => {
-        localStorage.setItem('jwtToken', resp.data.token)
+
+      // const requestOpts = {
+      //   'access_token': NEEDS SOMETHING BETTER THAN THIS
+      // }
+
+      //Header post method to authenticate login by passing login details
+      axios.post('http://localhost:9000/auth/', requestOpts, {
+        auth: {
+          username: this.loginData.email,
+          password: this.loginData.password
+        }
+      })
+      // Retreive token and redirect to requested page
+      .then( user => {
+        // localStorage.setItem('access_token', user.data.token)
+        console.log('authenticadddddd')
+        console.log(user.data)
         this.$router.push({name: 'Dashboard'})
       })
+      // Check for request errors
       .catch(err => {
         console.log(err)
       })
