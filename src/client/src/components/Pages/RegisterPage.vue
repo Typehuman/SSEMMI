@@ -37,7 +37,8 @@ export default {
   },
   data() {
     return {
-      registerUserData: {}
+      registerUserData: {},
+      VUE_APP_MASTER_KEY: process.env.VUE_APP_MASTER_KEY
     };
   },
   methods: {
@@ -48,7 +49,7 @@ export default {
       const regUserRequst = {
         'email': this.registerUserData.email,
         'password': this.registerUserData.password,
-        'access_token': process.env.MASTER_KEY
+        'access_token': this.VUE_APP_MASTER_KEY
       }
 
       //Header post method to pass user details by passing created user details

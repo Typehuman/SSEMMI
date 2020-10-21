@@ -33,7 +33,8 @@ export default {
   name: 'Login',
   data() {
     return {
-      loginData: {}
+      loginData: {},
+      VUE_APP_MASTER_KEY: process.env.VUE_APP_MASTER_KEY
     }
   },
   methods: {
@@ -42,7 +43,7 @@ export default {
       event.preventDefault()
 
       const requestOpts = {
-        'access_token': process.env.MASTER_KEY
+        'access_token': this.VUE_APP_MASTER_KEY
       }
 
       //Header post method to authenticate login by passing login details
