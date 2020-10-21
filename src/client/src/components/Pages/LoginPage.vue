@@ -23,19 +23,14 @@
       </form>
     </section>
   </div>
-  <RegisterForm/>
 </div>
 </template>
 
 <script>
-import RegisterForm from './RegisterPage'
 import axios from 'axios'
 
 export default {
   name: 'Login',
-  components: {
-    RegisterForm
-  },
   data() {
     return {
       loginData: {}
@@ -46,9 +41,9 @@ export default {
       // Check for event error to prevent propagation
       event.preventDefault()
 
-      // const requestOpts = {
-      //   'access_token': NEEDS SOMETHING BETTER THAN THIS
-      // }
+      const requestOpts = {
+        'access_token': process.env.MASTER_KEY
+      }
 
       //Header post method to authenticate login by passing login details
       axios.post('http://localhost:9000/auth/', requestOpts, {
@@ -60,9 +55,9 @@ export default {
       // Retreive token and redirect to requested page
       .then( user => {
         // localStorage.setItem('access_token', user.data.token)
-        console.log('authenticadddddd')
+        console.log(`Login successful, Hello ${user.data.user.name}`)
         console.log(user.data)
-        this.$router.push({name: 'Dashboard'})
+        this.$router.push({name: 'Register'})
       })
       // Check for request errors
       .catch(err => {
