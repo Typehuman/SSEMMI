@@ -1,5 +1,5 @@
 <template>
-<div><h4>HELLO YOU ARE LOGGED IN</h4></div>
+<div><h4>WELCOME TO SSEMMI</h4></div>
     
 </template>
 
