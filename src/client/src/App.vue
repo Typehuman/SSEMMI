@@ -9,17 +9,6 @@
   </div>
 </template>
 
-// <script>
-// import LoginPage from './components/Pages/LoginPage'
-
-// export default {
-//   name: 'App',
-//   components: {
-//     LoginPage
-//   }
-// }
-// </script>
-
 <style>
 #app {
   text-align: center;
