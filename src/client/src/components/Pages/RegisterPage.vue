@@ -68,3 +68,11 @@ export default {
 }
 </script>
 
+<style scoped>
+  form {
+    width: 400px;
+    height: 450px;
+    margin: auto;
+    position: relative;
+  }
+</style>

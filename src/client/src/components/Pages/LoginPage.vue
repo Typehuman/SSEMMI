@@ -55,7 +55,7 @@ export default {
       })
       // Retreive token and redirect to requested page
       .then( user => {
-        // localStorage.setItem('access_token', user.data.token)
+        localStorage.setItem('token', user.data.token)
         console.log(`Login successful, Hello ${user.data.user.name}`)
         console.log(user.data)
         this.$router.push({name: 'Register'})
@@ -63,6 +63,7 @@ export default {
       // Check for request errors
       .catch(err => {
         console.log(err)
+        alert("Sorry your login details were invalid")
       })
     }
   }
