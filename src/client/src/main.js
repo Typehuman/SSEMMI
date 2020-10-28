@@ -32,11 +32,15 @@ const router = new Router({
       name: 'Dashboard',
       component: Dashboard,
       beforeEnter: (to, from, next) => {
-        if(store.state.authenticated == false) {
+        let isRestricted = store.state.authenticated == false
+        let isLegitUser = store.state.token != null
+
+        if(isRestricted && !isLegitUser) {
           next('/login')
         } else {
           next()
         }
+
       }
     },
     {
@@ -53,11 +57,20 @@ Vue.use(Vuex)
 export const store = new Vuex.Store(
   {
     state: {
-      authenticated: false
+      authenticated: false,
+      token: null
     },
     mutations: {
       setAuthentication(state, status) {
         state.authenticated = status;
+      },
+      setUserToken(state, token) {
+        state.token = token;
+      }
+    },
+    getters: {
+      getUserToken: state => {
+        return state.token
       }
     }
   }

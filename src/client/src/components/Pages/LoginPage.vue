@@ -45,7 +45,6 @@ export default {
       const requestOpts = {
         'access_token': this.VUE_APP_MASTER_KEY
       }
-
       //Header post method to authenticate login by passing login details
       axios.post('http://localhost:9000/auth/', requestOpts, {
         auth: {
@@ -55,13 +54,19 @@ export default {
       })
       // Retreive token and redirect to requested page
       .then( user => {
-        localStorage.setItem('token', user.data.token)
+        // Route protection to the next page
+        this.$store.commit('setAuthentication', true)
+        // Save retreived token to state and local storage
+        this.$store.commit('setUserToken', user.data.token)
+        localStorage.setItem('userToken', user.data.token)
         console.log(`Login successful, Hello ${user.data.user.name}`)
         console.log(user.data)
-        this.$router.push({name: 'Register'})
+        // Redirect to page upon login --admins will be redirected to register
+        this.$router.replace({name: 'Dashboard'})
       })
       // Check for request errors
       .catch(err => {
+        localStorage.removeItem('userToken')
         console.log(err)
         alert("Sorry your login details were invalid")
       })
