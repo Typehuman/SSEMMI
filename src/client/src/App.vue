@@ -3,11 +3,36 @@
   <div id="nav">
     <router-link to="/">Login</router-link>
     |
-    <router-link to="/dashboard"> Dashboard</router-link>
+    <router-link to="/dashboard"> Dashboard </router-link>
+    |
+    <router-link to="/register">Register</router-link>
   </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  created() {
+    axios.interceptors.response.use(undefined, (err) => {
+      return new Promise( (resolve, reject) => {
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+          // if get an unauthorized, logout the user
+          this.$store.dispatch('auth_logout')
+          // redirect to login
+          this.$router.push('/login')
+          resolve()
+        } else {
+          reject(err)
+          throw err
+        }
+      })
+    })
+  }
+}
+</script>
 
 <style>
 #app {

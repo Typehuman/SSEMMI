@@ -33,10 +33,11 @@ const router = new Router({
       name: 'Dashboard',
       component: Dashboard,
       beforeEnter: (to, from, next) => {
+        let hasToken = localStorage.getItem('userToken')
         let isRestricted = store.state.isAuthenticated == false
         let isLegitUser = store.state.token != null
 
-        if(isRestricted && !isLegitUser) {
+        if(isRestricted && !isLegitUser && !hasToken) {
           next('/login')
         } else {
           next()
@@ -75,6 +76,15 @@ export const store = new Vuex.Store(
       }
     },
     actions: {
+      // Check session data upon creation or refresh
+      init_store({commit}) {
+        const userToken = localStorage.getItem('userToken')
+        if (userToken) {
+          commit('setAuthentication', true)
+          commit('setUserToken', userToken)
+        }
+      },
+      // Login request
       auth_request({commit}, data) {
         return new Promise ((resolve, reject) => {
           const requestOpts = {
@@ -109,6 +119,13 @@ export const store = new Vuex.Store(
             reject(err)
           })
         })
+      },
+      // Logout method
+      auth_logout() {
+        return new Promise( (resolve) => {
+          localStorage.removeItem('userToken')
+          resolve()
+        })
       }
     }
   }
@@ -117,5 +134,6 @@ export const store = new Vuex.Store(
 new Vue({
   render: h => h(App),
   store: store,
-  router: router
+  router: router,
+  beforeEnter() { this.store.commit('init_store')}
 }).$mount('#app')
