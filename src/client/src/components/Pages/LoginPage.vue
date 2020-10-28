@@ -10,7 +10,7 @@
     </header>
     <section class="login--section">
       <!-- UI for passing login details -->
-      <form class='login--form' @submit="login">
+      <form class='login--form' @submit.prevent="loginMethod">
         <fieldset>
           <input type="text" v-model.trim="loginData.email" placeholder='Email' name="email" required />
         </fieldset>
@@ -27,48 +27,19 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'Login',
   data() {
     return {
-      loginData: {},
-      VUE_APP_MASTER_KEY: process.env.VUE_APP_MASTER_KEY
+      loginData: {}
     }
   },
   methods: {
-    login(event) {
-      // Check for event error to prevent propagation
-      event.preventDefault()
-
-      const requestOpts = {
-        'access_token': this.VUE_APP_MASTER_KEY
-      }
-      //Header post method to authenticate login by passing login details
-      axios.post('http://localhost:9000/auth/', requestOpts, {
-        auth: {
-          username: this.loginData.email,
-          password: this.loginData.password
-        }
-      })
-      // Retreive token and redirect to requested page
-      .then( user => {
-        // Route protection to the next page
-        this.$store.commit('setAuthentication', true)
-        // Save retreived token to state and local storage
-        this.$store.commit('setUserToken', user.data.token)
-        localStorage.setItem('userToken', user.data.token)
-        console.log(`Login successful, Hello ${user.data.user.name}`)
-        console.log(user.data)
+    loginMethod() {
+      this.$store.dispatch('auth_request', this.loginData)
+      .then( () => {
         // Redirect to page upon login --admins will be redirected to register
         this.$router.replace({name: 'Dashboard'})
-      })
-      // Check for request errors
-      .catch(err => {
-        localStorage.removeItem('userToken')
-        console.log(err)
-        alert("Sorry your login details were invalid")
       })
     }
   }
