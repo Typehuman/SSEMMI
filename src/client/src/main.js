@@ -33,7 +33,7 @@ const router = new Router({
       name: 'Dashboard',
       component: Dashboard,
       beforeEnter: (to, from, next) => {
-        let hasToken = localStorage.getItem('userToken')
+        let hasToken = sessionStorage.getItem('userToken')
         let isRestricted = store.state.isAuthenticated == false
         let isLegitUser = store.state.token != null
 
@@ -42,13 +42,23 @@ const router = new Router({
         } else {
           next()
         }
-
       }
     },
     {
       path: '/register',
       name: 'Register',
-      component: Register
+      component: Register,
+      beforeEnter: (to, from, next) => {
+        let hasToken = sessionStorage.getItem('userToken')
+        let isRestricted = store.state.isAuthenticated == false
+        let isLegitUser = store.state.token != null
+
+        if(isRestricted && !isLegitUser && !hasToken) {
+          next('/login')
+        } else {
+          next()
+        }
+      }
     }
   ]
 })
@@ -78,7 +88,7 @@ export const store = new Vuex.Store(
     actions: {
       // Check session data upon creation or refresh
       init_store({commit}) {
-        const userToken = localStorage.getItem('userToken')
+        const userToken = sessionStorage.getItem('userToken')
         if (userToken) {
           commit('setAuthentication', true)
           commit('setUserToken', userToken)
@@ -91,7 +101,7 @@ export const store = new Vuex.Store(
             'access_token': process.env.VUE_APP_MASTER_KEY
           }
           //Header post method to authenticate login by passing login details
-          axios.post('http://localhost:9000/auth/', requestOpts, {
+          axios.post('http://localhost:9000/apiv1/auth/', requestOpts, {
             auth: {
               username: data.email,
               password: data.password
@@ -103,7 +113,7 @@ export const store = new Vuex.Store(
             commit('setAuthentication', true)
             // Save retreived token to state and local storage
             commit('setUserToken', user.data.token)
-            localStorage.setItem('userToken', user.data.token)
+            sessionStorage.setItem('userToken', user.data.token)
             // Login success
             console.log(`Login successful, Hello ${user.data.user.name}`)
             console.log(user.data)
@@ -113,7 +123,7 @@ export const store = new Vuex.Store(
           .catch(err => {
             commit('setUserToken', null)
             commit('setAuthentication', false)
-            localStorage.removeItem('userToken')
+            sessionStorage.removeItem('userToken')
             console.log(err)
             alert("Sorry your login details were invalid")
             reject(err)
@@ -121,10 +131,14 @@ export const store = new Vuex.Store(
         })
       },
       // Logout method
-      auth_logout() {
+      auth_logout({commit}) {
         return new Promise( (resolve) => {
-          localStorage.removeItem('userToken')
-          resolve()
+          if (sessionStorage.getItem('userToken') != null) {
+            commit('setUserToken', null)
+            commit('setAuthentication', false)
+            sessionStorage.removeItem('userToken')
+          }
+          resolve('Logged out')
         })
       }
     }

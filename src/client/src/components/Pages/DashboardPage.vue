@@ -29,8 +29,8 @@ export default {
         }
     },
     mounted() {
-        if(localStorage.userToken) {
-            this.userToken = localStorage.userToken
+        if(sessionStorage.userToken) {
+            this.userToken = sessionStorage.userToken
         }
     }
 }

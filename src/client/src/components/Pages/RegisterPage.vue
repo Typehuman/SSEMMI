@@ -53,7 +53,7 @@ export default {
       }
 
       //Header post method to pass user details by passing created user details
-      axios.post('http://localhost:9000/users/', regUserRequst)
+      axios.post('http://localhost:9000/apiv1/users/', regUserRequst)
       // Redirect to requested page
       .then( regUser => {
         console.log(`Successfully added ${regUser.data}`)

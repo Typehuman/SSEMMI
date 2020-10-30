@@ -6,8 +6,11 @@
     <router-link to="/dashboard"> Dashboard </router-link>
     |
     <router-link to="/register">Register</router-link>
+    |
+    <button to="/" @click="logoutMethod"> Logout </button>
   </div>
     <router-view/>
+
   </div>
 </template>
 
@@ -30,6 +33,15 @@ export default {
         }
       })
     })
+  },
+  methods: {
+    logoutMethod() {
+      this.$store.dispatch('auth_logout')
+      .then( () => {
+        // Redirect to login
+        this.$router.push('/')
+      })
+    }
   }
 }
 </script>
