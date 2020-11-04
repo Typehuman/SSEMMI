@@ -47,7 +47,7 @@ router.route("/")
 router.use('/apiv1/users', user)
 router.use('/apiv1/auth', cors({origin: 'http://localhost:8082'}),auth)
 router.use('/apiv1/password-resets', passwordReset)
-router.use('apiv1/sightings', dataIngestion)
+router.use('/apiv1/sightings', dataIngestion)
 
 /**
  *----- LOADING DATA FROM API INTO DB METHODS -----
