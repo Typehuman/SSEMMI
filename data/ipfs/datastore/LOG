@@ -303,3 +303,13 @@
 02:49:16.629201 table@remove removed @63
 02:49:16.630294 table@remove removed @60
 02:49:16.631352 table@remove removed @59
+=============== Nov 4, 2020 (UTC) ===============
+03:11:39.063118 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+03:11:39.081403 version@stat F·[0 1] S·27KiB[0B 27KiB] Sc·[0.00 0.00]
+03:11:39.082142 db@open opening
+03:11:39.089973 journal@recovery F·1
+03:11:39.091561 journal@recovery recovering @70
+03:11:39.101480 memdb@flush created L0@73 N·399 S·31KiB "/F5..H2X,v5495":"/pr..6VY,d5589"
+03:11:39.102903 version@stat F·[1 1] S·58KiB[31KiB 27KiB] Sc·[0.25 0.00]
+03:11:39.129889 db@janitor F·4 G·0
+03:11:39.130119 db@open done T·47.8225ms

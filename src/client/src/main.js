@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import Vuex from 'vuex'
+import vuexPersistedState from 'vuex-persistedstate'
 import Router from 'vue-router'
 import Login from './components/Pages/LoginPage'
 import Dashboard from './components/Pages/DashboardPage'
@@ -26,7 +27,18 @@ const router = new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      beforeEnter: (to, from, next) => {
+        let hasToken = sessionStorage.getItem('userToken')
+        let isAuthenticated = store.state.isAuthenticated == true
+        let isLegitUser = store.state.token != null
+
+        if(isAuthenticated && isLegitUser && hasToken) {
+          next('/dashboard')
+        } else {
+          next()
+        }
+      }
     },
     {
       path: '/dashboard',
@@ -136,12 +148,15 @@ export const store = new Vuex.Store(
           if (sessionStorage.getItem('userToken') != null) {
             commit('setUserToken', null)
             commit('setAuthentication', false)
-            sessionStorage.removeItem('userToken')
+            sessionStorage.clear()
           }
           resolve('Logged out')
         })
       }
-    }
+    },
+    plugins: [vuexPersistedState({
+      storage:window.sessionStorage
+    })]
   }
 )
 
