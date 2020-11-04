@@ -82,7 +82,9 @@ export const store = new Vuex.Store(
   {
     state: {
       isAuthenticated: false,
-      token: null
+      token: null,
+      userDetails: [],
+      isAdmin: false
     },
     mutations: {
       setAuthentication(state, status) {
@@ -90,6 +92,12 @@ export const store = new Vuex.Store(
       },
       setUserToken(state, token) {
         state.token = token;
+      },
+      setUserDetails(state, userData) {
+        state.userDetails = userData
+      },
+      setisAdmin(state, status) {
+        state.isAdmin = status
       }
     },
     getters: {
@@ -123,8 +131,10 @@ export const store = new Vuex.Store(
           .then( user => {
             // Route protection to the next page
             commit('setAuthentication', true)
-            // Save retreived token to state and local storage
+            // Save retreived token to state and session storage
             commit('setUserToken', user.data.token)
+            // Set user data
+            commit('setUserDetails', user.data)
             sessionStorage.setItem('userToken', user.data.token)
             // Login success
             console.log(`Login successful, Hello ${user.data.user.name}`)
@@ -151,6 +161,23 @@ export const store = new Vuex.Store(
             sessionStorage.clear()
           }
           resolve('Logged out')
+        })
+      },
+      auth_Admin({commit}, data) {
+        return new Promise( (resolve, reject) => {
+          const requestOpts = {
+            'access_token': store.token
+          }
+          //Header post method to authenticate login by passing login details
+          axios.post('http://localhost:9000/apiv1/users/', requestOpts)
+          .then(message => {
+            commit('setIsAdmin', true)
+            resolve(message)
+          })
+          .catch( err => {
+            commit('setIsAdmin', false)
+            reject(err)
+          })
         })
       }
     },
