@@ -40,6 +40,7 @@ export default {
       .then( () => {
         // Redirect to login
         this.$router.push('/')
+        this.$router.go()
       })
     }
   }
