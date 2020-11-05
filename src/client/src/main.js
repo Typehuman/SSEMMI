@@ -19,12 +19,14 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
+      // Reroutes to login by default upon render
       path: '/',
       redirect: {
         name: 'Login'
       }
     },
     {
+      // Login page
       path: '/login',
       name: 'Login',
       component: Login,
@@ -41,6 +43,7 @@ const router = new Router({
       }
     },
     {
+      // Dashboard page for users to claim tokens
       path: '/dashboard',
       name: 'Dashboard',
       component: Dashboard,
@@ -57,6 +60,7 @@ const router = new Router({
       }
     },
     {
+      // Register page to create new users - admin only
       path: '/register',
       name: 'Register',
       component: Register,
@@ -64,10 +68,14 @@ const router = new Router({
         let hasToken = sessionStorage.getItem('userToken')
         let isRestricted = store.state.isAuthenticated == false
         let isLegitUser = store.state.token != null
-
+        let isAdmin = store.state.isAdmin == true
         if(isRestricted && !isLegitUser && !hasToken) {
           next('/login')
-        } else {
+        } 
+        else if(!isAdmin) {
+          next('/dashboard')
+        }
+        else {
           next()
         }
       }
@@ -96,13 +104,16 @@ export const store = new Vuex.Store(
       setUserDetails(state, userData) {
         state.userDetails = userData
       },
-      setisAdmin(state, status) {
+      setIsAdmin(state, status) {
         state.isAdmin = status
       }
     },
     getters: {
       getUserToken: state => {
         return state.token
+      },
+      getUserDetails: state => {
+        return state.userDetails.user
       }
     },
     actions: {
@@ -135,10 +146,17 @@ export const store = new Vuex.Store(
             commit('setUserToken', user.data.token)
             // Set user data
             commit('setUserDetails', user.data)
+            // Check role
+            if(user.data.user.role != 'admin') {
+              commit('setIsAdmin', false)
+            } else {
+              commit('setIsAdmin', true)
+            }
             sessionStorage.setItem('userToken', user.data.token)
             // Login success
             console.log(`Login successful, Hello ${user.data.user.name}`)
             console.log(user.data)
+
             resolve(user)
           })
           // Check for request errors
@@ -161,23 +179,6 @@ export const store = new Vuex.Store(
             sessionStorage.clear()
           }
           resolve('Logged out')
-        })
-      },
-      auth_Admin({commit}, data) {
-        return new Promise( (resolve, reject) => {
-          const requestOpts = {
-            'access_token': store.token
-          }
-          //Header post method to authenticate login by passing login details
-          axios.post('http://localhost:9000/apiv1/users/', requestOpts)
-          .then(message => {
-            commit('setIsAdmin', true)
-            resolve(message)
-          })
-          .catch( err => {
-            commit('setIsAdmin', false)
-            reject(err)
-          })
         })
       }
     },
