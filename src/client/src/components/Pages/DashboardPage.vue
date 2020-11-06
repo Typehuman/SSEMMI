@@ -3,7 +3,7 @@
     <h1>Welcome to SSEMMI</h1>
     <h4>Grab your token here:</h4>
     <h6 id="userToken">{{userToken}}</h6>
-    <button v-on:click="copyToken" >Copy your token</button>
+    <button v-clipboard="copyToken" >Copy your token</button>
 </div>    
 </template>
 
@@ -17,14 +17,11 @@ export default {
     },
     methods: {
         copyToken() {
-            let copy = document.getElementById("userToken")
-            // copy.select()
-            console.log(copy)
             try {
-                document.execCommand("copy")
-                alert("Token copied!")
+                alert('Token copied!')
+                return this.userToken
             } catch (error) {
-                alert(" :( Oops sorry, you have to manually copy the token.")
+                alert('Sorry, unable to copy your token :(')
             }
         }
     },

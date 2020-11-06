@@ -11,7 +11,6 @@
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "v-clipboard": "^2.2.3",
-    "vee-validate": "^3.4.3",
     "vue": "^2.6.12",
     "vuex-persistedstate": "^4.0.0-beta.1"
   },

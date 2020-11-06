@@ -7,11 +7,14 @@ import Login from './components/Pages/LoginPage'
 import Dashboard from './components/Pages/DashboardPage'
 import Register from './components/Pages/RegisterPage'
 import axios from 'axios'
+import Clipboard from 'v-clipboard'
 import 'bootstrap-css-only/css/bootstrap.min.css'
 import 'mdbvue/lib/css/mdb.min.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
 Vue.config.productionTip = false
+
+Vue.use(Clipboard)
 
 Vue.use(Router)
 
