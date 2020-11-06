@@ -33,7 +33,13 @@ const userSchema = new Schema({
   picture: {
     type: String,
     trim: true
-  }
+  },
+  did: {
+    type: String
+  },
+  pKey: {
+    type: String
+  },
 }, {
   timestamps: true
 })

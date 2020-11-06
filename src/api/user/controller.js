@@ -1,5 +1,7 @@
 import { success, notFound } from '../../services/response/'
 import { User } from '.'
+import { ec as EC } from 'elliptic'
+import { toEthereumAddress } from 'did-jwt'
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   User.find(query, select, cursor)
@@ -17,11 +19,26 @@ export const show = ({ params }, res, next) =>
 export const showMe = ({ user }, res) =>
   res.json(user.view(true))
 
-export const create = ({ bodymen: { body } }, res, next) =>
+export const create = ({ bodymen: { body } }, res, next) => {
+  // Create a key pair
+  try {
+  const sepCurve = new EC('secp256k1')
+  const userKey = sepCurve.genKeyPair()
+
+  // Generate user DID and Primary key
+  const userDid = `did:ethr:${toEthereumAddress(userKey.getPublic('hex'))}`
+  const userPk = userKey.getPrivate('hex')
+  body.did = userDid
+  body.pKey = userPk
+  console.info('body:',body)
+  } catch (e) {
+    console.error('There was an error adding the user: ', e)
+  }
   User.create(body)
     .then((user) => user.view(true))
     .then(success(res, 201))
     .catch((err) => {
+      console.error(`There was an error adding a user: ${err}`)
       /* istanbul ignore else */
       if (err.name === 'MongoError' && err.code === 11000) {
         res.status(409).json({
@@ -33,6 +50,7 @@ export const create = ({ bodymen: { body } }, res, next) =>
         next(err)
       }
     })
+  }
 
 export const update = ({ bodymen: { body }, params, user }, res, next) =>
   User.findById(params.id === 'me' ? user.id : params.id)
