@@ -62,6 +62,31 @@ export const dbGetItem = (data) => {
 
 // Post an entry into the db
 export const dbPost = (data) => {
+  // The accepted format of data payload for ssemmi
+  const ssemmi_format = [
+    "ssemmi_id",
+    "entry_id",
+    "data_source_name",
+    "data_source_entity",
+    "data_source_id",
+    "created",
+    "photo_url",
+    "no_sighted",
+    "latitude",
+    "longitude",
+    "data_source_witness",
+    "trusted",
+    "data_source_comments",
+    "ssemmi_date_added"
+  ]
+
+  // Iterate to check if the data payload has all the needed fields
+  ssemmi_format.forEach( key => {
+    if(!data.hasOwnProperty(key)) {
+      return false
+    }
+  })
+
   db.put(data)
   return true
 }
