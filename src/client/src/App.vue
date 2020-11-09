@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-  <div id="nav">
+  <div id="nav" v-if="isAuth">
     <router-link to="/">Login</router-link>
     |
     <router-link to="/dashboard"> Dashboard </router-link>
@@ -42,6 +42,11 @@ export default {
         this.$router.push('/')
         this.$router.go()
       })
+    }
+  },
+  computed: {
+    isAuth() {
+      return this.$store.state.isAuthenticated
     }
   }
 }
