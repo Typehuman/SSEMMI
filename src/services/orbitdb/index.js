@@ -63,27 +63,32 @@ export const dbGetItem = (data) => {
 // Post an entry into the db
 export const dbPost = (data) => {
   // The accepted format of data payload for ssemmi
-  const ssemmi_format = [
-    "ssemmi_id",
-    "entry_id",
-    "data_source_name",
-    "data_source_entity",
-    "data_source_id",
-    "created",
-    "photo_url",
-    "no_sighted",
-    "latitude",
-    "longitude",
-    "data_source_witness",
-    "trusted",
-    "data_source_comments",
-    "ssemmi_date_added"
-  ]
+  const ssemmi_format = {
+    "ssemmi_id": any,
+    "entry_id": any,
+    "data_source_name": any,
+    "data_source_entity": any,
+    "data_source_id": any,
+    "created": any,
+    "photo_url": any,
+    "no_sighted": any,
+    "latitude": any,
+    "longitude": any,
+    "data_source_witness": any,
+    "trusted": any,
+    "data_source_comments": any,
+    "ssemmi_date_added": any
+  }
 
   // Iterate to check if the data payload has all the needed fields
-  ssemmi_format.forEach( key => {
-    if(!data.hasOwnProperty(key)) {
-      return false
+  data.forEach( key => {
+    let keySourceName = key == "data_source_name"
+    let keyLatitude = key == "latitude"
+    let keyLongitude = key == "longitude"
+    if(keySourceName || keyLatitude || keyLongitude) {
+      if (!Object.prototype.hasOwnProperty.call(ssemmi_format, key)) {
+        return false
+      }
     }
   })
 
