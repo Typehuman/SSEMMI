@@ -6,6 +6,7 @@ import Router from 'vue-router'
 import Login from './components/Pages/LoginPage'
 import Dashboard from './components/Pages/DashboardPage'
 import Register from './components/Pages/RegisterPage'
+import Approvals from './components/Pages/ApprovalsPage'
 import axios from 'axios'
 import Clipboard from 'v-clipboard'
 import 'bootstrap-css-only/css/bootstrap.min.css'
@@ -66,7 +67,13 @@ const router = new Router({
       // Register page to create new users - admin only
       path: '/register',
       name: 'Register',
-      component: Register,
+      component: Register
+    },
+    {
+      // Approvals page to confirm user registration
+      path: '/approvals',
+      name: 'Approvals',
+      component: Approvals,
       beforeEnter: (to, from, next) => {
         let hasToken = sessionStorage.getItem('userToken')
         let isRestricted = store.state.isAuthenticated == false
