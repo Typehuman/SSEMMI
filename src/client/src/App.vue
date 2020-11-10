@@ -1,16 +1,17 @@
 <template>
   <div id="app">
-  <div id="nav" v-if="isAuth">
-    <router-link to="/">Login</router-link>
-    |
-    <router-link to="/dashboard"> Dashboard </router-link>
-    |
-    <router-link to="/register">Register</router-link>
-    |
-    <button to="/" @click="logoutMethod"> Logout </button>
-  </div>
+    <div id="nav">
+      <router-link to="/">Login</router-link>
+      |
+      <router-link to="/dashboard" v-if="isAuth">Dashboard</router-link>
+      |
+      <router-link to="/register">Register</router-link>
+      |
+      <router-link to="/approvals" v-if="isAdmin">Approvals</router-link>
+      |
+      <button to="/" @click="logoutMethod" v-if="isAuth">Logout</button>
+    </div>
     <router-view/>
-
   </div>
 </template>
 
@@ -47,6 +48,9 @@ export default {
   computed: {
     isAuth() {
       return this.$store.state.isAuthenticated
+    },
+    isAdmin() {
+      return this.$store.state.isAdmin
     }
   }
 }
