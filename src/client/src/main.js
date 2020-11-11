@@ -102,20 +102,24 @@ export const store = new Vuex.Store(
       isAuthenticated: false,
       token: null,
       userDetails: [],
-      isAdmin: false
+      isAdmin: false,
+      userRequestList: []
     },
     mutations: {
       setAuthentication(state, status) {
-        state.isAuthenticated = status;
+        state.isAuthenticated = status
       },
       setUserToken(state, token) {
-        state.token = token;
+        state.token = token
       },
       setUserDetails(state, userData) {
         state.userDetails = userData
       },
       setIsAdmin(state, status) {
         state.isAdmin = status
+      },
+      setUserRequestList(state, list) {
+        state.userRequestList = list
       }
     },
     getters: {
@@ -124,6 +128,9 @@ export const store = new Vuex.Store(
       },
       getUserDetails: state => {
         return state.userDetails.user
+      },
+      getUserRequestList: state => {
+        return state.userRequestList
       }
     },
     actions: {
@@ -189,6 +196,36 @@ export const store = new Vuex.Store(
             sessionStorage.clear()
           }
           resolve('Logged out')
+        })
+      },
+      get_user_requests({commit}) {
+        return new Promise( (resolve,reject) => {
+          // Check if user has admin priviledges
+          if (store.state.isAdmin) {
+            // Format the admin level header for requesting user requests
+            const requestAuth = {
+              headers: {
+                'Authorization': 'Bearer ' + store.state.userDetails.token,
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            }
+
+            // Pass headers of admin to retreive user requests
+            axios.get('http://localhost:9000/apiv1/users/requests', requestAuth)
+            // Add list of users into the store of user requests
+            .then( users => {
+              console.log(users.data)
+              commit('setUserRequestList', users.data)
+              resolve(users)
+            })
+            .catch(err => {
+              console.error(err)
+              reject()
+            })
+          } else {
+            // Show error if access to it fails
+            throw console.error('Sorry you are not authorised to fetch the data');
+          }
         })
       }
     },

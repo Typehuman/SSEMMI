@@ -1,7 +1,7 @@
 <template>
     <div id="user-table">
         <mdb-datatable
-            :data="data"
+            :data="userReqTable"
             striped
             bordered
         />
@@ -11,7 +11,7 @@
 <script>
   import axios from 'axios'
   import { mdbDatatable } from 'mdbvue'
-  
+
   export default {
     name: 'DatatablePage',
     components: {
@@ -19,7 +19,7 @@
     },
     data() {
       return {
-        data: {
+        userReqTable: {
           columns: [
             {
               label: 'Name',
@@ -33,37 +33,53 @@
             },
             {
               label: 'Requested At',
-              field: 'requestedAt',
+              field: 'createdAt',
               sort: 'asc'
             }
           ],
-          rows: [
-            {
-              name: 'Tiger Nixon',
-              email: 'tiger@man.com',
-              requestedAt: '2011/04/25'
-            }
-          ]
+          rows: []
         }
       }
     },
+    mounted() {
+      try {
+        this.$store.dispatch("get_user_requests")
+        let getList = this.$store.getters.getUserRequestList
+        getList.forEach(user => {
+          let userMap = {
+            name: user.name,
+            email: user.email,
+            createdAt: user.createdAt
+          }
+          console.log(userMap)
+          this.userReqTable.rows.push(userMap)
+        })
+        // this.userReqTable.rows.push(getList)
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    computed: {
+      loadUserRequest: () => {
+        this.data.rows = JSON.stringify(this.$store.getters.getUserRequestList)
+      }
+    },
     methods: {
-      addUserMethod(event) {
+      approveUserMethod(userId) {
         // Check for event error to prevent propagation
         event.preventDefault()
 
         const regUserRequst = {
-          'email': this.registerUserData.email,
-          'password': this.registerUserData.password,
-          'access_token': this.VUE_APP_MASTER_KEY
+          'isApproved': true,
+          'access_token': this.$store.userDetails.user.token
         }
 
         //Header post method to pass user details by passing created user details
-        axios.post('http://localhost:9000/apiv1/users/', regUserRequst)
+        axios.post(`http://localhost:9000/apiv1/users/${userId}`, regUserRequst)
         // Redirect to requested page
         .then( regUser => {
-          console.log(`Successfully added ${regUser.data}`)
-          this.$router.push({name: 'Dashboard'})
+          console.log(`Added ${regUser.data}`)
+          this.$router.go()
         })
         // Check for request errors
         .catch(err => {
