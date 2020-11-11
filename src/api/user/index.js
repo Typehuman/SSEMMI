@@ -2,12 +2,12 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { password as passwordAuth, master, token } from '../../services/passport'
-import { index, showMe, show, create, update, updatePassword, destroy } from './controller'
+import { index, showMe, show, create, update, updatePassword, destroy, showUserRequests } from './controller'
 import { schema } from './model'
 export User, { schema } from './model'
 
 const router = new Router()
-const { email, password, name, picture, role } = schema.tree
+const { email, password, name, picture, isApproved, role } = schema.tree
 
 /**
  * @api {get} /users Retrieve users
@@ -24,6 +24,23 @@ router.get('/',
   token({ required: true, roles: ['admin'] }),
   query(),
   index)
+
+/**
+ * @api {get} /users/requests Retrieve current user requests
+ * @apiName RetrieveCurrentUserRequests
+ * @apiGroup User
+ * @apiPermission admin
+ * @apiParam {String} access_token User access_token.
+ * @apiSuccess {Object} user request User's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 401 Admin access only.
+ */
+
+router.get('/requests',
+  token({ required: true, roles: ['admin'] }),
+  query(),
+  showUserRequests)
+
 
 /**
  * @api {get} /users/me Retrieve current user
@@ -58,6 +75,7 @@ router.get('/:id',
  * @apiParam {String{6..}} password User's password.
  * @apiParam {String} [name] User's name.
  * @apiParam {String} [picture] User's picture.
+ * @apiParam {String} [isApproved] if the user is approved by admin.
  * @apiParam {String=user,admin} [role=user] User's role.
  * @apiSuccess (Sucess 201) {Object} user User's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
@@ -66,7 +84,7 @@ router.get('/:id',
  */
 router.post('/',
   master(),
-  body({ email, password, name, picture, role }),
+  body({ email, password, name, picture, isApproved, role }),
   create)
 
 /**
@@ -77,14 +95,15 @@ router.post('/',
  * @apiParam {String} access_token User access_token.
  * @apiParam {String} [name] User's name.
  * @apiParam {String} [picture] User's picture.
+ * @apiParam {String} [isApproved] if the user is approved by admin.
  * @apiSuccess {Object} user User's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 401 Current user or admin access only.
  * @apiError 404 User not found.
  */
 router.put('/:id',
-  token({ required: true }),
-  body({ name, picture }),
+  token({ required: true, roles: ['admin'] }),
+  body({ name, picture, isApproved }),
   update)
 
 /**
