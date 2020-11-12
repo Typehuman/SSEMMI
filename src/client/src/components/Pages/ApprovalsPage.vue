@@ -1,24 +1,29 @@
 <template>
     <div id="user-table">
-        <mdb-datatable
-            :data="userReqTable"
+        <mdb-datatable-2
+            v-model="userReqTable"
             striped
             bordered
+            fixedHeader
+            selectable
+            @selected="selected = $event"
         />
+        <button to="/" @click="approveUserMethod">Approve Selected Users</button>
     </div>
 </template>
 
 <script>
   import axios from 'axios'
-  import { mdbDatatable } from 'mdbvue'
+  import { mdbDatatable2 } from 'mdbvue'
 
   export default {
     name: 'DatatablePage',
     components: {
-      mdbDatatable
+      mdbDatatable2
     },
     data() {
       return {
+        selected: null,
         userReqTable: {
           columns: [
             {
@@ -35,6 +40,11 @@
               label: 'Requested At',
               field: 'createdAt',
               sort: 'asc'
+            },
+            {
+              label: 'id',
+              field: 'id',
+              sort: 'asc'
             }
           ],
           rows: []
@@ -49,7 +59,8 @@
           let userMap = {
             name: user.name,
             email: user.email,
-            createdAt: user.createdAt
+            createdAt: user.createdAt,
+            id: user._id
           }
           console.log(userMap)
           this.userReqTable.rows.push(userMap)
@@ -65,7 +76,7 @@
       }
     },
     methods: {
-      approveUserMethod(userId) {
+      approveUserMethod() {
         // Check for event error to prevent propagation
         event.preventDefault()
 
@@ -75,7 +86,7 @@
         }
 
         //Header post method to pass user details by passing created user details
-        axios.post(`http://localhost:9000/apiv1/users/${userId}`, regUserRequst)
+        axios.post(`http://localhost:9000/apiv1/users/${this.selected.id}`, regUserRequst)
         // Redirect to requested page
         .then( regUser => {
           console.log(`Added ${regUser.data}`)
@@ -92,7 +103,7 @@
 
 <style scoped>
   #user-table {
-    width: 700px;
+    width: 800px;
     height: 450px;
     margin: auto;
     position: relative;
