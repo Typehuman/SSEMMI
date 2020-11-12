@@ -86,7 +86,7 @@
         }
 
         //Header post method to pass user details by passing created user details
-        axios.post(`http://localhost:9000/apiv1/users/${this.selected.id}`, regUserRequst)
+        axios.post(`${process.env.WEB_SERVER_URL}/apiv1/users/${this.selected.id}`, regUserRequst)
         // Redirect to requested page
         .then( regUser => {
           console.log(`Added ${regUser.data}`)
