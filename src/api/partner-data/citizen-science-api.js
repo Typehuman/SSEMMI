@@ -7,7 +7,7 @@ import { GoogleSpreadsheet } from 'google-spreadsheet'
 
 /**
  * citizenSciDoc is the URL to retreive data from Citizen Science google spreadsheet entries
- * shared from Resolve Conservation. Some helpful reference to implementing the 
+ * shared from Resolve Conservation. Some helpful reference to implementing the
 */
 
 // Load environment variables for details
@@ -15,13 +15,13 @@ const gKey = process.env.GOOGLE_SPREADSHEET_KEY
 const gClientEmail = process.env.GOOGLE_SPREADSHEET_CLIENT_EMAIL
 const citizenSciDoc = process.env.CITIZEN_SCIENCE_GOOGLE_ID
 
-/** 
+/**
  * Method to map CITIZEN SCIENCE data fields from the data into the ssemmi db
  */
 
 // Validations before JSON mapping
 function undefinedStrChecks (field) {
-    if(field == undefined) {
+    if(field === undefined) {
         return "N/A"
     }
     else {
