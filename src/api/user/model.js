@@ -40,7 +40,6 @@ const userSchema = new Schema({
   pKey: {
     type: String
   },
-  },
   isApproved: {
     type: Boolean,
     default: false

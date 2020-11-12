@@ -148,9 +148,9 @@ export const store = new Vuex.Store(
           const requestOpts = {
             'access_token': process.env.VUE_APP_MASTER_KEY
           }
-          console.log(process.env.WEB_SERVER_URL)
+          console.log(process.env.VUE_APP_WEB_SERVER_URL)
           //Header post method to authenticate login by passing login details
-          axios.post(`${process.env.WEB_SERVER_URL}/apiv1/auth/`, requestOpts, {
+          axios.post(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/auth/`, requestOpts, {
             auth: {
               username: data.email,
               password: data.password
@@ -212,7 +212,7 @@ export const store = new Vuex.Store(
             }
 
             // Pass headers of admin to retreive user requests
-            axios.get(`${process.env.WEB_SERVER_URL}/apiv1/users/requests`, requestAuth)
+            axios.get(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/requests`, requestAuth)
             // Add list of users into the store of user requests
             .then( users => {
               console.log(users.data)
