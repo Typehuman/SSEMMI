@@ -25,6 +25,15 @@ const router = new Router({
     {
       // Reroutes to login by default upon render
       path: '/',
+      meta: {
+        title: 'SSEMMI Client',
+        metaTags: [
+          {
+            name: 'SSEMMI Client',
+            content: 'SSEMMI Client'
+          }
+        ]
+      },
       redirect: {
         name: 'Login'
       }
@@ -33,6 +42,15 @@ const router = new Router({
       // Login page
       path: '/login',
       name: 'Login',
+      meta: {
+        title: 'SSEMMI Client',
+        metaTags: [
+          {
+            name: 'SSEMMI Client',
+            content: 'SSEMMI Client'
+          }
+        ]
+      },
       component: Login,
       beforeEnter: (to, from, next) => {
         let hasToken = sessionStorage.getItem('userToken')
