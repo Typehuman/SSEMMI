@@ -44,7 +44,7 @@ router.route("/")
  *----- USER AND AUTHENTICATION ROUTING METHODS -----
  */
 
-router.use('/apiv1/users', user)
+router.use('/apiv1/users', cors({origin: 'http://localhost:8082'}), user)
 router.use('/apiv1/auth', cors({origin: 'http://localhost:8082'}),auth)
 router.use('/apiv1/password-resets', passwordReset)
 router.use('/apiv1/sightings', dataIngestion)

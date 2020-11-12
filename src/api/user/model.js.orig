@@ -34,17 +34,19 @@ const userSchema = new Schema({
     type: String,
     trim: true
   },
+<<<<<<< HEAD
   did: {
     type: String
   },
   pKey: {
     type: String
   },
-  },
+=======
   isApproved: {
     type: Boolean,
     default: false
   }
+>>>>>>> 186596db1f27e0fa3bb293f44e4f5944d029f12a
 }, {
   timestamps: true
 })

@@ -16,6 +16,12 @@ export const show = ({ params }, res, next) =>
     .then(success(res))
     .catch(next)
 
+export const showUserRequests =({ querymen: { query, select, cursor } }, res, next) =>
+    User.find(query, select, cursor)
+    .then((users) => users.filter((user) => (user.isApproved == false) ? user.view() : false))
+    .then(success(res))
+    .catch(next)
+
 export const showMe = ({ user }, res) =>
   res.json(user.view(true))
 
