@@ -81,7 +81,7 @@ const router = new Router({
         let isAdmin = store.state.isAdmin == true
         if(isRestricted && !isLegitUser && !hasToken) {
           next('/login')
-        } 
+        }
         else if(!isAdmin) {
           next('/dashboard')
         }

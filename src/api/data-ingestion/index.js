@@ -17,7 +17,8 @@ router
           res.send('Invalid input 400');
           return;
       }
-      res.send( dbPost(req.body) );
+      console.info(req.user)
+      res.send( dbPost(req.body, req.user) );
   });
 
 router

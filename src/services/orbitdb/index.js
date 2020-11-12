@@ -1,5 +1,7 @@
 import IpfsHttpClient from 'ipfs-http-client'
 import OrbitDb from 'orbit-db'
+import { ec as EC } from 'elliptic'
+import ObjectHash from 'object-hash'
 
 // Initial ipfs setup
 console.log("Connecting to IPFS HTTP client.... \n")
@@ -61,38 +63,48 @@ export const dbGetItem = (data) => {
 }
 
 // Post an entry into the db
-export const dbPost = (data) => {
+export const dbPost = (data, user) => {
   // The accepted format of data payload for ssemmi
-  const ssemmi_format = {
-    "ssemmi_id": any,
-    "entry_id": any,
-    "data_source_name": any,
-    "data_source_entity": any,
-    "data_source_id": any,
-    "created": any,
-    "photo_url": any,
-    "no_sighted": any,
-    "latitude": any,
-    "longitude": any,
-    "data_source_witness": any,
-    "trusted": any,
-    "data_source_comments": any,
-    "ssemmi_date_added": any
-  }
+  const ssemmi_format = [
+    'ssemmi_id',
+    'entry_id',
+    'data_source_name',
+    'data_source_entity',
+    'data_source_id',
+    'created',
+    'photo_url',
+    'no_sighted',
+    'latitude',
+    'longitude',
+    'data_source_witness',
+    'trusted',
+    'data_source_comments',
+    'ssemmi_date_added'
+  ]
 
-  // Iterate to check if the data payload has all the needed fields
-  data.forEach( key => {
-    let keySourceName = key === "data_source_name"
-    let keyLatitude = key ==="latitude"
-    let keyLongitude = key === "longitude"
-    if(keySourceName || keyLatitude || keyLongitude) {
-      if (!Object.prototype.hasOwnProperty.call(ssemmi_format, key)) {
-        return false
+  const dataKeys = Object.keys(data)
+
+  // Remove unsupported fields from the payload
+  dataKeys.forEach( key => {
+      if (ssemmi_format.indexOf(key) === -1) {
+        delete data[key]
       }
-    }
   })
 
+  if (data.length === 0) {
+    return false
+  }
+  // Regenerate the EC key and sign the object
+  const curve = new EC('secp256k1')
+  const userKey = curve.keyFromPrivate(user.pKey, 'hex')
+  const dataHash = ObjectHash(data)
+  const signDER = userKey.sign(dataHash).toDER().toHex
+  data['submitter_did'] = user.did
+  data['signature'] = signDER
+
   db.put(data)
+
+  // we probably want to return what has been saved to orbitdb
   return true
 }
 
