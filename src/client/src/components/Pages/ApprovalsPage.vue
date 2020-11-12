@@ -82,6 +82,7 @@
 
         const regUserRequst = {
           'isApproved': true,
+          'name': this.selected.name,
           'access_token': this.$store.getters.getUserToken
         }
 
