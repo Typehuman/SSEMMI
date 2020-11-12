@@ -15,4 +15,6 @@ script:
 env:
   global:
   - CXX=g++-4.8
+  - SENDGRID_KEY=sendgridKey
   - MASTER_KEY=masterKey
+  - JWT_SECRET=jwtSecret

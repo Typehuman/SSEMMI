@@ -12,5 +12,4 @@ npm-debug.log
 coverage
 cassettes
 data
-orbitdb
 google-creds.json

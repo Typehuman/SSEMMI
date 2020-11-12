@@ -1,5 +1,7 @@
 import IpfsHttpClient from 'ipfs-http-client'
 import OrbitDb from 'orbit-db'
+import { ec as EC } from 'elliptic'
+import ObjectHash from 'object-hash'
 
 // Initial ipfs setup
 console.log("Connecting to IPFS HTTP client.... \n")
@@ -39,7 +41,7 @@ export const dbService = async () => {
     await db.load()
 
     // Log message upon successful db setup
-    console.log("Database setup succesful! \n")
+    console.log("Database setup successful! \n")
 
   } catch (e) {
     // Log errors
@@ -61,8 +63,48 @@ export const dbGetItem = (data) => {
 }
 
 // Post an entry into the db
-export const dbPost = (data) => {
-  db.put(data, { pin: true })
+export const dbPost = (data, user) => {
+  // The accepted format of data payload for ssemmi
+  const ssemmi_format = [
+    'ssemmi_id',
+    'entry_id',
+    'data_source_name',
+    'data_source_entity',
+    'data_source_id',
+    'created',
+    'photo_url',
+    'no_sighted',
+    'latitude',
+    'longitude',
+    'data_source_witness',
+    'trusted',
+    'data_source_comments',
+    'ssemmi_date_added'
+  ]
+
+  const dataKeys = Object.keys(data)
+
+  // Remove unsupported fields from the payload
+  dataKeys.forEach( key => {
+      if (ssemmi_format.indexOf(key) === -1) {
+        delete data[key]
+      }
+  })
+
+  if (data.length === 0) {
+    return false
+  }
+  // Regenerate the EC key and sign the object
+  const curve = new EC('secp256k1')
+  const userKey = curve.keyFromPrivate(user.pKey, 'hex')
+  const dataHash = ObjectHash(data)
+  const signDER = userKey.sign(dataHash).toDER().toHex
+  data['submitter_did'] = user.did
+  data['signature'] = signDER
+
+  db.put(data)
+
+  // we probably want to return what has been saved to orbitdb
   return true
 }
 
