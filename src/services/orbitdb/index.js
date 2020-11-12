@@ -39,7 +39,7 @@ export const dbService = async () => {
     await db.load()
 
     // Log message upon successful db setup
-    console.log("Database setup succesful! \n")
+    console.log("Database setup successful! \n")
 
   } catch (e) {
     // Log errors
@@ -82,9 +82,9 @@ export const dbPost = (data) => {
 
   // Iterate to check if the data payload has all the needed fields
   data.forEach( key => {
-    let keySourceName = key == "data_source_name"
-    let keyLatitude = key == "latitude"
-    let keyLongitude = key == "longitude"
+    let keySourceName = key === "data_source_name"
+    let keyLatitude = key ==="latitude"
+    let keyLongitude = key === "longitude"
     if(keySourceName || keyLatitude || keyLongitude) {
       if (!Object.prototype.hasOwnProperty.call(ssemmi_format, key)) {
         return false

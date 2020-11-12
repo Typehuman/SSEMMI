@@ -34,6 +34,13 @@ const userSchema = new Schema({
     type: String,
     trim: true
   },
+  did: {
+    type: String
+  },
+  pKey: {
+    type: String
+  },
+  },
   isApproved: {
     type: Boolean,
     default: false
