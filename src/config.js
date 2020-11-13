@@ -41,7 +41,7 @@ const config = {
   test: { },
   development: {
     mongo: {
-      uri: 'mongodb://localhost/orcasound-api-dev',
+      uri: process.env.MONGO_CONNECT_URI_PROD,
       options: {
         debug: true
       }
@@ -51,7 +51,7 @@ const config = {
     ip: process.env.IP || undefined,
     port: process.env.PORT || 8080,
     mongo: {
-      uri: process.env.MONGODB_URI || 'mongodb://localhost/orcasound-api'
+      uri: process.env.MONGO_CONNECT_URI_PROD || 'mongodb://localhost/orcasound-api'
     }
   }
 }

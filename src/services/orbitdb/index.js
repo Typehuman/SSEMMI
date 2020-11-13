@@ -5,7 +5,7 @@ import ObjectHash from 'object-hash'
 
 // Initial ipfs setup
 console.log("Connecting to IPFS HTTP client.... \n")
-const ipfs = IpfsHttpClient({ host: '127.0.0.1', port: '5001' })
+const ipfs = IpfsHttpClient({ host: process.env.IPFS_HOST, port: '5001' })
 
 let db
 

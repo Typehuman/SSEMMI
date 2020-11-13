@@ -5,10 +5,10 @@ volumes:
 services:
   web:
     build: .
-    ports: 
+    ports:
       - "9000:9000"
     depends_on: ['ipfs']
-    links: 
+    links:
       - ipfs
   ipfs:
     image: ipfs/go-ipfs:latest
