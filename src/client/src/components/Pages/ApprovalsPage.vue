@@ -8,7 +8,7 @@
             selectable
             @selected="selected = $event"
         />
-        <button to="/" @click="approveUserMethod">Approve Selected Users</button>
+        <button to="/" @click="approveUserMethod" class="btn">Approve Selected Users</button>
     </div>
 </template>
 
@@ -82,11 +82,12 @@
 
         const regUserRequst = {
           'isApproved': true,
-          'access_token': this.$store.userDetails.user.token
+          'name': this.selected.name,
+          'access_token': this.$store.getters.getUserToken
         }
 
         //Header post method to pass user details by passing created user details
-        axios.post(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${this.selected.id}`, regUserRequst)
+        axios.put(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${this.selected.id}`, regUserRequst)
         // Redirect to requested page
         .then( regUser => {
           console.log(`Added ${regUser.data}`)

@@ -19,7 +19,6 @@
         </fieldset>
         <fieldset>
           <button type='submit' class='btn'>Submit</button>
-          <button type='requestAccount' class='btn' @click="requestAccountMethod">REQUEST ACCOUNT</button>
         </fieldset>
       </form>
     </section>
@@ -42,9 +41,6 @@ export default {
         // Redirect to page upon login --admins will be redirected to register
         this.$router.replace({name: 'Dashboard'})
       })
-    },
-    requestAccountMethod() {
-      this.$router.push({name: 'Register'})
     }
   }
 }

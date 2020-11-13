@@ -1,15 +1,11 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/" v-if="!isAuth">Login</router-link>
-      |
-      <router-link to="/dashboard" v-if="isAuth">Dashboard</router-link>
-      |
-      <router-link to="/register">Register</router-link>
-      |
-      <router-link to="/approvals" v-if="isAdmin">Approvals</router-link>
-      |
-      <button to="/" @click="logoutMethod" v-if="isAuth">Logout</button>
+      <router-link to="/" v-if="!isAuth" class='btn'>Login</router-link>
+      <router-link to="/dashboard" v-if="isAuth" class='btn'>Dashboard</router-link>
+      <router-link to="/register" class='btn'>Register</router-link>
+      <router-link to="/approvals" v-if="isAdmin" class='btn'>Approvals</router-link>
+      <button to="/" @click="logoutMethod" class='btn' v-if="isAuth">Logout</button>
     </div>
     <router-view/>
   </div>
@@ -65,5 +61,13 @@ export default {
 
 #nav {
   font-weight: bold;
+  display: inline;
+}
+
+#nav .btn {
+  background: white;
+  box-shadow: inset 0 0 2px 0 #EEEEEE;
+  padding: .3rem 1rem .4rem;
+  cursor: pointer;
 }
 </style>
