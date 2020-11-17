@@ -1,5 +1,6 @@
 import { dbPost } from '../../services/orbitdb'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
+import User, { schema } from '../user/model'
 
 /**
  *----- CITIZEN SCIENCE GOOGLE SHEET DATA -> DB (LOADING METHODS) -----

@@ -1,5 +1,6 @@
 import { dbPost } from '../../services/orbitdb'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
+import User, { schema } from '../user/model'
 
 /**
  *----- ORCA MAP GOOGLE SHEET API DATA -> DB (LOADING METHODS) -----
