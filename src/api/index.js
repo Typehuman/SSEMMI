@@ -53,21 +53,21 @@ router.use('/apiv1/sightings', dataIngestion)
  *----- LOADING DATA FROM API INTO DB METHODS -----
  */
     // Load data from CONSERVE.IO SPOTTER API
-loadApi(conserveApi)
+    loadApi(conserveApi)
     // GOOGLE SHEETS DATA LOAD
     .then( () => {
         setTimeout( () => {
             // Load data from ORCA MAP
             omLoadSpreadsheet()
-        }, 2000)
-    })
-    .then( () => console.log("---------Preparing to load next Google Sheets data------- \n") )
-    .then( () => {
-        setTimeout( () => {
-            // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
-            // as Google has a maximum request calls with the same API.
-            csLoadSpreadsheet()
         }, 5000)
-    }).catch((err) => console.log(err))
+    })
+    // .then( () => {
+    //     setTimeout( () => {
+    //         // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
+    //         // as Google has a maximum request calls with the same API.
+    //         csLoadSpreadsheet()
+    //     }, 5000)
+    // })
+    .catch((err) => console.log(err + '\n' + 'Error Loading Google sheets'))
 
 export default router

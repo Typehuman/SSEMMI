@@ -19,7 +19,7 @@ const orcaMapDoc = process.env.ORCA_MAP_GOOGLE_ID
 // Method to map relevant fields from the data into the ssemmi db
 /** NOTE: ipfs-http doesn't support CBOR tags so the date fields had to be stringified
 refer to https://github.com/ipfs/js-ipfs/issues/3043 **/
-function ssemmiFormatting (entryData) {
+function ssemmiFormatting (entryData, count) {
     // Set trusted field to lower case and whitespace free verified field from entry
     const trustedEntry = entryData['verified?'].trim().toLowerCase()
     // Check if truly verified before assigning entry as trusted
@@ -46,7 +46,7 @@ function ssemmiFormatting (entryData) {
 
     // Map entries into a SSEMMI compliant JSON format
     const source_input = {
-        "ssemmi_id": "ORCAMAP" + entryData['timestamp'],
+        "ssemmi_id": "ORCAMAP" + count,
         "entry_id": new Date().getTime(),
         "data_source_name": "Orca Map",
         "data_source_entity": "Orca Map",
@@ -94,11 +94,11 @@ export const omLoadSpreadsheet = async () => {
                 console.log(`Adding data from ORCA MAP documents to the DB....`)
 
                 // Map Google sheets data to fit SSEMMI DB fields and formatting
-                const entryFormatted = ssemmiFormatting(entry)
+                const count = index + 1
+                const entryFormatted = ssemmiFormatting(entry, count)
                 // Add data into the decentralised database
                 dbPost(entryFormatted, userBot)
                 // Tracks the entry count to log/trace
-                const count = index + 1
                 console.log(`Entry count: ${count}\n`)
                 // Display success alert of entry added to the db
                 console.log(entryFormatted)
