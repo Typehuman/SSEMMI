@@ -68,6 +68,6 @@ loadApi(conserveApi)
             // as Google has a maximum request calls with the same API.
             csLoadSpreadsheet()
         }, 5000)
-    })
+    }).catch((err) => console.log(err))
 
 export default router
