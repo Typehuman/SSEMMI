@@ -52,28 +52,7 @@
       }
     },
     mounted() {
-      try {
-        this.$store.dispatch("get_user_requests")
-        let getList = this.$store.getters.getUserRequestList
-        getList.forEach(user => {
-          let userMap = {
-            name: user.name,
-            email: user.email,
-            createdAt: user.createdAt,
-            id: user._id
-          }
-          console.log(userMap)
-          this.userReqTable.rows.push(userMap)
-        })
-        // this.userReqTable.rows.push(getList)
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    computed: {
-      loadUserRequest: () => {
-        this.data.rows = JSON.stringify(this.$store.getters.getUserRequestList)
-      }
+      this.loadUserRequest()
     },
     methods: {
       approveUserMethod() {
@@ -91,11 +70,27 @@
         // Redirect to requested page
         .then( regUser => {
           console.log(`Added ${regUser.data}`)
-          this.$router.go()
+          location.reload()
         })
         // Check for request errors
         .catch(err => {
           console.log(err)
+        })
+      },
+      loadUserRequest() {
+        this.$store.dispatch("get_user_requests")
+        .then(res => {
+          let getList = JSON.parse(JSON.stringify(res.data))
+
+          for (let i = 0; i < getList.length; i++) {
+            let userMap = {
+              name: getList[i].name,
+              email: getList[i].email,
+              createdAt: getList[i].createdAt,
+              id: getList[i]._id
+            }
+            this.userReqTable.rows.push(userMap)
+          }
         })
       }
     }
