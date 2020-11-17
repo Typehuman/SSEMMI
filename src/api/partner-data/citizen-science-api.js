@@ -54,6 +54,9 @@ function ssemmiFormatting (entryData, count) {
 
 // Method to load spreadsheet from Google
 export const csLoadSpreadsheet = async () => {
+    // Initialise the user data to be a bot designed for citizen science CRON jobs
+    const userBot = await User.findById(process.env.CSCIENCE_BOT_ID)
+
     // Authenticating access to specified Google spreadsheets
     const gDoc = new GoogleSpreadsheet(citizenSciDoc)
     await gDoc.useServiceAccountAuth({
@@ -82,8 +85,8 @@ export const csLoadSpreadsheet = async () => {
                 // Map Google sheets data to fit SSEMMI DB fields and formatting
                 const entryFormatted = ssemmiFormatting(entry, index)
 
-                // // Add data into the decentralised database
-                // dbPost(entryFormatted)
+                // Add data into the decentralised database
+                dbPost(entryFormatted, userBot)
 
                 console.log(`Entry count: ${count}\n`)
 

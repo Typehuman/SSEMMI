@@ -1,5 +1,6 @@
 import request from 'request'
 import { dbPost } from '../../services/orbitdb'
+import User, { schema } from '../user/model'
 
 /**
  *----- SPOTTER API DATA -> DB (LOADING METHODS) -----
@@ -27,6 +28,9 @@ export const conserveApi = `https://maplify.com/waseak/php/search-all-sightings.
 
 // Retreive data from the URL
 export const loadApi = async (api) => {
+    // Initialise the user data to be a bot designed for spotter CRON jobs
+    const userBot = await User.findById(process.env.SPOTTER_BOT_ID)
+
     // Request connection to the API
     request(api, (err, resp, body) => {
         console.log("Connecting to Spotter API... \n");
@@ -61,7 +65,7 @@ export const loadApi = async (api) => {
                 try {
                     // Add data into SSEMMI decentralised database
                     console.log(`Adding data from date ${currentDayFormat} to the DB....`)
-                    dbPost(source_input)
+                    dbPost(source_input, userBot)
                     // Tracks the entry count to log/trace
                     count+= 1
                     console.log(`Entry count: ${count}\n`)

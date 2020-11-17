@@ -67,6 +67,9 @@ function ssemmiFormatting (entryData) {
 
 // Method to load spreadsheet from Google
 export const omLoadSpreadsheet = async () => {
+    // Initialise the user data to be a bot designed for orca map CRON jobs
+    const userBot = await User.findById(process.env.ORCAMAP_BOT_ID)
+
     // Authenticating access to specified Google spreadsheets
     const gDoc = new GoogleSpreadsheet(orcaMapDoc)
     await gDoc.useServiceAccountAuth({
@@ -91,8 +94,8 @@ export const omLoadSpreadsheet = async () => {
 
                 // Map Google sheets data to fit SSEMMI DB fields and formatting
                 const entryFormatted = ssemmiFormatting(entry)
-                // // Add data into the decentralised database
-                // dbPost(entryFormatted)
+                // Add data into the decentralised database
+                dbPost(entryFormatted, userBot)
                 // Tracks the entry count to log/trace
                 const count = index + 1
                 console.log(`Entry count: ${count}\n`)
