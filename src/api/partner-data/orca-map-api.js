@@ -85,7 +85,7 @@ export const omLoadSpreadsheet = async () => {
     const sheetRows = await sheet.getRows({ offset: 0 })
 
     // Map all row values from current workbook as JSON payload
-    sheetRows.forEach(async (entry, index) => {
+    await Promise.all(sheetRows.map(async (entry, index) => {
       try {
         console.log('Adding data from ORCA MAP documents to the DB....')
 
@@ -102,7 +102,7 @@ export const omLoadSpreadsheet = async () => {
       } catch (error) {
         console.log(error)
       }
-    })
+    }))
 
     // Increment to advance to next workbook
     i++
