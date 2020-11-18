@@ -16,7 +16,7 @@ export const dbService = async () => {
 
     // Creates an instance of orbitdb
     const orbitdb = await OrbitDb.createInstance(ipfs, {
-      directory: '../../../orbitdb/'
+      directory: './orbitdb/'
     })
 
     // Allow write access

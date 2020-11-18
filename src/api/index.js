@@ -53,7 +53,7 @@ router.use('/apiv1/sightings', dataIngestion)
  *----- LOADING DATA FROM API INTO DB METHODS -----
  */
 // Load data from CONSERVE.IO SPOTTER API
-loadApi(conserveApi)
+/* loadApi(conserveApi)
 // GOOGLE SHEETS DATA LOAD
   .then(
     omLoadSpreadsheet)
@@ -65,5 +65,5 @@ loadApi(conserveApi)
      }, 5000)
  })
   .catch((err) => console.log(err + '\n' + 'Error Loading Google sheets'))
-
+*/
 export default router

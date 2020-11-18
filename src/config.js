@@ -41,7 +41,7 @@ const config = {
   test: { },
   development: {
     mongo: {
-      uri: process.env.MONGO_CONNECT_URI,
+      uri: process.env.MONGO_CONNECT_URI_PROD,
       options: {
         debug: true
       }
