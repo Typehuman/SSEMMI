@@ -35,39 +35,35 @@ const router = new Router()
  * @apiParam {String[]} [fields] Fields to be returned.
  */
 
-router.route("/")
-    .get( (req, res, next) => {
-        res.send("Hello")
-    });
+router.route('/')
+  .get((req, res, next) => {
+    res.send('Hello')
+  })
 
 /**
  *----- USER AND AUTHENTICATION ROUTING METHODS -----
  */
 
-router.use('/apiv1/users', cors({origin: 'http://localhost:8082'}), user)
-router.use('/apiv1/auth', cors({origin: 'http://localhost:8082'}),auth)
+router.use('/apiv1/users', cors({ origin: 'http://localhost:8082' }), user)
+router.use('/apiv1/auth', cors({ origin: 'http://localhost:8082' }), auth)
 router.use('/apiv1/password-resets', passwordReset)
 router.use('/apiv1/sightings', dataIngestion)
 
 /**
  *----- LOADING DATA FROM API INTO DB METHODS -----
  */
-    // Load data from CONSERVE.IO SPOTTER API
-// loadApi(conserveApi)
-//     // GOOGLE SHEETS DATA LOAD
-//     .then( () => {
-//         setTimeout( () => {
-//             // Load data from ORCA MAP
-//             omLoadSpreadsheet()
-//         }, 2000)
-//     })
-//     .then( () => console.log("---------Preparing to load next Google Sheets data------- \n") )
-//     .then( () => {
-//         setTimeout( () => {
-//             // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
-//             // as Google has a maximum request calls with the same API.
-//             csLoadSpreadsheet()
-//         }, 5000)
-//     })
+// Load data from CONSERVE.IO SPOTTER API
+loadApi(conserveApi)
+// GOOGLE SHEETS DATA LOAD
+  .then(
+    omLoadSpreadsheet)
+// .then( () => {
+//     setTimeout( () => {
+//         // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
+//         // as Google has a maximum request calls with the same API.
+//         csLoadSpreadsheet()
+//     }, 5000)
+// })
+  .catch((err) => console.log(err + '\n' + 'Error Loading Google sheets'))
 
 export default router
