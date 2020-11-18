@@ -8,7 +8,7 @@
             selectable
             @selected="selected = $event"
         />
-        <button to="/" @click="approveUserMethod" class="btn">Approve Selected Users</button>
+        <button to="/" @click="approveUserMethod" class="btn">Approve Selected User</button>
     </div>
 </template>
 
