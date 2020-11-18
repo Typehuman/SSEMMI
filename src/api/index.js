@@ -8,6 +8,8 @@ import auth from './auth'
 import passwordReset from './password-reset'
 import dataIngestion from './data-ingestion'
 import cors from 'cors'
+import { token } from '../services/passport/index'
+import cat from 'ipfs-http-client/src/cat'
 
 const router = new Router()
 
@@ -48,6 +50,24 @@ router.use('/apiv1/users', cors({ origin: 'http://localhost:8082' }), user)
 router.use('/apiv1/auth', cors({ origin: 'http://localhost:8082' }), auth)
 router.use('/apiv1/password-resets', passwordReset)
 router.use('/apiv1/sightings', dataIngestion)
+
+router.get('/apiv1/import',
+  token({ required: true, roles: ['admin'] }),
+  async (req, res, next) => {
+    try {
+    await loadApi(conserveApi)
+    // GOOGLE SHEETS DATA LOAD
+    await omLoadSpreadsheet()
+    await Promise.all(setTimeout(async () => {
+        // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
+        // as Google has a maximum request calls with the same API.
+        await csLoadSpreadsheet()
+    }, 5000))
+  } catch(e) {
+    console.error(`There was an error loading the data ${e}`)
+    res.send(500)
+  }
+})
 
 /**
  *----- LOADING DATA FROM API INTO DB METHODS -----
