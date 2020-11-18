@@ -32,7 +32,7 @@ export const loadApi = async (api) => {
   const userBot = await User.findById(process.env.SPOTTER_BOT_ID)
 
   // Request connection to the API
-  request(api, (err, resp, body) => {
+  request(api, async (err, resp, body) => {
     console.log('Connecting to Spotter API... \n')
     if (!err) {
       // Parsing the JSON from the data, parameters are 'count' and 'results'
@@ -65,7 +65,7 @@ export const loadApi = async (api) => {
         try {
           // Add data into SSEMMI decentralised database
           console.log(`Adding data from date ${currentDayFormat} to the DB....`)
-          dbPost(source_input, userBot)
+          await dbPost(source_input, userBot)
           // Tracks the entry count to log/trace
           count += 1
           console.log(`Entry count: ${count}\n`)

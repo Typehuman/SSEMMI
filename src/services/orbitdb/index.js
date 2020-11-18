@@ -102,10 +102,8 @@ export const dbPost = (data, user) => {
   data['submitter_did'] = user.did
   //data['signature'] = signDER
 
-  db.put(data)
+  return db.put(data)
 
-  // we probably want to return what has been saved to orbitdb
-  return true
 }
 
 // Removes the db locally
