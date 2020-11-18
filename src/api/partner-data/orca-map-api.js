@@ -85,7 +85,7 @@ export const omLoadSpreadsheet = async () => {
     const sheetRows = await sheet.getRows({ offset: 0 })
 
     // Map all row values from current workbook as JSON payload
-    sheetRows.forEach((entry, index) => {
+    await Promise.all(sheetRows.map(async (entry, index) => {
       try {
         console.log('Adding data from ORCA MAP documents to the DB....')
 
@@ -93,7 +93,7 @@ export const omLoadSpreadsheet = async () => {
         const count = index + 1
         const entryFormatted = ssemmiFormatting(entry, count)
         // Add data into the decentralised database
-        dbPost(entryFormatted, userBot)
+        await dbPost(entryFormatted, userBot)
         // Tracks the entry count to log/trace
         console.log(`Entry count: ${count}\n`)
         // Display success alert of entry added to the db
@@ -102,7 +102,7 @@ export const omLoadSpreadsheet = async () => {
       } catch (error) {
         console.log(error)
       }
-    })
+    }))
 
     // Increment to advance to next workbook
     i++

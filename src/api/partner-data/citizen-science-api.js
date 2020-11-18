@@ -75,7 +75,7 @@ export const csLoadSpreadsheet = async () => {
     const sheetRows = await sheet.getRows({ offset: 0 })
 
     // Map all row values from current workbook as JSON payload
-    sheetRows.forEach((entry, index) => {
+    await Promise.all(sheetRows.map( async (entry, index) => {
       try {
         console.log('Adding data from CITIZEN SCIENCE documents to the DB....')
 
@@ -86,7 +86,7 @@ export const csLoadSpreadsheet = async () => {
         const entryFormatted = ssemmiFormatting(entry, index)
 
         // Add data into the decentralised database
-        dbPost(entryFormatted, userBot)
+        await dbPost(entryFormatted, userBot)
 
         console.log(`Entry count: ${count}\n`)
 
@@ -96,7 +96,7 @@ export const csLoadSpreadsheet = async () => {
       } catch (error) {
         console.log(error)
       }
-    })
+    }))
 
     // Increment to advance to next workbook
     i++
