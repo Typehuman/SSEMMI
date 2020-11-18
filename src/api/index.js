@@ -57,13 +57,13 @@ loadApi(conserveApi)
 // GOOGLE SHEETS DATA LOAD
   .then(
     omLoadSpreadsheet)
-// .then( () => {
-//     setTimeout( () => {
-//         // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
-//         // as Google has a maximum request calls with the same API.
-//         csLoadSpreadsheet()
-//     }, 5000)
-// })
+ .then( () => {
+     setTimeout( () => {
+         // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
+         // as Google has a maximum request calls with the same API.
+         csLoadSpreadsheet()
+     }, 5000)
+ })
   .catch((err) => console.log(err + '\n' + 'Error Loading Google sheets'))
 
 export default router
