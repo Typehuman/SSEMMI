@@ -98,9 +98,9 @@ export const dbPost = (data, user) => {
   const curve = new EC('secp256k1')
   const userKey = curve.keyFromPrivate(user.pKey, 'hex')
   const dataHash = ObjectHash(data)
-  const signDER = userKey.sign(dataHash).toDER().toHex
+  const signDER = userKey.sign(dataHash).toDER()
   data['submitter_did'] = user.did
-  data['signature'] = signDER
+  //data['signature'] = signDER
 
   db.put(data)
 
