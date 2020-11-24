@@ -46,6 +46,7 @@ router.route('/')
  *----- USER AND AUTHENTICATION ROUTING METHODS -----
  */
 
+//  CORS Whitelist prod and local frontend URLs for the application
 const corsWhitelist = {
   origin: ["ssemmi-api.typehuman.dev", "localhost:8082"]
 }
