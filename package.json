@@ -67,7 +67,7 @@
     "mongoose-keywords": "^0.4.0",
     "morgan": "^1.9.1",
     "object-hash": "^2.0.3",
-    "orbit-db": "^0.24.2",
+    "orbit-db": "^0.26.0",
     "passport": "^0.4.1",
     "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",
