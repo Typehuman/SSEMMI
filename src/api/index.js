@@ -51,7 +51,7 @@ const corsWhitelist = {
 
 router.use('/apiv1/users', cors(corsWhitelist), user)
 router.use('/apiv1/auth', cors(corsWhitelist), auth)
-router.use('/apiv1/password-resets', passwordReset)
+router.use('/apiv1/password-resets', cors(corsWhitelist), passwordReset)
 router.use('/apiv1/sightings', cors(corsWhitelist), dataIngestion)
 
 /**
