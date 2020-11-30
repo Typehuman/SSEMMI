@@ -1,11 +1,16 @@
-import IpfsHttpClient from 'ipfs-http-client'
+import Ipfs from 'ipfs'
 import OrbitDb from 'orbit-db'
-import { ec as EC } from 'elliptic'
+import { ec, ec as EC } from 'elliptic'
 import ObjectHash from 'object-hash'
 
 // Initial ipfs setup
-console.log("Connecting to IPFS HTTP client.... \n")
-const ipfs = IpfsHttpClient({ host: '127.0.0.1', port: '5001' })
+console.log("Starting up IPFS js Node.... \n")
+
+
+// Create IPFS instance
+const initIPFSInstance = async () => {
+  return await Ipfs.create({ repo: "./data/ipfs" });
+};
 
 let db
 
@@ -14,9 +19,11 @@ export const dbService = async () => {
   try {
     console.log("Starting a database instance and configuration... \n")
 
+    const ipfs = await initIPFSInstance();
+
     // Creates an instance of orbitdb
     const orbitdb = await OrbitDb.createInstance(ipfs, {
-      directory: './orbitdb/'
+      directory: './data/orbitdb/'
     })
 
     // Allow write access
@@ -27,10 +34,6 @@ export const dbService = async () => {
 
     // Initialise the db
     db = await orbitdb.docs('ssemmi-api-ingestor', access)
-
-    // //Add data into doc db
-    // await db.put({spotter: "whalistic", total_spotted: 5})
-    // await db.put({spotter: "orcawhat", total_spotted: 2})
 
     // Emit a log message upon synchronisation with another peer
     db.events.on('replicated', () => {
@@ -98,9 +101,10 @@ export const dbPost = (data, user) => {
   const curve = new EC('secp256k1')
   const userKey = curve.keyFromPrivate(user.pKey, 'hex')
   const dataHash = ObjectHash(data)
-  const signDER = userKey.sign(dataHash).toDER()
+  const signDER = userKey.sign(dataHash)
+  const sigHex = {r: signDER.r.toJSON(), s: signDER.s.toJSON()}
   data['submitter_did'] = user.did
-  //data['signature'] = signDER
+  data['signature'] = sigHex
 
   return db.put(data)
 
