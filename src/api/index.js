@@ -45,10 +45,15 @@ router.route('/')
  *----- USER AND AUTHENTICATION ROUTING METHODS -----
  */
 
-router.use('/apiv1/users', cors({ origin: 'http://localhost:8082' }), user)
-router.use('/apiv1/auth', cors({ origin: 'http://localhost:8082' }), auth)
-router.use('/apiv1/password-resets', passwordReset)
-router.use('/apiv1/sightings', dataIngestion)
+//  CORS Whitelist prod and local frontend URLs for the application
+const corsWhitelist = {
+  origin: ["ssemmi-api.typehuman.dev", "localhost:8082"]
+}
+
+router.use('/apiv1/users', cors(corsWhitelist), user)
+router.use('/apiv1/auth', cors(corsWhitelist), auth)
+router.use('/apiv1/password-resets', cors(corsWhitelist), passwordReset)
+router.use('/apiv1/sightings', cors(corsWhitelist), dataIngestion)
 
 router.get('/apiv1/import',
   token({ required: true, roles: ['admin'] }),
@@ -76,6 +81,7 @@ router.get('/apiv1/import',
 // GOOGLE SHEETS DATA LOAD
   .then(
     omLoadSpreadsheet)
+  .catch((err) => console.log('Error Loading Spotter API:' + '\n' + err))
  .then( () => {
      setTimeout( () => {
          // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data

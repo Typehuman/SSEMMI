@@ -8,7 +8,8 @@
             selectable
             @selected="selected = $event"
         />
-        <button to="/" @click="approveUserMethod" class="btn">Approve Selected Users</button>
+        <button to="/" @click="approveUserMethod" class="btn">Approve Selected User</button>
+        <button to="/" @click="rejectUserMethod" class="btn">Reject Selected User</button>
     </div>
 </template>
 
@@ -70,6 +71,29 @@
         // Redirect to requested page
         .then( regUser => {
           console.log(`Added ${regUser.data}`)
+          location.reload()
+        })
+        // Check for request errors
+        .catch(err => {
+          console.log(err)
+        })
+      },
+      rejectUserMethod() {
+        // Check for event error to prevent propagation
+        event.preventDefault()
+
+        const requestAuth = {
+          headers: {
+            'Authorization': 'Bearer ' + this.$store.getters.getUserToken,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+
+        //Header post method to pass user details by passing created user details
+        axios.delete(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${this.selected.id}`, requestAuth)
+        // Redirect to requested page
+        .then( regUser => {
+          console.log(`Deleted ${regUser.data}`)
           location.reload()
         })
         // Check for request errors
