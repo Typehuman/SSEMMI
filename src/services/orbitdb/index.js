@@ -43,6 +43,8 @@ export const dbService = async () => {
     //Load locally persisted db state from memory
     await db.load()
 
+    console.info(`The location of the database is ${db.address.toString()}`)
+    
     // Log message upon successful db setup
     console.log("Database setup successful! \n")
 

@@ -9,7 +9,6 @@ import passwordReset from './password-reset'
 import dataIngestion from './data-ingestion'
 import cors from 'cors'
 import { token } from '../services/passport/index'
-import cat from 'ipfs-http-client/src/cat'
 
 const router = new Router()
 
