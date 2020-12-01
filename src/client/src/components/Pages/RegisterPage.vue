@@ -9,10 +9,10 @@
       <!-- UI for passing register details -->
       <form class='register--form' @submit="register">
         <fieldset>
-          <mdb-input placeholder="email" name="Email" icon="envelope" type="email" required/>
+          <mdb-input placeholder="email" name="Email" v-model.trim="registerUserData.initEmail" icon="envelope" type="email" required/>
         </fieldset>
         <fieldset>
-          <mdb-input placeholder="confirm email" v-model.trim="registerUserData.email" name="Confirm email" icon="exclamation-triangle" type="text" required/>
+          <mdb-input placeholder="confirm email" v-model.trim="registerUserData.email" name="Confirm email" icon="exclamation-triangle" type="email" required/>
         </fieldset>
         <fieldset>
           <mdb-input placeholder="password" v-model.trim="registerUserData.password" name="Password" icon="lock" type="password" required/>
@@ -38,11 +38,26 @@ export default {
   data() {
     return {
       registerUserData: {},
+      errors: [],
       VUE_APP_MASTER_KEY: process.env.VUE_APP_MASTER_KEY
     };
   },
   methods: {
     register(event) {
+      if (!this.registerUserData.email) {
+        alert('Email required.')
+        return false
+      }
+
+      if (this.registerUserData.email != this.registerUserData.initEmail) {
+        alert('Email does not match.')
+        return false
+      }
+
+      if (!this.registerUserData.password) {
+        alert('Password required.')
+        return false
+      }
       // Check for event error to prevent propagation
       event.preventDefault()
 
