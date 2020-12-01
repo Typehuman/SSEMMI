@@ -1,10 +1,9 @@
 module.exports = {
-    chainWebpack: config => {
-        config
-            .plugin('html')
-            .tap(args => {
-                args[0].title = "SSEMMI Client";
-                return args;
-            })
+    pages: {
+      index: {
+        entry: './src/main.js',
+        template: './index.html',
+        title: 'SSEMMI Client'
+      }
     }
-}
+  }
