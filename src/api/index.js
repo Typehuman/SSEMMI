@@ -70,7 +70,7 @@ router.get('/apiv1/import',
     }, 5000))
   } catch(e) {
     console.error(`There was an error loading the data ${e}`)
-    res.send(500)
+    res.sendStatus(500)
   }
 })
 
