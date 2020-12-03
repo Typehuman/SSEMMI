@@ -10,6 +10,13 @@
 	- [Submit password](#submit-password)
 	- [Verify token](#verify-token)
 	
+- [Sightings](#sightings)
+	- [Delete specific sightings](#delete-specific-sightings)
+	- [Contribute sightings](#contribute-sightings)
+	- [Retrieve current sightings](#retrieve-current-sightings)
+	- [Retrieve specific sightings](#retrieve-specific-sightings)
+	- [Retrieve sightings marked as trusted](#retrieve-sightings-marked-as-trusted)
+	
 - [User](#user)
 	- [Create user](#create-user)
 	- [Delete user](#delete-user)
@@ -77,6 +84,73 @@
 
 	GET /password-resets/:token
 
+
+# Sightings
+
+## Delete specific sightings
+
+
+
+	DELETE /sightings/:id
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>User access_token.</p>							|
+
+## Contribute sightings
+
+
+
+	POST /sightings
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>User access_token.</p>							|
+
+## Retrieve current sightings
+
+
+
+	GET /sightings
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>User access_token.</p>							|
+
+## Retrieve specific sightings
+
+
+
+	GET /sightings/:id
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>User access_token.</p>							|
+
+## Retrieve sightings marked as trusted
+
+
+
+	GET /sightings/trusted
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>User access_token.</p>							|
 
 # User
 
