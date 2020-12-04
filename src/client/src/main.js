@@ -191,7 +191,6 @@ export const store = new Vuex.Store(
             sessionStorage.setItem('userToken', user.data.token)
             // Login success
             console.log(`Login successful, Hello ${user.data.user.name}`)
-            console.log(user.data)
 
             resolve(user)
           })
@@ -233,7 +232,7 @@ export const store = new Vuex.Store(
             axios.get(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/requests`, requestAuth)
             // Add list of users into the store of user requests
             .then( users => {
-              console.log(users.data)
+              // console.log(users.data)
               commit('setUserRequestList', users.data)
               resolve(users)
             })
