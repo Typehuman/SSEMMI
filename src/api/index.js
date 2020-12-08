@@ -1,5 +1,4 @@
 import { Router } from 'express'
-import { dbGetAll, dbGetItem, dbPost, dbDelete, dbQueryTrusted } from '../services/orbitdb'
 import { loadApi, conserveApi } from './partner-data/spotter-api'
 import { csLoadSpreadsheet } from './partner-data/citizen-science-api'
 import { omLoadSpreadsheet } from './partner-data/orca-map-api'
@@ -9,6 +8,7 @@ import passwordReset from './password-reset'
 import dataIngestion from './data-ingestion'
 import cors from 'cors'
 import { token } from '../services/passport/index'
+import cron from 'node-cron'
 
 const router = new Router()
 
@@ -74,21 +74,25 @@ router.get('/apiv1/import',
 })
 
 /**
- *----- LOADING DATA FROM API INTO DB METHODS -----
+ *----- SCHEDULED JOBS TO LOAD PARTNER-DATA INTO API -----
  */
-// Load data from CONSERVE.IO SPOTTER API
-/* loadApi(conserveApi)
-// GOOGLE SHEETS DATA LOAD
-  .then(
-    omLoadSpreadsheet)
-  .catch((err) => console.log('Error Loading Spotter API:' + '\n' + err))
- .then( () => {
-     setTimeout( () => {
-         // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
-         // as Google has a maximum request calls with the same API.
-         csLoadSpreadsheet()
-     }, 5000)
- })
-  .catch((err) => console.log(err + '\n' + 'Error Loading Google sheets'))
-*/
+
+// CRON job to pull from Spotter API every hour
+cron.schedule('*/59 * * * * ', () => {
+  console.log('Preparing scheduled load of SPOTTER API.................')
+  loadApi(conserveApi)
+})
+
+// CRON job to pull from Orca Map google spreadsheet every Sunday at 1AM
+cron.schedule('* 1 * * Sunday', () => {
+  console.log('Preparing scheduled load of ORCA MAP....................')
+  omLoadSpreadsheet()
+})
+
+// CRON job to pull from Citizen Science google spreadsheet every Sunday at 3AM
+cron.schedule('* 3 * * Sunday', () => {
+  console.log('Preparing scheduled load of CITIZEN SCIENCE.............')
+  csLoadSpreadsheet()
+})
+
 export default router
