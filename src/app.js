@@ -1,15 +1,17 @@
 import http from 'http'
 import { env, mongo, port, ip, apiRoot } from './config'
 import mongoose from './services/mongoose'
-import express from './services/express'
+import expressApp from './services/express'
+import express from 'express'
+import path from 'path'
 import api from './api'
 import { dbService, getAll, getItem, post } from './services/orbitdb'
 
-const app = express(apiRoot, api)
+const app = expressApp(apiRoot, api)
 const server = http.createServer(app)
 
-//Using the routes from API to handle endpoints
-app.use("/", api)
+// Using the routes from API to handle endpoints
+app.use('/', api)
 
 if (mongo.uri) {
   mongoose.connect(mongo.uri)

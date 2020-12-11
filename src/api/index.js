@@ -1,4 +1,5 @@
-import { Router } from 'express'
+import express, { Router } from 'express'
+import path from 'path'
 import { loadApi, conserveApi } from './partner-data/spotter-api'
 import { csLoadSpreadsheet } from './partner-data/citizen-science-api'
 import { omLoadSpreadsheet } from './partner-data/orca-map-api'
@@ -9,6 +10,7 @@ import dataIngestion from './data-ingestion'
 import cors from 'cors'
 import { token } from '../services/passport/index'
 import cron from 'node-cron'
+import app from '../app'
 
 const router = new Router()
 
@@ -41,20 +43,15 @@ router.route('/')
     res.send('Hello')
   })
 
+router.use('/apiv1/docs', express.static('src/docs'))
 /**
  *----- USER AND AUTHENTICATION ROUTING METHODS -----
  */
 
 //  CORS Whitelist prod and local frontend URLs for the application
 const corsWhitelist = {
-  origin: ["ssemmi-api.typehuman.dev", "localhost:8082"]
+  origin: ['ssemmi-api.typehuman.dev', 'localhost:8082']
 }
-
-router.use('/docs', cors(corsWhitelist))
-router.route('/docs')
-  .get((req, res, next) => {
-    res.sendFile(__dirname + "/docs/index.html")
-  })
 
 router.use('/apiv1/users', cors(corsWhitelist), user)
 router.use('/apiv1/auth', cors(corsWhitelist), auth)
@@ -65,19 +62,19 @@ router.get('/apiv1/import',
   token({ required: true, roles: ['admin'] }),
   async (req, res, next) => {
     try {
-    await loadApi(conserveApi)
-    // GOOGLE SHEETS DATA LOAD
-    await omLoadSpreadsheet()
-    await Promise.all(setTimeout(async () => {
+      await loadApi(conserveApi)
+      // GOOGLE SHEETS DATA LOAD
+      await omLoadSpreadsheet()
+      await Promise.all(setTimeout(async () => {
         // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
         // as Google has a maximum request calls with the same API.
         await csLoadSpreadsheet()
-    }, 5000))
-  } catch(e) {
-    console.error(`There was an error loading the data ${e}`)
-    res.sendStatus(500)
-  }
-})
+      }, 5000))
+    } catch (e) {
+      console.error(`There was an error loading the data ${e}`)
+      res.sendStatus(500)
+    }
+  })
 
 /**
  *----- SCHEDULED JOBS TO LOAD PARTNER-DATA INTO API -----
