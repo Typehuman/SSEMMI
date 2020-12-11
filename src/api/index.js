@@ -50,6 +50,12 @@ const corsWhitelist = {
   origin: ["ssemmi-api.typehuman.dev", "localhost:8082"]
 }
 
+router.use('/docs', cors(corsWhitelist))
+router.route('/docs')
+  .get((req, res, next) => {
+    res.sendFile(__dirname + "/docs/index.html")
+  })
+
 router.use('/apiv1/users', cors(corsWhitelist), user)
 router.use('/apiv1/auth', cors(corsWhitelist), auth)
 router.use('/apiv1/password-resets', cors(corsWhitelist), passwordReset)
