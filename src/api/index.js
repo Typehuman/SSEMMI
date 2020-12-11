@@ -43,7 +43,7 @@ router.route('/')
     res.send('Hello')
   })
 
-router.use('/apiv1/docs', express.static('src/docs'))
+router.use('/docs', express.static('src/docs'))
 /**
  *----- USER AND AUTHENTICATION ROUTING METHODS -----
  */
