@@ -80,8 +80,8 @@ router.get('/apiv1/import',
  *----- SCHEDULED JOBS TO LOAD PARTNER-DATA INTO API -----
  */
 
-// CRON job to pull from Spotter API every day
-cron.schedule('0 */23 * * * ', () => {
+// CRON job to pull from Spotter API every day at 11PM to extract data at the end of the day
+cron.schedule('0 23 * * * ', () => {
   console.log('Preparing scheduled load of SPOTTER API.................')
   loadApi(conserveApi)
 })
