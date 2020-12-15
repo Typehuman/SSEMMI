@@ -7,6 +7,7 @@ import Login from './components/Pages/LoginPage'
 import Dashboard from './components/Pages/DashboardPage'
 import Register from './components/Pages/RegisterPage'
 import Approvals from './components/Pages/ApprovalsPage'
+import Visualiser from './components/Pages/VisualiserPage'
 import axios from 'axios'
 import Clipboard from 'v-clipboard'
 import 'bootstrap-css-only/css/bootstrap.min.css'
@@ -107,6 +108,12 @@ const router = new Router({
           next()
         }
       }
+    },
+    {
+      // Visualiser page to view data visualisations
+      path: '/visualiser',
+      name: 'Visualiser',
+      component: Visualiser
     }
   ]
 })

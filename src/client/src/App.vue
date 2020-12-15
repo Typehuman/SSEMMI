@@ -1,9 +1,12 @@
 <template>
   <div id="app">
+    <!-- Adding dependency for mapbox css for map visualisation -->
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
     <div id="nav">
       <router-link to="/" v-if="!isAuth" class='btn'>Login</router-link>
       <router-link to="/dashboard" v-if="isAuth" class='btn'>Dashboard</router-link>
       <router-link to="/register" class='btn'>Register</router-link>
+      <router-link to="/visualiser" class='btn'>Visualiser</router-link>
       <router-link to="/approvals" v-if="isAdmin" class='btn'>Approvals</router-link>
       <button to="/" @click="logoutMethod" class='btn' v-if="isAuth">Logout</button>
     </div>
