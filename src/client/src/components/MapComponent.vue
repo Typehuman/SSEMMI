@@ -1,5 +1,5 @@
 <template>
-    <div id='mapContainer' style='width: 400px; height: 300px;'></div>
+    <div id='mapContainer'></div>
 </template>
 
 <script>
@@ -17,8 +17,18 @@ export default {
 
         new mapboxgl.Map({
             container: 'mapContainer',
-            style: 'mapbox://styles/mapbox/streets-v11'
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-122.312490, 47.951812],
+            zoom: 7.0
         });
     }
 }
 </script>
+
+<style>
+#mapContainer {
+    width: 80%;
+    height: 400px;
+    margin: 0 auto;
+}
+</style>

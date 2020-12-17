@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <!-- Adding dependency for mapbox css for map visualisation -->
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
     <div id="nav">
       <router-link to="/" v-if="!isAuth" class='btn'>Login</router-link>
       <router-link to="/dashboard" v-if="isAuth" class='btn'>Dashboard</router-link>
