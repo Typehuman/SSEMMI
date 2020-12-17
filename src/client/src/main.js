@@ -113,7 +113,22 @@ const router = new Router({
       // Visualiser page to view data visualisations
       path: '/visualiser',
       name: 'Visualiser',
-      component: Visualiser
+      component: Visualiser,
+      beforeEnter: (to, from, next) => {
+        let hasToken = sessionStorage.getItem('userToken')
+        let isRestricted = store.state.isAuthenticated == false
+        let isLegitUser = store.state.token != null
+        let isAdmin = store.state.isAdmin == true
+        if(isRestricted && !isLegitUser && !hasToken) {
+          next('/login')
+        }
+        else if(!isAdmin) {
+          next('/dashboard')
+        }
+        else {
+          next()
+        }
+      }
     }
   ]
 })
@@ -242,6 +257,34 @@ export const store = new Vuex.Store(
               // console.log(users.data)
               commit('setUserRequestList', users.data)
               resolve(users)
+            })
+            .catch(err => {
+              console.error(err)
+              reject()
+            })
+          } else {
+            // Show error if access to it fails
+            throw console.error('Sorry you are not authorised to fetch the data');
+          }
+        })
+      },
+      get_sightings() {
+        return new Promise( (resolve,reject) => {
+          // Check if user has admin priviledges
+          if (store.state.isAdmin) {
+            // Format the admin level header for requesting user requests
+            const requestAuth = {
+              headers: {
+                'Authorization': 'Bearer ' + store.state.userDetails.token,
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            }
+
+            // Pass headers of admin to retreive user requests
+            axios.get(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/sightings`, requestAuth)
+            // Add list of users into the store of user requests
+            .then( sightings => {
+              resolve(sightings.data)
             })
             .catch(err => {
               console.error(err)
