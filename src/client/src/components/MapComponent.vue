@@ -62,9 +62,9 @@ export default {
                         .setHTML(
                             '<div class="container">'
                                 +'<h4><b>'+this.sightings[i].entity+'</b></h4>'
-                                +'<p><b>Created:</b>'+this.sightings[i].created+'</p>'
-                                +'<p><b>Witness:</b>'+this.sightings[i].witness+'</p>'
-                                +'<p><b>Comments:</b> '+this.sightings[i].comments+'</p>'
+                                +'<p><b>Created: </b>'+this.sightings[i].created+'</p>'
+                                +'<p><b>Witness: </b>'+this.sightings[i].witness+'</p>'
+                                +'<p><b>Comments: </b> '+this.sightings[i].comments+'</p>'
                             +'</div>'
                             +'</div>'
                         )
@@ -82,14 +82,5 @@ export default {
     width: 80%;
     height: 500px;
     margin: 0 auto;
-}
-
-.marker {
-  background-image: url('../assets/whale-icon.png');
-  background-size: cover;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
 }
 </style>

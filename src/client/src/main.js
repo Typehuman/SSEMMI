@@ -118,12 +118,8 @@ const router = new Router({
         let hasToken = sessionStorage.getItem('userToken')
         let isRestricted = store.state.isAuthenticated == false
         let isLegitUser = store.state.token != null
-        let isAdmin = store.state.isAdmin == true
         if(isRestricted && !isLegitUser && !hasToken) {
           next('/login')
-        }
-        else if(!isAdmin) {
-          next('/dashboard')
         }
         else {
           next()
@@ -264,15 +260,17 @@ export const store = new Vuex.Store(
             })
           } else {
             // Show error if access to it fails
-            throw console.error('Sorry you are not authorised to fetch the data');
+            const errMsg = 'Sorry you are not authorised to fetch the data'
+            alert(errMsg)
+            throw console.error(errMsg)
           }
         })
       },
       get_sightings() {
         return new Promise( (resolve,reject) => {
-          // Check if user has admin priviledges
-          if (store.state.isAdmin) {
-            // Format the admin level header for requesting user requests
+          // Check if user has access token
+          if (store.state.userDetails.token) {
+            // Format the token into header for requesting sightings requests
             const requestAuth = {
               headers: {
                 'Authorization': 'Bearer ' + store.state.userDetails.token,
@@ -292,7 +290,9 @@ export const store = new Vuex.Store(
             })
           } else {
             // Show error if access to it fails
-            throw console.error('Sorry you are not authorised to fetch the data');
+            const errMsg = 'Sorry you are not authorised to fetch the data'
+            alert(errMsg)
+            throw console.error(errMsg)
           }
         })
       }
