@@ -6,10 +6,19 @@ import ObjectHash from 'object-hash'
 // Initial ipfs setup
 console.log("Starting up IPFS js Node.... \n")
 
+// optional settings for the ipfs instance
+const ipfsOptions = {
+  EXPERIMENTAL: {
+      pubsub: true
+  },
+  // sets up a our node as a "circuit relay", which means that others will be able to "hop" through our node to connect to our peers, and our node will hop over others to do the same.
+  relay: { enabled: true, hop: { enabled: true, active: true } },
+  repo: './data/ipfs'
+}
 
 // Create IPFS instance
 const initIPFSInstance = async () => {
-  return await Ipfs.create({ repo: "./data/ipfs" });
+  return await Ipfs.create(ipfsOptions);
 };
 
 let db
@@ -28,16 +37,16 @@ export const dbService = async () => {
 
     // Allow write access
     const access = {
-      write: ['*'],
-      indexBy: 'ssemmi_id'
+        write: ['*'],
+        indexBy: 'ssemmi_id'
     }
 
     // Initialise the db
     db = await orbitdb.docs('ssemmi-api-ingestor', access)
 
     // Emit a log message upon synchronisation with another peer
-    db.events.on('replicated', () => {
-      console.log(`Database replicated. Check for new spotters.`)
+    db.events.on('write', (address, entry, heads) => {
+      console.log(`${address} Database to write. entry: ${entry}.`)
     })
 
     //Load locally persisted db state from memory
