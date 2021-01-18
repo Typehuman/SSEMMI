@@ -49,6 +49,11 @@ export const dbService = async () => {
       console.log(`${address} Database to write. entry: ${entry}.`)
     })
 
+    // Emit a error message upon error handling if something happens during the creation of the IPFS node.
+    db.events.on('error', (error) => {
+      console.log(`Database creation error: \n ${error}.`)
+    })
+
     //Load locally persisted db state from memory
     await db.load()
 
