@@ -13,6 +13,8 @@ import Clipboard from 'v-clipboard'
 import 'bootstrap-css-only/css/bootstrap.min.css'
 import 'mdbvue/lib/css/mdb.min.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import IPFS from 'ipfs'
+import OrbitDB from 'orbit-db'
 
 Vue.config.productionTip = false
 
@@ -113,18 +115,7 @@ const router = new Router({
       // Visualiser page to view data visualisations
       path: '/visualiser',
       name: 'Visualiser',
-      component: Visualiser,
-      beforeEnter: (to, from, next) => {
-        let hasToken = sessionStorage.getItem('userToken')
-        let isRestricted = store.state.isAuthenticated == false
-        let isLegitUser = store.state.token != null
-        if(isRestricted && !isLegitUser && !hasToken) {
-          next('/login')
-        }
-        else {
-          next()
-        }
-      }
+      component: Visualiser
     }
   ]
 })
@@ -139,7 +130,8 @@ export const store = new Vuex.Store(
       token: null,
       userDetails: [],
       isAdmin: false,
-      userRequestList: []
+      userRequestList: [],
+      sightings: []
     },
     mutations: {
       setAuthentication(state, status) {
@@ -156,6 +148,9 @@ export const store = new Vuex.Store(
       },
       setUserRequestList(state, list) {
         state.userRequestList = list
+      },
+      setSightings(state, sightings) {
+        state.sightings = sightings
       }
     },
     getters: {
@@ -167,6 +162,9 @@ export const store = new Vuex.Store(
       },
       getUserRequestList: state => {
         return state.userRequestList
+      },
+      getSightings: state => {
+        return state.sightings
       }
     },
     actions: {
@@ -266,6 +264,50 @@ export const store = new Vuex.Store(
           }
         })
       },
+      async get_ipfs_sightings({commit}) {
+        try {
+            // optional settings for the ipfs instance
+            const ipfsOptions = {
+              repo: './ipfs',
+              EXPERIMENTAL: { pubsub: true },
+              pubsub: true
+            }
+    
+            // Create IPFS instance with optional config
+            const ipfs = await IPFS.create(ipfsOptions)
+            console.log(ipfs)
+    
+            // Create OrbitDB instance
+            const orbitdb = await OrbitDB.createInstance(ipfs)
+            console.log(orbitdb)
+    
+            //create database
+            const db2 = await orbitdb.docs('/orbitdb/zdpuAqYtBanw8i2ZdQ6Do8SP6Ey9SrZP7KRua9ZKLyhHyMWy2/ssemmi-api-ingestor', {replicate: false})
+            console.log(db2)
+    
+            // Emit a log message upon synchronisation with another peer
+            db2.events.on('replicated', (address) => {
+                console.log(`${address} Database replicated. Data AFTER SYNCING. \n`) 
+            })
+    
+            //Load locally persisted db state from memory
+            db2.load()
+            .then( async () => {
+              const getData = await db2.get('')
+              console.log(getData)
+              // Set data from synchronisation into store
+            commit('setSightings', getData)
+            })
+    
+            console.info(`The location of the database is ${db2.address.toString()}`)
+    
+            // Log message upon successful db setup
+            console.log("Database setup successful! \n")
+
+        } catch (e) {
+            console.log(e)
+        }
+      },
       get_sightings() {
         return new Promise( (resolve,reject) => {
           // Check if user has access token
@@ -277,7 +319,7 @@ export const store = new Vuex.Store(
                 'Content-Type': 'application/x-www-form-urlencoded'
               }
             }
-
+            
             // Pass headers of admin to retreive user requests
             axios.get(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/sightings`, requestAuth)
             // Add list of users into the store of user requests

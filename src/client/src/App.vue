@@ -5,7 +5,7 @@
       <router-link to="/" v-if="!isAuth" class='btn'>Login</router-link>
       <router-link to="/dashboard" v-if="isAuth" class='btn'>Dashboard</router-link>
       <router-link to="/register" class='btn'>Register</router-link>
-      <router-link to="/visualiser" v-if="isAuth" class='btn'>Visualiser</router-link>
+      <router-link to="/visualiser" class='btn'>Visualiser</router-link>
       <router-link to="/approvals" v-if="isAdmin" class='btn'>Approvals</router-link>
       <button to="/" @click="logoutMethod" class='btn' v-if="isAuth">Logout</button>
     </div>
