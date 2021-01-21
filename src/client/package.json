@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
-    "ipfs": "^0.53.0",
+    "ipfs": "^0.52.3",
     "mapbox-gl": "^1.13.0",
     "orbit-db": "^0.26.0",
     "v-clipboard": "^2.2.3",

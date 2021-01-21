@@ -120,6 +120,7 @@ const router = new Router({
   ]
 })
 
+Vue.prototype.$db2 = null;
 
 // Setup store with vuex
 Vue.use(Vuex)
@@ -269,38 +270,44 @@ export const store = new Vuex.Store(
             // optional settings for the ipfs instance
             const ipfsOptions = {
               repo: './ipfs',
-              EXPERIMENTAL: { pubsub: true },
-              pubsub: true
+              // EXPERIMENTAL: { pubsub: true },
+              // pubsub: true
             }
-    
+
             // Create IPFS instance with optional config
             const ipfs = await IPFS.create(ipfsOptions)
             console.log(ipfs)
-    
+
             // Create OrbitDB instance
             const orbitdb = await OrbitDB.createInstance(ipfs)
             console.log(orbitdb)
-    
+
             //create database
-            const db2 = await orbitdb.docs('/orbitdb/zdpuAqYtBanw8i2ZdQ6Do8SP6Ey9SrZP7KRua9ZKLyhHyMWy2/ssemmi-api-ingestor', {replicate: false})
-            console.log(db2)
-    
+            this.$db2 = await orbitdb.docs('/orbitdb/zdpuAsKvnRo6Zkquzu7k69drD4zBDvKE6HBUYDkMaJiLSEqet/ssemmi-api-ingestor', {replicate: true})
+            console.log(this.$db2)
+
             // Emit a log message upon synchronisation with another peer
-            db2.events.on('replicated', (address) => {
-                console.log(`${address} Database replicated. Data AFTER SYNCING. \n`) 
+           this.$db2.events.on('replicated', (address) => {
+              console.log(`${address} Database replicated. Data AFTER SYNCING. \n`)
             })
-    
-            //Load locally persisted db state from memory
-            db2.load()
-            .then( async () => {
-              const getData = await db2.get('')
-              console.log(getData)
-              // Set data from synchronisation into store
-            commit('setSightings', getData)
-            })
-    
-            console.info(`The location of the database is ${db2.address.toString()}`)
-    
+
+          this.$db2.events.on('replicate', () => {
+            console.log('starting replication')
+          })
+
+          this.$db2.events.on('replicate.progress', () => {
+            console.log('making progress')
+          })
+
+          //Load locally persisted db state from memory
+          await this.$db2.load()
+          const getData = await this.$db2.get('')
+          console.log(getData)
+          // Set data from synchronisation into store
+          commit('setSightings', getData)
+
+            console.info(`The location of the database is ${this.$db2.address.toString()}`)
+
             // Log message upon successful db setup
             console.log("Database setup successful! \n")
 
@@ -319,7 +326,7 @@ export const store = new Vuex.Store(
                 'Content-Type': 'application/x-www-form-urlencoded'
               }
             }
-            
+
             // Pass headers of admin to retreive user requests
             axios.get(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/sightings`, requestAuth)
             // Add list of users into the store of user requests
