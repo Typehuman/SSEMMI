@@ -22,7 +22,7 @@ export default {
         loadSightings() {
             this.$store.dispatch("get_sightings")
             .then(res => {
-                for(let i = 0; i < 100; i++) {
+                for(let i = 0; i < res.length; i++) {
                     // Create new array instance of two numbers for mapbox marker coordinate
                     const arrCoordinates = new Array()
                     arrCoordinates.push(res[i].longitude)
