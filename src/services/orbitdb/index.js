@@ -37,8 +37,11 @@ export const dbService = async () => {
 
     // Allow write access
     const access = {
-        write: ['*'],
-        indexBy: 'ssemmi_id'
+      write: ['*'],
+      indexBy: 'ssemmi_id',
+      accessController: {
+        type: 'orbitdb'
+      }
     }
 
     // Initialise the db
