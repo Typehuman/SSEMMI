@@ -290,22 +290,55 @@ export const store = new Vuex.Store(
             console.log(orbitdb)
     
             //create database
-            const db2 = await orbitdb.docs('/orbitdb/zdpuAxZNjDM1DKd7m5vMvV8oibxt3MeUMSSUiJSraPUBNFaDP/ssemmi-api-ingestor', {replicate: false})
+            const db2 = await orbitdb.docs('/orbitdb/zdpuB2kQmxqdBZvCZDxU5SmzxLt9xnDvyjPQnMSuqrrLuYVrQ/ssemmi-api-ingestor', {replicate: false})
             console.log(db2)
     
-            // Emit a log message upon synchronisation with another peer
+             // Emit a log message upon synchronisation with another peer
+            db2.events.on('write', (address, entry) => {
+              console.log(`
+                ${address} Database to write. \n
+                Entry: ${entry}.
+              `)
+            })
+
+            // Emit log message before replicating a part of the db with another peer
+            db2.events.on('replicate', (address) => {
+              console.log(`Preparing to replicate with another peer ${address}.`)
+            })
+
+            // Emit log message while replicating the db
+            db2.events.on('replicate.progress', (address, hash, entry, progress, have) => {
+              console.log(`
+                Replicating with another peer ${address}.\n
+                Multihash of loaded entry: ${hash} \n
+                Entry: ${entry}. \n
+                Progress: ${progress} \n
+                Map of our db pieces: ${have} \n 
+              `)
+            })
+
+            // Emit log message when db has synced with another peer
             db2.events.on('replicated', (address) => {
-                console.log(`${address} Database replicated. Data AFTER SYNCING. \n`) 
+              console.log(`Replicated ${address}`)
+              const getData = db2.get('')
+              console.log(getData)
+              // Set data from synchronisation into store
+              commit('setSightings', getData)
+            })
+
+            // Emit a error message upon error handling if something happens during the creation of the IPFS node.
+            db2.events.on('error', (error) => {
+              console.log(`Database creation error: \n ${error}.`)
             })
     
             //Load locally persisted db state from memory
             db2.load()
-            .then( async () => {
-              const getData = await db2.get('')
-              console.log(getData)
-              // Set data from synchronisation into store
-            commit('setSightings', getData)
-            })
+            // .then( async () => {
+            //   const getData = await db2.get('')
+            //   console.log(getData)
+            //   // Set data from synchronisation into store
+            //   commit('setSightings', getData)
+            // })
     
             console.info(`The location of the database is ${db2.address.toString()}`)
     
