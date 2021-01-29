@@ -270,7 +270,15 @@ export const store = new Vuex.Store(
             const ipfsOptions = {
               repo: './ipfs',
               EXPERIMENTAL: { pubsub: true },
-              pubsub: true
+              preload: { enabled: false },
+              config: {
+                Swarm: [
+                  '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
+                  '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
+                  '/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/',
+                  '/dns4/libp2p-rdv.vps.revolunet.com/tcp/443/wss/p2p-webrtc-star/',
+                ]
+              }
             }
     
             // Create IPFS instance with optional config
@@ -282,7 +290,7 @@ export const store = new Vuex.Store(
             console.log(orbitdb)
     
             //create database
-            const db2 = await orbitdb.docs('/orbitdb/zdpuAqYtBanw8i2ZdQ6Do8SP6Ey9SrZP7KRua9ZKLyhHyMWy2/ssemmi-api-ingestor', {replicate: false})
+            const db2 = await orbitdb.docs('/orbitdb/zdpuAxZNjDM1DKd7m5vMvV8oibxt3MeUMSSUiJSraPUBNFaDP/ssemmi-api-ingestor', {replicate: false})
             console.log(db2)
     
             // Emit a log message upon synchronisation with another peer
