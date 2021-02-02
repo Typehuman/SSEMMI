@@ -6,6 +6,10 @@ import express from 'express'
 import path from 'path'
 import api from './api'
 import { dbService, getAll, getItem, post } from './services/orbitdb'
+import { EventEmitter } from 'events'
+
+// Prevent max listener warnings upon running the application
+EventEmitter.defaultMaxListeners = 30
 
 const app = expressApp(apiRoot, api)
 const server = http.createServer(app)
