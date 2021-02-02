@@ -272,12 +272,14 @@ export const store = new Vuex.Store(
               EXPERIMENTAL: { pubsub: true },
               preload: { enabled: false },
               config: {
-                Swarm: [
-                  '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
-                  '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
-                  '/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/',
-                  '/dns4/libp2p-rdv.vps.revolunet.com/tcp/443/wss/p2p-webrtc-star/',
-                ]
+                Addresses: {
+                  Swarm: [
+                    '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
+                    '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
+                    '/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/',
+                    '/dns4/libp2p-rdv.vps.revolunet.com/tcp/443/wss/p2p-webrtc-star/'
+                  ]
+                }
               }
             }
     
@@ -288,34 +290,12 @@ export const store = new Vuex.Store(
             // Create OrbitDB instance
             const orbitdb = await OrbitDB.createInstance(ipfs)
             console.log(orbitdb)
-    
-            //create database
-            const db2 = await orbitdb.docs('/orbitdb/zdpuB2kQmxqdBZvCZDxU5SmzxLt9xnDvyjPQnMSuqrrLuYVrQ/ssemmi-api-ingestor', {replicate: false})
-            console.log(db2)
-    
-             // Emit a log message upon synchronisation with another peer
-            db2.events.on('write', (address, entry) => {
-              console.log(`
-                ${address} Database to write. \n
-                Entry: ${entry}.
-              `)
-            })
+  
+            // Connect to the peer id of the backend orbitdb database (NOTE: this will be an env variable)
+            await orbitdb._ipfs.swarm.connect('/ip4/127.0.0.1/tcp/4003/ws/p2p/QmWdwcHK2ih8VzP9jacLPKGBdmxzZf1F3Nvo9pqj5Q4QcN')
 
-            // Emit log message before replicating a part of the db with another peer
-            db2.events.on('replicate', (address) => {
-              console.log(`Preparing to replicate with another peer ${address}.`)
-            })
-
-            // Emit log message while replicating the db
-            db2.events.on('replicate.progress', (address, hash, entry, progress, have) => {
-              console.log(`
-                Replicating with another peer ${address}.\n
-                Multihash of loaded entry: ${hash} \n
-                Entry: ${entry}. \n
-                Progress: ${progress} \n
-                Map of our db pieces: ${have} \n 
-              `)
-            })
+            // create database
+            const db2 = await orbitdb.docs('/orbitdb/zdpuB2kQmxqdBZvCZDxU5SmzxLt9xnDvyjPQnMSuqrrLuYVrQ/ssemmi-api-ingestor')
 
             // Emit log message when db has synced with another peer
             db2.events.on('replicated', (address) => {
@@ -326,19 +306,21 @@ export const store = new Vuex.Store(
               commit('setSightings', getData)
             })
 
+             // Emit a log message upon synchronisation with another peer
+             db2.events.on('write', (address, entry) => {
+              console.log(`
+                ${address} Database to write. \n
+                Entry: ${entry}.
+              `)
+            })
+
             // Emit a error message upon error handling if something happens during the creation of the IPFS node.
             db2.events.on('error', (error) => {
               console.log(`Database creation error: \n ${error}.`)
             })
-    
+
             //Load locally persisted db state from memory
-            db2.load()
-            // .then( async () => {
-            //   const getData = await db2.get('')
-            //   console.log(getData)
-            //   // Set data from synchronisation into store
-            //   commit('setSightings', getData)
-            // })
+            await db2.load()
     
             console.info(`The location of the database is ${db2.address.toString()}`)
     

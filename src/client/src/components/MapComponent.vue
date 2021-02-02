@@ -12,7 +12,7 @@ export default {
     data() {
         return {
             mapboxKey: process.env.VUE_APP_MAPBOX_KEY,
-            sightings: []
+            arrSightings: []
         }
     },
     mounted() {
@@ -36,17 +36,17 @@ export default {
             map.addControl(nav, "top-right")
 
             // Insert coordinates into map as marker points
-            for (let i = 0; i < this.sightings.length; i++) {
+            for (let i = 0; i < this.arrSightings.length; i++) {
                 new mapboxgl.Marker()
-                .setLngLat(this.sightings[i].coordinates)
+                .setLngLat(this.arrSightings[i].coordinates)
                 .setPopup(
                     new mapboxgl.Popup({ offset: 25 }) // add popups
                     .setHTML(
                         '<div class="container">'
-                            +'<h4><b>'+this.sightings[i].entity+'</b></h4>'
-                            +'<p><b>Created: </b>'+this.sightings[i].created+'</p>'
-                            +'<p><b>Witness: </b>'+this.sightings[i].witness+'</p>'
-                            +'<p><b>Comments: </b> '+this.sightings[i].comments+'</p>'
+                            +'<h4><b>'+this.arrSightings[i].entity+'</b></h4>'
+                            +'<p><b>Created: </b>'+this.arrSightings[i].created+'</p>'
+                            +'<p><b>Witness: </b>'+this.arrSightings[i].witness+'</p>'
+                            +'<p><b>Comments: </b> '+this.arrSightings[i].comments+'</p>'
                         +'</div>'
                         +'</div>'
                     )
@@ -57,31 +57,33 @@ export default {
       loadSightings() {
             // Call the method to retreive data
             this.$store.dispatch("get_ipfs_sightings")
-            const res = this.$store.sightings
+            .then( () => {
+                const res = this.$store.getters.getSightings
+                console.log(`loaded sightss: ${res}`)
 
-            if (res) {
-                // Process data into location points
-                for(let i = 0; i < res.length; i++) {
-                    // Create new array instance of two numbers for mapbox marker coordinate
-                    const arrCoordinates = new Array()
-                    if(res[i]) {
-                        arrCoordinates.push(res[i].longitude)
-                        arrCoordinates.push(res[i].latitude)
+                // if (res) {
+                    // Process data into location points
+                    for(let i = 0; i < res.length; i++) {
+                        // Create new array instance of two numbers for mapbox marker coordinate
+                        const arrCoordinates = new Array()
+                        if(res[i]) {
+                            arrCoordinates.push(res[i].longitude)
+                            arrCoordinates.push(res[i].latitude)
 
-                        const sightingEntry = {
-                            entity: res[i].data_source_entity,
-                            created: res[i].created,
-                            witness: res[i].data_source_witness,
-                            comments: res[i].data_source_comments,
-                            coordinates: arrCoordinates
+                            const sightingEntry = {
+                                entity: res[i].data_source_entity,
+                                created: res[i].created,
+                                witness: res[i].data_source_witness,
+                                comments: res[i].data_source_comments,
+                                coordinates: arrCoordinates
+                            }
+                            this.arrSightings.push(sightingEntry)
                         }
-                        this.sightings.push(sightingEntry)
                     }
-                }
-            }
-
+                // }
+            })
             // Load map and plot location points
-            this.mapSightings()
+            .then(() => this.mapSightings())
         }
     } 
 }
