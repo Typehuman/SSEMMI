@@ -1,19 +1,19 @@
 <template>
     <div style="card">
-        <CardComponent componentHeader="Sightings Map">
+        <!-- <CardComponent componentHeader="Sightings Map"> -->
             <Map />
-        </CardComponent>
+        <!-- </CardComponent> -->
     </div>
 </template>
 
 <script>
-import CardComponent from '../CardComponent'
+// import CardComponent from '../CardComponent'
 import Map from '../MapComponent'
 
 export default {
     name: 'Visualiser',
     components: {
-        CardComponent,
+        // CardComponent,
         Map
     },
 }
@@ -21,7 +21,7 @@ export default {
 
 <style>
 .card {
-    left: 50%;
-    top: 5%;
+    /* left: 50%;
+    top: 5%; */
 }
 </style>
