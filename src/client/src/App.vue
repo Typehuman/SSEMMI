@@ -2,10 +2,11 @@
   <div id="app">
     <!-- Adding dependency for mapbox css for map visualisation -->
     <div id="nav">
+      <router-link id="title" to="/" class='btn'>SSEMMI Client</router-link>
       <router-link to="/" v-if="!isAuth" class='btn'>Login</router-link>
       <router-link to="/dashboard" v-if="isAuth" class='btn'>Dashboard</router-link>
       <router-link to="/register" class='btn'>Register</router-link>
-      <router-link to="/visualiser" class='btn'>Visualiser</router-link>
+      <router-link to="/data-explorer" class='btn'>Data Explorer</router-link>
       <router-link to="/approvals" v-if="isAdmin" class='btn'>Approvals</router-link>
       <button to="/" @click="logoutMethod" class='btn' v-if="isAuth">Logout</button>
     </div>
@@ -56,14 +57,27 @@ export default {
 
 <style>
 #app {
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
+  text-align: center;
+}
+
+#title {
+  text-align: left;
+  font-weight: bold;
+  display: inline;
+  /* position: relative;
+  left: -50px; */
+  float: left;
 }
 
 #nav {
   font-weight: bold;
   display: inline;
+  float: right;
+  text-align: right;
+  width: 100%;
+  background: grey;
 }
 
 #nav .btn {

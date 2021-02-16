@@ -113,8 +113,8 @@ const router = new Router({
     },
     {
       // Visualiser page to view data visualisations
-      path: '/visualiser',
-      name: 'Visualiser',
+      path: '/data-explorer',
+      name: 'DataExplorer',
       component: Visualiser
     }
   ]
@@ -232,7 +232,7 @@ export const store = new Vuex.Store(
           resolve('Logged out')
         })
       },
-      get_user_requests({commit}) {
+      get_user_requests({commit}) { //DEPRECATED
         return new Promise( (resolve,reject) => {
           // Check if user has admin priviledges
           if (store.state.isAdmin) {
@@ -301,7 +301,7 @@ export const store = new Vuex.Store(
             db2.events.on('replicated', (address) => {
               console.log(`Replicated ${address}`)
               const getData = db2.get('')
-              console.log(getData)
+              // console.log(getData)
               // Set data from synchronisation into store
               commit('setSightings', getData)
             })
@@ -331,7 +331,7 @@ export const store = new Vuex.Store(
             console.log(e)
         }
       },
-      get_sightings() {
+      get_sightings({commit}) {
         return new Promise( (resolve,reject) => {
           // Check if user has access token
           if (store.state.userDetails.token) {
@@ -348,6 +348,7 @@ export const store = new Vuex.Store(
             // Add list of users into the store of user requests
             .then( sightings => {
               resolve(sightings.data)
+              commit('setSightings', sightings.data)
             })
             .catch(err => {
               console.error(err)
