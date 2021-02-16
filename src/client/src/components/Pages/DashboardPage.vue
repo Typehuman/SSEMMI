@@ -2,7 +2,7 @@
 <div>
     <div id="token-table-heading">
         <h1 id="token-table-title">Your Active Tokens</h1>
-        <button id="token-table-btn-new">Generate new key</button>
+        <mdb-btn outline="black" id="token-table-btn-new">Generate new key</mdb-btn>
     </div>
     <mdb-tbl hover id="token-table-container">
       <mdb-tbl-head>
@@ -32,13 +32,14 @@
 </template>
 
 <script>
-import { mdbTbl, mdbTblHead, mdbTblBody } from 'mdbvue'
+import { mdbTbl, mdbTblHead, mdbTblBody, mdbBtn } from 'mdbvue'
 export default {
     name: "Dashboard",
     components: {
         mdbTbl,
         mdbTblHead,
-        mdbTblBody
+        mdbTblBody,
+        mdbBtn
     },
     data() {
         return {
