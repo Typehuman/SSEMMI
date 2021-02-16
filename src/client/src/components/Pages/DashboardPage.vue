@@ -1,7 +1,10 @@
 <template>
-<div id="token-table-container">
-    <h1 id="token-table-title">Your Active Tokens</h1>
-    <mdb-tbl hover>
+<div>
+    <div id="token-table-heading">
+        <h1 id="token-table-title">Your Active Tokens</h1>
+        <button id="token-table-btn-new">Generate new key</button>
+    </div>
+    <mdb-tbl hover id="token-table-container">
       <mdb-tbl-head>
         <tr>
           <th>Reference</th>
@@ -68,7 +71,15 @@ export default {
     display: inline-table;
 }
 
+#token-table-heading {
+    padding: 5%;
+}
+
 #token-table-title {
     float: left;
+}
+
+#token-table-btn-new {
+    float: right;
 }
 </style>
