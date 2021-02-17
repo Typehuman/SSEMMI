@@ -1,16 +1,19 @@
 <template>
+  <div>
+    <div id="request-table-heading">
+        <h1 id="request-table-title">Pending Requests</h1>
+    </div>
     <div id="user-table">
         <mdb-datatable-2
             v-model="userReqTable"
-            striped
-            bordered
-            fixedHeader
-            selectable
             @selected="selected = $event"
         />
-        <button to="/" @click="approveUserMethod" class="btn">Approve Selected User</button>
-        <button to="/" @click="rejectUserMethod" class="btn">Reject Selected User</button>
+        <div id="decision-btn">
+            <button to="/" @click="approveUserMethod" class="btn">Approve</button>
+            <button to="/" @click="rejectUserMethod" class="btn">Deny</button>
+        </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -27,6 +30,11 @@
         selected: null,
         userReqTable: {
           columns: [
+            {
+              label: 'Reference',
+              field: 'reference',
+              sort: 'asc'
+            },
             {
               label: 'Name',
               field: 'name',
@@ -108,6 +116,7 @@
 
           for (let i = 0; i < getList.length; i++) {
             let userMap = {
+              reference: i+1,
               name: getList[i].name,
               email: getList[i].email,
               createdAt: getList[i].createdAt,
@@ -123,9 +132,21 @@
 
 <style scoped>
   #user-table {
-    width: 800px;
-    height: 450px;
+    width: 50%;
+    padding: 10px;
     margin: auto;
     position: relative;
+  }
+
+  #decision-btn {
+    float: right;
+  }
+
+  #request-table-heading {
+    padding: 5%;
+}
+
+  #request-table-title {
+      float: left;
   }
 </style>
