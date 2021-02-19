@@ -8,6 +8,7 @@ import Dashboard from './components/Pages/DashboardPage'
 import Register from './components/Pages/RegisterPage'
 import Approvals from './components/Pages/ApprovalsPage'
 import Visualiser from './components/Pages/VisualiserPage'
+import About from './components/Pages/AboutPage'
 import axios from 'axios'
 import Clipboard from 'v-clipboard'
 import 'bootstrap-css-only/css/bootstrap.min.css'
@@ -89,6 +90,12 @@ const router = new Router({
       path: '/register',
       name: 'Register',
       component: Register
+    },
+    {
+      // Register page to create new users - admin only
+      path: '/about',
+      name: 'About',
+      component: About
     },
     {
       // Approvals page to confirm user registration
