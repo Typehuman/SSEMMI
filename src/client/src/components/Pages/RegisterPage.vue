@@ -9,31 +9,52 @@
       <!-- UI for passing register details -->
       <form class='register--form' @submit="register">
         <fieldset>
-          <mdb-input placeholder="email" name="Email" v-model.trim="registerUserData.initEmail" icon="envelope" type="email" required/>
+          <mdb-input placeholder="Email:" name="Email" v-model.trim="registerUserData.initEmail" type="email" required/>
         </fieldset>
         <fieldset>
-          <mdb-input placeholder="confirm email" v-model.trim="registerUserData.email" name="Confirm email" icon="exclamation-triangle" type="email" required/>
+          <mdb-input placeholder="Confirm email:" v-model.trim="registerUserData.email" name="Confirm email" type="email" required/>
         </fieldset>
         <fieldset>
-          <mdb-input placeholder="password" v-model.trim="registerUserData.password" name="Password" icon="lock" type="password" required/>
+          <mdb-input placeholder="Password:" v-model.trim="registerUserData.password" name="Password" type="password" required/>
         </fieldset>
         <fieldset>
-          <mdb-btn type='submit' color="primary">Register User</mdb-btn>
+          <mdb-btn type='submit' color="white">Invite User</mdb-btn>
         </fieldset>
       </form>
     </section>
+    <mdb-tbl hover id="register-list-container">
+      <mdb-tbl-head>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Invite sent</th>
+          <th>Status</th>
+        </tr>
+      </mdb-tbl-head>
+      <mdb-tbl-body>
+        <tr>
+          <th>John Doe</th>
+          <td>jdoe@testmail.com</td>
+          <td>11.12 AM 31/01/21</td>
+          <td>Invite Sent</td>
+        </tr>
+      </mdb-tbl-body>
+    </mdb-tbl>
 </div>
 </template>
 
 <script>
-import { mdbInput, mdbBtn } from 'mdbvue';
+import { mdbInput, mdbBtn, mdbTbl, mdbTblHead, mdbTblBody } from 'mdbvue';
 import axios from 'axios';
 
 export default {
   name: 'Register',
   components: {
     mdbInput,
-    mdbBtn
+    mdbBtn,
+    mdbTbl,
+    mdbTblHead,
+    mdbTblBody
   },
   data() {
     return {
@@ -85,9 +106,17 @@ export default {
 
 <style scoped>
   form {
-    width: 400px;
-    height: 450px;
+    float: left;
+    padding-left: 5%;
+    width: 40%;
     margin: auto;
     position: relative;
+  }
+
+  #register-list-container {
+    width: 80%;
+    padding-left: 5%;
+    /* margin: auto; */
+    /* display: inline-table; */
   }
 </style>
