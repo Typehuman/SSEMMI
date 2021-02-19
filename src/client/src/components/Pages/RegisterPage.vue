@@ -1,28 +1,30 @@
 <template>
 <div>
   <!-- Title and header on the UI -->
-    <header class="register--header">
-      <h1>SSEMMI CLIENT</h1>
-      <span>Create User</span>
-    </header>
+  <div style="padding: 5%">
     <section class="register--section">
       <!-- UI for passing register details -->
-      <form class='register--form' @submit="register">
-        <fieldset>
-          <mdb-input placeholder="Email:" name="Email" v-model.trim="registerUserData.initEmail" type="email" required/>
-        </fieldset>
-        <fieldset>
-          <mdb-input placeholder="Confirm email:" v-model.trim="registerUserData.email" name="Confirm email" type="email" required/>
-        </fieldset>
-        <fieldset>
-          <mdb-input placeholder="Password:" v-model.trim="registerUserData.password" name="Password" type="password" required/>
-        </fieldset>
-        <fieldset>
-          <mdb-btn type='submit' color="white">Invite User</mdb-btn>
-        </fieldset>
-      </form>
+      <div>
+        <form class='register--form' @submit="register">
+          <h1 id="register-heading">Invite Users</h1>
+          <fieldset>
+            <mdb-input placeholder="Email:" name="Email" v-model.trim="registerUserData.initEmail" type="email" required/>
+          </fieldset>
+          <fieldset>
+            <mdb-input placeholder="Confirm email:" v-model.trim="registerUserData.email" name="Confirm email" type="email" required/>
+          </fieldset>
+          <fieldset>
+            <mdb-input placeholder="Password:" v-model.trim="registerUserData.password" name="Password" type="password" required/>
+          </fieldset>
+          <fieldset>
+            <mdb-btn type='submit' color="white" style="right: 32%">Invite User</mdb-btn>
+          </fieldset>
+        </form>
+      </div>
     </section>
-    <mdb-tbl hover id="register-list-container">
+  </div>
+  <div id="register-list-container">
+    <mdb-tbl hover>
       <mdb-tbl-head>
         <tr>
           <th>Name</th>
@@ -40,6 +42,7 @@
         </tr>
       </mdb-tbl-body>
     </mdb-tbl>
+  </div>
 </div>
 </template>
 
@@ -107,7 +110,7 @@ export default {
 <style scoped>
   form {
     float: left;
-    padding-left: 5%;
+    padding-left: 8%;
     width: 40%;
     margin: auto;
     position: relative;
@@ -115,8 +118,13 @@ export default {
 
   #register-list-container {
     width: 80%;
-    padding-left: 5%;
+    padding: 10%;
     /* margin: auto; */
     /* display: inline-table; */
+  }
+
+  #register-heading {
+    position: relative;
+    right: 32%;
   }
 </style>
