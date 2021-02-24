@@ -1,5 +1,5 @@
 <template>
-    <div style="card">
+    <div>
         <!-- <CardComponent componentHeader="Sightings Map"> -->
             <Map />
         <!-- </CardComponent> -->
@@ -18,10 +18,3 @@ export default {
     },
 }
 </script>
-
-<style>
-.card {
-    /* left: 50%;
-    top: 5%; */
-}
-</style>
