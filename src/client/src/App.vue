@@ -7,10 +7,10 @@
       <router-link to="/dashboard" v-if="isAuth" class='btn'>Dashboard</router-link>
       <router-link to="/register" class='btn'>Register</router-link>
       <router-link to="/about" class='btn'>About</router-link>
-      <router-link to="/data-explorer" class='btn'>Data Explorer</router-link>
+      <router-link to="/data-explorer" class='btn' v-if="isAuth">Data Explorer</router-link>
       <router-link to="/approvals" v-if="isAdmin" class='btn'>Approvals</router-link>
       <button to="/" @click="logoutMethod" class='btn' v-if="isAuth">Logout</button>
-    </div>
+    </div> 
     <router-view/>
   </div>
 </template>
