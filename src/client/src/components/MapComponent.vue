@@ -45,6 +45,9 @@ export default {
                     // Create new array instance of two numbers for mapbox marker coordinate
                     console.log(key)
                     if(value) {   
+                        // Check if sighting is a valid number
+                        let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
+
                         const sightingEntry = {
                             "type": "Feature",
                             "geometry": {
@@ -55,7 +58,7 @@ export default {
                                 "entity": value.data_source_entity,
                                 "ssemmi_id": value.ssemmi_id,
                                 "created": value.created,
-                                "no_sighted": value.no_sighted,
+                                "no_sighted": filtered_sightings,
                                 "witness": value.data_source_witness,
                                 "comments": value.data_source_comments,
                                 "ssemmi_date_added": value.ssemmi_date_added
