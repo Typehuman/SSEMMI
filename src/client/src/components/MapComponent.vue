@@ -14,7 +14,7 @@
             </div>
             <div class='session' id='sliderbar'>
                 <h4>Sightings: <label id='active-hour'>2</label></h4>
-                <input id='slider' class='row' type='range' min='0' max='23' step='1' value='12' />
+                <input id='slider' class='row' type='range' min='0' max='23' step='1' value='2' />
             </div>
         </div>
     </div>
@@ -116,7 +116,7 @@ export default {
                 "features": this.geoJSONSightings
             }
 
-            this.mapView.on('load', function() {
+            map.on('load', function() {
                 map.addLayer({
                     id: 'ssemmi-map-layer',
                     type: 'circle',
