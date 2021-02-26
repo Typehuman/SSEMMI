@@ -13,8 +13,8 @@
                 <div class='label'>5+</div>
             </div>
             <div class='session' id='sliderbar'>
-                <h4>Sightings: <label id='active-hour'>1</label></h4>
-                <input id='slider' class='row' type='range' min='0' max='23' step='1' value='1' />
+                <h4>Sightings: <label id='active-hour'>January</label></h4>
+                <input id='slider' class='row' type="range" min="1" max="12" step="1" value="0" />
             </div>
         </div>
     </div>
@@ -22,6 +22,7 @@
 
 <script>
 import mapboxgl from 'mapbox-gl';
+import moment from 'moment';
 
 export default {
     name: 'Map',
@@ -47,6 +48,9 @@ export default {
                     if(value) {   
                         // Check if sighting is a valid number
                         let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
+                        let filtered_date = moment(value.created)
+                        let f_month = filtered_date.get('month') + 1
+                        let f_year = filtered_date.get('year')
 
                         const sightingEntry = {
                             "type": "Feature",
@@ -58,6 +62,9 @@ export default {
                                 "entity": value.data_source_entity,
                                 "ssemmi_id": value.ssemmi_id,
                                 "created": value.created,
+                                "month": f_month,
+                                "year": f_year,
+                                "month_year": `${f_month}${f_year}`,
                                 "no_sighted": filtered_sightings,
                                 "witness": value.data_source_witness,
                                 "comments": value.data_source_comments,
@@ -119,6 +126,22 @@ export default {
                 "features": this.geoJSONSightings
             }
 
+            const months = [
+                '',
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December'
+            ]
+
             map.on('load', function() {
                 map.addLayer({
                     id: 'ssemmi-map-layer',
@@ -128,13 +151,6 @@ export default {
                     data: geoData
                     },
                     paint: {
-                    'circle-radius': [
-                        'interpolate',
-                        ['linear'],
-                        ['number', ['get', 'no_sighted']],
-                        0, 4,
-                        5, 24
-                    ],
                     'circle-color': [
                         'interpolate',
                         ['linear'],
@@ -146,18 +162,18 @@ export default {
                         4, '#A2719B',
                         5, '#AA5E79'
                     ],
-                    'circle-opacity': 0.8
+                    'circle-opacity': 1
                     },
-                    filter: ['==', ['number', ['get', 'no_sighted']], 1]
+                    filter: ['==', ['number', ['get', 'month']], 1]
                 })
 
                 document.getElementById('slider').addEventListener('input', function(e) {
-                    var hour = parseInt(e.target.value);
+                    let month = parseInt(e.target.value);
                     // update the map
-                    map.setFilter('ssemmi-map-layer', ['==', ['number', ['get', 'no_sighted']], hour]);
+                    map.setFilter('ssemmi-map-layer', ['==', ['number', ['get', 'month']], month]);
 
                     // update text in the UI
-                    document.getElementById('active-hour').innerText = hour;
+                    document.getElementById('active-hour').innerText = months[month];
                 });
             })
 
@@ -178,6 +194,7 @@ export default {
                                 +'<h4><b>'+e.features[0].properties.entity+'</b></h4>'
                                 +'<p><b>SSEMMI ID: </b>'+e.features[0].properties.ssemmi_id+'</p>'
                                 +'<p><b>Created: </b>'+e.features[0].properties.created+'</p>'
+                                +'<p><b>Date: </b>'+e.features[0].properties.month+' '+ e.features[0].properties.year+'</p>'
                                 +'<p><b>No Sighted: </b>'+e.features[0].properties.no_sighted+'</p>'
                                 +'<p><b>Witness: </b>'+e.features[0].properties.witness+'</p>'
                                 +'<p><b>Comments: </b> '+e.features[0].properties.comments+'</p>'
