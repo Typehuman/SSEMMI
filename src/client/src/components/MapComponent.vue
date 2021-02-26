@@ -13,8 +13,8 @@
                 <div class='label'>5+</div>
             </div>
             <div class='session' id='sliderbar'>
-                <h4>Sightings: <label id='active-hour'>2</label></h4>
-                <input id='slider' class='row' type='range' min='0' max='23' step='1' value='2' />
+                <h4>Sightings: <label id='active-hour'>1</label></h4>
+                <input id='slider' class='row' type='range' min='0' max='23' step='1' value='1' />
             </div>
         </div>
     </div>
@@ -148,7 +148,7 @@ export default {
                     ],
                     'circle-opacity': 0.8
                     },
-                    filter: ['==', ['number', ['get', 'no_sighted']], 2]
+                    filter: ['==', ['number', ['get', 'no_sighted']], 1]
                 })
 
                 document.getElementById('slider').addEventListener('input', function(e) {
