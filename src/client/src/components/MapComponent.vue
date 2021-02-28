@@ -13,8 +13,14 @@
                 <div class='label'>5+</div>
             </div>
             <div class='session' id='sliderbar'>
-                <h4>Sightings: <label id='active-hour'>January</label></h4>
-                <input id='slider' class='row' type="range" min="1" max="12" step="1" value="0" />
+                <h4>Sightings: <label id='active-date'>January 2020</label></h4>
+                <input id='month-slider' class='row' type="range" min="1" max="12" step="1" value="0" />
+                <br>
+                <label for="year-list">Choose a year:</label>
+                <select id="year-list">
+                    <option value="2020" selected>2020</option>
+                    <option value="2021">2021</option>
+                </select>
             </div>
         </div>
     </div>
@@ -98,6 +104,7 @@ export default {
         }
     },
     mounted() {
+        // Mounted to continuously monitor for changes
         this.mapSightings()
         this.loadSightings()
     },
@@ -118,14 +125,18 @@ export default {
             const nav = new mapboxgl.NavigationControl()
             map.addControl(nav, "top-right")
 
+            // Cache map
             this.mapView = map
-            this.mapView.resize();
+            // Resize map to fit into screen width
+            this.mapView.resize()
 
+            // Initialise sightings data into geoJSON format
             let geoData = {
                 "type": "FeatureCollection",
                 "features": this.geoJSONSightings
             }
 
+            // Initialise months value to match integer date value in sightings from source/db
             const months = [
                 '',
                 'January',
@@ -142,41 +153,83 @@ export default {
                 'December'
             ]
 
+            // On load event
             map.on('load', function() {
+                // Initialise default value for year and month
+                let selectedYear = 2020
+                let selectedMonth = 1
+
+                // Set layer to display sightings
                 map.addLayer({
                     id: 'ssemmi-map-layer',
                     type: 'circle',
                     source: {
-                    type: 'geojson',
-                    data: geoData
+                        type: 'geojson',
+                        data: geoData
                     },
                     paint: {
-                    'circle-color': [
-                        'interpolate',
-                        ['linear'],
-                        ['number', ['get', 'no_sighted']],
-                        0, '#2DC4B2',
-                        1, '#3BB3C3',
-                        2, '#669EC4',
-                        3, '#8B88B6',
-                        4, '#A2719B',
-                        5, '#AA5E79'
-                    ],
-                    'circle-opacity': 1
-                    },
-                    filter: ['==', ['number', ['get', 'month']], 1]
+                        // Set size of circle pinpoint based on how large the sighting is
+                        'circle-radius': [
+                            'interpolate',
+                            ['linear'],
+                            ['number', ['get', 'no_sighted']],
+                            0, 4,
+                            5, 24
+                        ],
+                        // Set colour of circle pinpoint based of number of sightings
+                        'circle-color': [
+                            'interpolate',
+                            ['linear'],
+                            ['number', ['get', 'no_sighted']],
+                            0, '#2DC4B2',
+                            1, '#3BB3C3',
+                            2, '#669EC4',
+                            3, '#8B88B6',
+                            4, '#A2719B',
+                            5, '#AA5E79'
+                        ],
+                        'circle-opacity': 0.9
+                        },
+                    filter: [
+                        'all',
+                        ['==', ['number', ['get', 'month']], selectedMonth],
+                        ['==', ['number', ['get', 'year']], selectedYear]
+                    ]
                 })
 
-                document.getElementById('slider').addEventListener('input', function(e) {
-                    let month = parseInt(e.target.value);
+                // Action to change the sightings filter based on preference
+                let changeSightingPreference = () => {
+                    let preferenceFilter = [
+                        'all',
+                        ['==', ['number', ['get', 'month']], selectedMonth],
+                        ['==', ['number', ['get', 'year']], selectedYear]
+                    ]
                     // update the map
-                    map.setFilter('ssemmi-map-layer', ['==', ['number', ['get', 'month']], month]);
+                    map.setFilter('ssemmi-map-layer', preferenceFilter)
 
                     // update text in the UI
-                    document.getElementById('active-hour').innerText = months[month];
-                });
+                    document.getElementById('active-date').innerText = months[selectedMonth]+ " " +selectedYear 
+                }
+
+                // Listener function to monitor selected option for YEAR
+                document.getElementById('year-list').addEventListener('change', (e) => {
+                    selectedYear = parseInt(e.target.value)
+
+                    // update the map
+                    changeSightingPreference()
+                })
+                
+                // Listener function to monitor selected option for MONTH
+                document.getElementById('month-slider').addEventListener('input', (e) => {
+                    selectedMonth = parseInt(e.target.value)
+
+                    // update the map
+                    changeSightingPreference()
+                })
+
             })
 
+            // Click listener to display extra information upon clicking on a sightings point
             map.on('click', 'ssemmi-map-layer', function (e) {
                 let coordinates = e.features[0].geometry.coordinates.slice();
                 
@@ -184,7 +237,7 @@ export default {
                 // copies of the feature are visible, the popup appears
                 // over the copy being pointed to.
                 while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
                 
                 new mapboxgl.Popup()
