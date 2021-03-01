@@ -26,7 +26,7 @@ currentDate = String(currentDate)
 var currentDayFormat = `${yyyy}-${mm}-${dd}`
 
 // Current year format to display sightings since the current year
-var currentYearFormat = `${yyyy}-01-01`
+var currentYearFormat = `2020-01-01`
 export const conserveApi = `https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=${currentYearFormat}&species=Orcinus%20orca`
 
 // Retreive data from the URL
