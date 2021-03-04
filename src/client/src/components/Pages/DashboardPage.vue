@@ -67,8 +67,7 @@ export default {
 <style scoped>
 #token-table-container {
     width: 50%;
-    padding: 10px;
-    margin: auto;
+    padding: 10px 0 10px 0;
     display: inline-table;
 }
 
