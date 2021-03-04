@@ -296,6 +296,10 @@ export default {
     position: relative;
 }
 
+#active-date {
+    font-weight: bold;
+}
+
 #widget {
     position: fixed;
     width: 20%;
