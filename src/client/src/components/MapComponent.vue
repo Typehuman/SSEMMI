@@ -1,10 +1,10 @@
 <template>
     <div>
         <div id='mapContainer'></div>
-        <div id='console'>
+        <div id='widget'>
             <h2>Sightings</h2>
-            <div class='row colors'></div>
-            <div class='row labels'>
+            <div class='widget-row colors'></div>
+            <div class='widget-row labels'>
                 <div class='label'>0</div>
                 <div class='label'>1</div>
                 <div class='label'>2</div>
@@ -12,11 +12,11 @@
                 <div class='label'>4</div>
                 <div class='label'>5+</div>
             </div>
-            <div class='session' id='sliderbar'>
-                <h4>Sightings: <label id='active-date'>January 2020</label></h4>
-                <input id='month-slider' class='row' type="range" min="1" max="12" step="1" value="0" />
-                <br>
-                <label for="year-list">Choose a year:</label>
+            <br>
+            <div class='slider-class' id='sliderbar'>
+                <p>Sightings: <label id='active-date'>January 2020</label></p>
+                <input id='month-slider' class='widget-row' type="range" min="1" max="12" step="1" value="0" />
+                <label for="year-list">Choose a year: </label>
                 <select id="year-list">
                     <option value="2020" selected>2020</option>
                     <option value="2021">2021</option>
@@ -52,9 +52,9 @@ export default {
                     // Create new array instance of two numbers for mapbox marker coordinate
                     console.log(key)
                     if(value) {   
-                        // Check if sighting is a valid number
+                        // Check if the fields for the sighting is valid or compatible
                         let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
-                        let filtered_date = moment(value.created)
+                        let filtered_date = moment(new Date(value.created))                      
                         let f_month = filtered_date.get('month') + 1
                         let f_year = filtered_date.get('year')
 
@@ -296,27 +296,29 @@ export default {
     position: relative;
 }
 
-#console {
-    position: absolute;
+#widget {
+    position: fixed;
     width: 20%;
-    height: 20%;
-    top: 10%;
+    top: 6vh;
+    left: 1vh;
+    margin: 10px;
+    padding: 10px 20px;
     background-color: white;
-    font-size-adjust: inherit;
+    position: absolute;
 }
 
-.session {
+.slider-class {
   margin-left: 5%;
+  font-size: 1rem;
 }
 
-.row {
+.widget-row {
   height: 12px;
   width: 100%;
 }
 
 .colors {
   background: linear-gradient(to right, #2dc4b2, #3bb3c3, #669ec4, #8b88b6, #a2719b, #aa5e79);
-  /* margin-bottom: 5px; */
 }
 
 .label {
