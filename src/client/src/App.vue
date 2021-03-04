@@ -74,11 +74,12 @@ export default {
 
 #nav {
   font-weight: bold;
-  display: inline;
+  display: block;
   float: right;
   text-align: right;
   width: 100%;
   background: grey;
+  position: sticky;
 }
 
 #nav .btn {

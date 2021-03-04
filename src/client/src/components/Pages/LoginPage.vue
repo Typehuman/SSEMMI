@@ -69,7 +69,7 @@ fieldset {
 .container {
   background: none;
   width: 400px;
-  margin: 4rem auto 0;
+  top: 150px;
   text-align: center;
   box-shadow: 0 1rem 1rem 0 rgba(0, 0, 0, .15);
   position: relative;
