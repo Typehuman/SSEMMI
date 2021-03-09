@@ -48,11 +48,12 @@ export default {
         grabSightings(currSights) {
             if (this.mapView && currSights) {
                 // Insert coordinates into map as marker points
-                Object.entries(currSights).forEach( ([key, value]) => {
+                Object.values(currSights).forEach( (value) => {
                     // Create new array instance of two numbers for mapbox marker coordinate
-                    console.log(key)
                     if(value) {   
                         // Check if the fields for the sighting is valid or compatible
+                        let filtered_long = (isNaN(value.longitude)) ? 1 : value.longitude
+                        let filtered_lat = (isNaN(value.latitude)) ? 1 : value.latitude
                         let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
                         let filtered_date = moment(new Date(value.created))                      
                         let f_month = filtered_date.get('month') + 1
@@ -62,7 +63,7 @@ export default {
                             "type": "Feature",
                             "geometry": {
                                 "type": "Point",
-                                "coordinates": [value.longitude, value.latitude]
+                                "coordinates": [filtered_long, filtered_lat]
                             },
                             "properties": {
                                 "entity": value.data_source_entity,
