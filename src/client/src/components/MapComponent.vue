@@ -55,9 +55,13 @@ export default {
                         let filtered_long = (isNaN(value.longitude)) ? 1 : value.longitude
                         let filtered_lat = (isNaN(value.latitude)) ? 1 : value.latitude
                         let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
-                        let filtered_date = moment(new Date(value.created))                      
+                        let filtered_date = moment(new Date(value.created))
                         let f_month = filtered_date.get('month') + 1
-                        let f_year = filtered_date.get('year')
+                        let f_year = filtered_date.get('year')                      
+
+                        if(!filtered_date.isValid()) {
+                            filtered_date = moment(new Date('2011-01-01 20:00:00'))
+                        }
 
                         const sightingEntry = {
                             "type": "Feature",
@@ -71,34 +75,14 @@ export default {
                                 "created": value.created,
                                 "month": f_month,
                                 "year": f_year,
-                                "month_year": `${f_month}${f_year}`,
                                 "no_sighted": filtered_sightings,
                                 "witness": value.data_source_witness,
                                 "comments": value.data_source_comments,
-                                "ssemmi_date_added": value.ssemmi_date_added
+                                "ssemmi_date_added": value.ssemmi_date_added,
                             }
                         }
 
                         this.geoJSONSightings.push(sightingEntry)
-                        
-                        // new mapboxgl.Marker()
-                        // .setLngLat(sightingEntry.geometry.coordinates)
-                        // .setPopup(
-                        //     new mapboxgl.Popup({ offset: 25 }) // add popups
-                        //     .setHTML(
-                        //         '<div class="container">'
-                        //             +'<h4><b>'+sightingEntry.properties.entity+'</b></h4>'
-                        //             +'<p><b>SSEMMI ID: </b>'+sightingEntry.properties.ssemmi_id+'</p>'
-                        //             +'<p><b>Created: </b>'+sightingEntry.properties.created+'</p>'
-                        //             +'<p><b>No Sighted: </b>'+sightingEntry.properties.no_sighted+'</p>'
-                        //             +'<p><b>Witness: </b>'+sightingEntry.properties.witness+'</p>'
-                        //             +'<p><b>Comments: </b> '+sightingEntry.properties.comments+'</p>'
-                        //             +'<p><b>Date Added: </b> '+sightingEntry.properties.ssemmi_date_added+'</p>'
-                        //         +'</div>'
-                        //         +'</div>'
-                        //     )
-                        // )
-                        // .addTo(this.mapView)
                     }
                 })
             }
@@ -106,8 +90,8 @@ export default {
     },
     mounted() {
         // Mounted to continuously monitor for changes
-        this.mapSightings()
         this.loadSightings()
+        this.mapSightings()
     },
     methods: {
       mapSightings() {
@@ -258,28 +242,6 @@ export default {
                         )
                 .addTo(map);
             })
-
-            // // Insert coordinates into map as marker points
-            // for (let i = 0; i < this.arrSightings.length; i++) {
-            //     new mapboxgl.Marker()
-            //     .setLngLat(this.arrSightings[i].coordinates)
-            //     .setPopup(
-            //         new mapboxgl.Popup({ offset: 25 }) // add popups
-            //         .setHTML(
-            //             '<div class="container">'
-            //                 +'<h4><b>'+this.arrSightings[i].entity+'</b></h4>'
-            //                 +'<p><b>SSEMMI ID: </b>'+sightingEntry.properties.ssemmi_id+'</p>'
-            //                 +'<p><b>Created: </b>'+this.arrSightings[i].created+'</p>'
-            //                 +'<p><b>No Sighted: </b>'+this.arrSightings[i].no_sighted+'</p>'
-            //                 +'<p><b>Witness: </b>'+this.arrSightings[i].witness+'</p>'
-            //                 +'<p><b>Comments: </b> '+this.arrSightings[i].comments+'</p>'
-            //                 +'<p><b>Date Added: </b> '+sightingEntry.properties.ssemmi_date_added+'</p>'
-            //             +'</div>'
-            //             +'</div>'
-            //         )
-            //     )
-            //     .addTo(map)
-            // }
       },
       loadSightings() {
             // Call the method to retreive data
