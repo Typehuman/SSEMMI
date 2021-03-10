@@ -90,10 +90,13 @@ export default {
             }
         }
     },
+    created() {
+        this.loadSightings()
+    },
     mounted() {
         // Mounted to continuously monitor for changes
-        this.loadSightings()
         this.mapSightings()
+
     },
     methods: {
       mapSightings() {
