@@ -55,13 +55,15 @@ export default {
                         let filtered_long = (isNaN(value.longitude)) ? 1 : value.longitude
                         let filtered_lat = (isNaN(value.latitude)) ? 1 : value.latitude
                         let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
-                        let filtered_date = moment(new Date(value.created))
-                        let f_month = filtered_date.get('month') + 1
-                        let f_year = filtered_date.get('year')                      
+                        let filtered_date = moment(new Date('2011-01-01 20:00:00'))
+                        let f_month = 1
+                        let f_year = 2011               
 
-                        if(!filtered_date.isValid()) {
-                            filtered_date = moment(new Date('2011-01-01 20:00:00'))
-                        }
+                        if(filtered_date.isValid()) {
+                            filtered_date = moment(new Date(value.created))
+                            f_month = filtered_date.get('month') + 1
+                            f_year = filtered_date.get('year')
+                        }  
 
                         const sightingEntry = {
                             "type": "Feature",
@@ -240,7 +242,7 @@ export default {
                                 +'<h4><b>'+e.features[0].properties.entity+'</b></h4>'
                                 +'<p><b>SSEMMI ID: </b>'+e.features[0].properties.ssemmi_id+'</p>'
                                 +'<p><b>Created: </b>'+e.features[0].properties.created+'</p>'
-                                +'<p><b>Date: </b>'+e.features[0].properties.month+' '+ e.features[0].properties.year+'</p>'
+                                +'<p><b>Date: </b>'+e.features[0].properties.month+'/'+ e.features[0].properties.year+'</p>'
                                 +'<p><b>No Sighted: </b>'+e.features[0].properties.no_sighted+'</p>'
                                 +'<p><b>Witness: </b>'+e.features[0].properties.witness+'</p>'
                                 +'<p><b>Comments: </b> '+e.features[0].properties.comments+'</p>'
