@@ -39,58 +39,8 @@ export default {
             geoJSONSightings: []
         }
     },
-    computed: {
-        grabSightings() {
-            return this.$store.getters.getSightings
-        }
-    },
-    watch:{
-        grabSightings(currSights) {
-            if (this.mapView && currSights) {
-                // Insert coordinates into map as marker points
-                Object.values(currSights).forEach( (value) => {
-                    // Create new array instance of two numbers for mapbox marker coordinate
-                    if(value) {   
-                        // Check if the fields for the sighting is valid or compatible
-                        let filtered_long = (isNaN(value.longitude)) ? 1 : value.longitude
-                        let filtered_lat = (isNaN(value.latitude)) ? 1 : value.latitude
-                        let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
-                        let filtered_date = moment(new Date('2011-01-01 20:00:00'))
-                        let f_month = 1
-                        let f_year = 2011               
-
-                        if(filtered_date.isValid()) {
-                            filtered_date = moment(new Date(value.created))
-                            f_month = filtered_date.get('month') + 1
-                            f_year = filtered_date.get('year')
-                        }  
-
-                        const sightingEntry = {
-                            "type": "Feature",
-                            "geometry": {
-                                "type": "Point",
-                                "coordinates": [filtered_long, filtered_lat]
-                            },
-                            "properties": {
-                                "entity": value.data_source_entity,
-                                "ssemmi_id": value.ssemmi_id,
-                                "created": value.created,
-                                "month": f_month,
-                                "year": f_year,
-                                "no_sighted": filtered_sightings,
-                                "witness": value.data_source_witness,
-                                "comments": value.data_source_comments,
-                                "ssemmi_date_added": value.ssemmi_date_added,
-                            }
-                        }
-
-                        this.geoJSONSightings.push(sightingEntry)
-                    }
-                })
-            }
-        }
-    },
     created() {
+        // Fetch data from server upon instance creation
         this.loadSightings()
     },
     mounted() {
@@ -259,6 +209,47 @@ export default {
       loadSightings() {
             // Call the method to retreive data
             this.$store.dispatch("get_sightings")
+            .then( (currSights) => {
+                Object.values(currSights).forEach( (value) => {
+                    // Create new array instance of two numbers for mapbox marker coordinate
+                    if(value) {   
+                        // Check if the fields for the sighting is valid or compatible
+                        let filtered_long = (isNaN(value.longitude)) ? 1 : value.longitude
+                        let filtered_lat = (isNaN(value.latitude)) ? 1 : value.latitude
+                        let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
+                        let filtered_date = moment(new Date('2011-01-01 20:00:00'))
+                        let f_month = 1
+                        let f_year = 2011               
+
+                        if(filtered_date.isValid()) {
+                            filtered_date = moment(new Date(value.created))
+                            f_month = filtered_date.get('month') + 1
+                            f_year = filtered_date.get('year')
+                        }  
+
+                        const sightingEntry = {
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": [filtered_long, filtered_lat]
+                            },
+                            "properties": {
+                                "entity": value.data_source_entity,
+                                "ssemmi_id": value.ssemmi_id,
+                                "created": value.created,
+                                "month": f_month,
+                                "year": f_year,
+                                "no_sighted": filtered_sightings,
+                                "witness": value.data_source_witness,
+                                "comments": value.data_source_comments,
+                                "ssemmi_date_added": value.ssemmi_date_added,
+                            }
+                        }
+
+                        this.geoJSONSightings.push(sightingEntry)
+                    }
+                })
+            })
         }
     } 
 }
