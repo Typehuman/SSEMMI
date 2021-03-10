@@ -198,18 +198,26 @@ export default {
 
                 // Listener function to monitor selected option for YEAR
                 document.getElementById('year-list').addEventListener('change', (e) => {
-                    selectedYear = parseInt(e.target.value)
-
-                    // update the map
-                    changeSightingPreference()
+                    try {
+                        // Grab desired year
+                        selectedYear = parseInt(e.target.value)
+                        // update the map
+                        changeSightingPreference()
+                    } catch (error) {
+                        console.log(error)
+                    }
                 })
                 
                 // Listener function to monitor selected option for MONTH
                 document.getElementById('month-slider').addEventListener('input', (e) => {
-                    selectedMonth = parseInt(e.target.value)
-
-                    // update the map
-                    changeSightingPreference()
+                    try {
+                        // Grab desired month
+                        selectedMonth = parseInt(e.target.value)
+                        // update the map
+                        changeSightingPreference()
+                    } catch (error) {
+                        console.log(error)
+                    }
                 })
 
             })
