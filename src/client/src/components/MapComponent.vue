@@ -46,7 +46,10 @@ export default {
     mounted() {
         // Mounted to continuously monitor for changes
         this.mapSightings()
-
+    },
+    updated() {
+        // Mounted to continuously monitor for changes
+        this.mapSightings()
     },
     methods: {
       mapSightings() {
@@ -112,7 +115,7 @@ export default {
                         'circle-radius': [
                             'interpolate',
                             ['linear'],
-                            ['number', ['get', 'no_sighted']],
+                            ['to-number', ['get', 'no_sighted']],
                             0, 4,
                             5, 24
                         ],
@@ -120,7 +123,7 @@ export default {
                         'circle-color': [
                             'interpolate',
                             ['linear'],
-                            ['number', ['get', 'no_sighted']],
+                            ['to-number', ['get', 'no_sighted']],
                             0, '#2DC4B2',
                             1, '#3BB3C3',
                             2, '#669EC4',
@@ -132,8 +135,8 @@ export default {
                         },
                     filter: [
                         'all',
-                        ['==', ['number', ['get', 'month']], selectedMonth],
-                        ['==', ['number', ['get', 'year']], selectedYear]
+                        ['==', ['to-number', ['get', 'month']], selectedMonth],
+                        ['==', ['to-number', ['get', 'year']], selectedYear]
                     ]
                 })
 
@@ -141,8 +144,8 @@ export default {
                 let changeSightingPreference = () => {
                     let preferenceFilter = [
                         'all',
-                        ['==', ['number', ['get', 'month']], selectedMonth],
-                        ['==', ['number', ['get', 'year']], selectedYear]
+                        ['==', ['to-number', ['get', 'month']], selectedMonth],
+                        ['==', ['to-number', ['get', 'year']], selectedYear]
                     ]
                     // update the map
                     map.setFilter('ssemmi-map-layer', preferenceFilter)
