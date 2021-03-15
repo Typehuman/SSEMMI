@@ -9,6 +9,7 @@ import Register from './components/Pages/RegisterPage'
 import Approvals from './components/Pages/ApprovalsPage'
 import Visualiser from './components/Pages/VisualiserPage'
 import About from './components/Pages/AboutPage'
+import Home from './components/Pages/HomePage'
 import axios from 'axios'
 import Clipboard from 'v-clipboard'
 import 'bootstrap-css-only/css/bootstrap.min.css'
@@ -39,7 +40,33 @@ const router = new Router({
         ]
       },
       redirect: {
-        name: 'Login'
+        name: 'Home'
+      }
+    },
+    {
+      // Login page
+      path: '/home',
+      name: 'Home',
+      meta: {
+        title: 'SSEMMI Client',
+        metaTags: [
+          {
+            name: 'SSEMMI Client',
+            content: 'SSEMMI Client'
+          }
+        ]
+      },
+      component: Home,
+      beforeEnter: (to, from, next) => {
+        let hasToken = sessionStorage.getItem('userToken')
+        let isAuthenticated = store.state.isAuthenticated == true
+        let isLegitUser = store.state.token != null
+
+        if(isAuthenticated && isLegitUser && hasToken) {
+          next('/dashboard')
+        } else {
+          next()
+        }
       }
     },
     {
@@ -363,9 +390,11 @@ export const store = new Vuex.Store(
             })
           } else {
             // Show error if access to it fails
-            const errMsg = 'Sorry you are not authorised to fetch the data'
-            alert(errMsg)
-            throw console.error(errMsg)
+            if (router.history.current.path != "/home") {
+              const errMsg = 'Sorry you are not authorised to fetch the data'
+              alert(errMsg)
+              throw console.error(errMsg)
+            }
           }
         })
       }
