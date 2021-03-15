@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id='mapContainer'></div>
-        <div id='widget'>
+        <div id='widget' v-if="isAuth">
             <h2>Sightings</h2>
             <div class='widget-row colors'></div>
             <div class='widget-row labels'>
@@ -254,6 +254,11 @@ export default {
                 })
             })
         }
+    },
+    computed: {
+        isAuth() {
+            return this.$store.state.isAuthenticated
+        },
     } 
 }
 </script>

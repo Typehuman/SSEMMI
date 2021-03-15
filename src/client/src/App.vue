@@ -3,7 +3,8 @@
     <!-- Adding dependency for mapbox css for map visualisation -->
     <div id="nav">
       <router-link id="title" to="/" class='btn'>SSEMMI Client</router-link>
-      <router-link to="/" v-if="!isAuth" class='btn'>Login</router-link>
+      <router-link to="/" v-if="!isAuth" class='btn'>Home</router-link>
+      <router-link to="/login" v-if="!isAuth" class='btn'>Login</router-link>
       <router-link to="/dashboard" v-if="isAuth" class='btn'>Dashboard</router-link>
       <router-link to="/register" class='btn'>Register</router-link>
       <router-link to="/about" class='btn'>About</router-link>
