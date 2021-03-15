@@ -33,12 +33,12 @@ export default {
 }
 
 #home-about-card {
-    width: 20%;
+    width: 40%;
     top: 6vh;
-    left: 1vh;
+    right: -30vh;
     margin: 10px;
-    padding: 10px 20px;
     background-color: transparent;
     position: fixed;
+    display: inline-block;
 }
 </style>
