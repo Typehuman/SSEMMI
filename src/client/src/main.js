@@ -59,7 +59,7 @@ const router = new Router({
       component: Home,
       beforeEnter: (to, from, next) => {
         let hasToken = sessionStorage.getItem('userToken')
-        let isAuthenticated = store.state.isAuthenticated == true
+        let isAuthenticated = store.state.isAuthenticated === true
         let isLegitUser = store.state.token != null
 
         if(isAuthenticated && isLegitUser && hasToken) {
@@ -85,7 +85,7 @@ const router = new Router({
       component: Login,
       beforeEnter: (to, from, next) => {
         let hasToken = sessionStorage.getItem('userToken')
-        let isAuthenticated = store.state.isAuthenticated == true
+        let isAuthenticated = store.state.isAuthenticated === true
         let isLegitUser = store.state.token != null
 
         if(isAuthenticated && isLegitUser && hasToken) {
@@ -102,7 +102,7 @@ const router = new Router({
       component: Dashboard,
       beforeEnter: (to, from, next) => {
         let hasToken = sessionStorage.getItem('userToken')
-        let isRestricted = store.state.isAuthenticated == false
+        let isRestricted = store.state.isAuthenticated === false
         let isLegitUser = store.state.token != null
 
         if(isRestricted && !isLegitUser && !hasToken) {
@@ -131,9 +131,9 @@ const router = new Router({
       component: Approvals,
       beforeEnter: (to, from, next) => {
         let hasToken = sessionStorage.getItem('userToken')
-        let isRestricted = store.state.isAuthenticated == false
+        let isRestricted = store.state.isAuthenticated === false
         let isLegitUser = store.state.token != null
-        let isAdmin = store.state.isAdmin == true
+        let isAdmin = store.state.isAdmin === true
         if(isRestricted && !isLegitUser && !hasToken) {
           next('/login')
         }
@@ -316,15 +316,15 @@ export const store = new Vuex.Store(
                 }
               }
             }
-    
+
             // Create IPFS instance with optional config
             const ipfs = await IPFS.create(ipfsOptions)
             console.log(ipfs)
-    
+
             // Create OrbitDB instance
             const orbitdb = await OrbitDB.createInstance(ipfs)
             console.log(orbitdb)
-  
+
             // Connect to the peer id of the backend orbitdb database (NOTE: this will be an env variable)
             await orbitdb._ipfs.swarm.connect('/ip4/127.0.0.1/tcp/4003/ws/p2p/QmWdwcHK2ih8VzP9jacLPKGBdmxzZf1F3Nvo9pqj5Q4QcN')
 
@@ -355,9 +355,9 @@ export const store = new Vuex.Store(
 
             //Load locally persisted db state from memory
             await db2.load()
-    
+
             console.info(`The location of the database is ${db2.address.toString()}`)
-    
+
             // Log message upon successful db setup
             console.log("Database setup successful! \n")
 
@@ -367,18 +367,25 @@ export const store = new Vuex.Store(
       },
       get_sightings({commit}) {
         return new Promise( (resolve,reject) => {
+          let requestAuth = {}
+          let endpoint
           // Check if user has access token
           if (store.state.userDetails.token) {
+            endpoint = '/apiv1/sightings'
             // Format the token into header for requesting sightings requests
-            const requestAuth = {
-              headers: {
+            requestAuth.headers = {
                 'Authorization': 'Bearer ' + store.state.userDetails.token,
                 'Content-Type': 'application/x-www-form-urlencoded'
               }
+            } else {
+            endpoint = '/apiv1/sightings/current'
+            requestAuth.headers = {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                }
             }
-            
+
             // Pass headers of admin to retreive user requests
-            axios.get(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/sightings`, requestAuth)
+            axios.get(`${process.env.VUE_APP_WEB_SERVER_URL}${endpoint}`, requestAuth)
             // Add list of users into the store of user requests
             .then( sightings => {
               resolve(sightings.data)
@@ -388,14 +395,6 @@ export const store = new Vuex.Store(
               console.error(err)
               reject()
             })
-          } else {
-            // Show error if access to it fails
-            if (router.history.current.path != "/home") {
-              const errMsg = 'Sorry you are not authorised to fetch the data'
-              alert(errMsg)
-              throw console.error(errMsg)
-            }
-          }
         })
       }
     },
