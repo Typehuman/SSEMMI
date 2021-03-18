@@ -16,7 +16,7 @@ router
    * @apiSuccess {Object} List of sightings.
    */
   .get(token({ required: true }), (req, res) => {
-    res.send(dbGetAll(true))
+    res.send(dbGetAll())
   })
   /**
    * @api {post} /sightings Contribute sightings
