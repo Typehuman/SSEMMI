@@ -98,9 +98,11 @@ export default {
 
             // On load event
             map.on('load', function() {
+              const today = new Date();
+
                 // Initialise default value for year and month
-                let selectedYear = 2020
-                let selectedMonth = 1
+                let selectedYear = today.getFullYear()
+                let selectedMonth = today.getMonth()
 
                 // Set layer to display sightings
                 map.addLayer({
@@ -151,7 +153,7 @@ export default {
                     map.setFilter('ssemmi-map-layer', preferenceFilter)
 
                     // update text in the UI
-                    document.getElementById('active-date').innerText = months[selectedMonth]+ " " +selectedYear 
+                    document.getElementById('active-date').innerText = months[selectedMonth]+ " " +selectedYear
                 }
 
                 // Listener function to monitor selected option for YEAR
@@ -165,7 +167,7 @@ export default {
                         console.log(error)
                     }
                 })
-                
+
                 // Listener function to monitor selected option for MONTH
                 document.getElementById('month-slider').addEventListener('input', (e) => {
                     try {
@@ -183,14 +185,14 @@ export default {
             // Click listener to display extra information upon clicking on a sightings point
             map.on('click', 'ssemmi-map-layer', function (e) {
                 let coordinates = e.features[0].geometry.coordinates.slice();
-                
+
                 // Ensure that if the map is zoomed out such that multiple
                 // copies of the feature are visible, the popup appears
                 // over the copy being pointed to.
                 while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
-                
+
                 new mapboxgl.Popup()
                 .setLngLat(coordinates)
                 .setHTML(
@@ -215,20 +217,20 @@ export default {
             .then( (currSights) => {
                 Object.values(currSights).forEach( (value) => {
                     // Create new array instance of two numbers for mapbox marker coordinate
-                    if(value) {   
+                    if(value) {
                         // Check if the fields for the sighting is valid or compatible
                         let filtered_long = (isNaN(value.longitude)) ? 1 : value.longitude
                         let filtered_lat = (isNaN(value.latitude)) ? 1 : value.latitude
                         let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
                         let filtered_date = moment(new Date('2011-01-01 20:00:00'))
                         let f_month = 1
-                        let f_year = 2011               
+                        let f_year = 2011
 
                         if(filtered_date.isValid()) {
                             filtered_date = moment(new Date(value.created))
                             f_month = filtered_date.get('month') + 1
                             f_year = filtered_date.get('year')
-                        }  
+                        }
 
                         const sightingEntry = {
                             "type": "Feature",
@@ -259,7 +261,7 @@ export default {
         isAuth() {
             return this.$store.state.isAuthenticated
         },
-    } 
+    }
 }
 </script>
 
