@@ -96,15 +96,23 @@ export default {
                 'December'
             ]
 
+            const isHome = (this.$route.path === '/home')
             // On load event
             map.on('load', function() {
               const today = new Date();
 
                 // Initialise default value for year and month
                 let selectedYear = today.getFullYear()
-                let selectedMonth = today.getMonth()
+                let selectedMonth = today.getMonth() + 1
 
-                // Set layer to display sightings
+              // Set the defaults
+              // update text in the UI
+              if (!isHome) {
+                document.getElementById('active-date').innerText = months[selectedMonth] + " " + selectedYear
+                document.getElementById('year-list').value = selectedYear
+                document.getElementById('month-slider').value = selectedMonth
+              }
+              // Set layer to display sightings
                 map.addLayer({
                     id: 'ssemmi-map-layer',
                     type: 'circle',
@@ -156,29 +164,31 @@ export default {
                     document.getElementById('active-date').innerText = months[selectedMonth]+ " " +selectedYear
                 }
 
+              if (!isHome) {
                 // Listener function to monitor selected option for YEAR
                 document.getElementById('year-list').addEventListener('change', (e) => {
-                    try {
-                        // Grab desired year
-                        selectedYear = parseInt(e.target.value)
-                        // update the map
-                        changeSightingPreference()
-                    } catch (error) {
-                        console.log(error)
-                    }
+                  try {
+                    // Grab desired year
+                    selectedYear = parseInt(e.target.value)
+                    // update the map
+                    changeSightingPreference()
+                  } catch (error) {
+                    console.log(error)
+                  }
                 })
 
                 // Listener function to monitor selected option for MONTH
                 document.getElementById('month-slider').addEventListener('input', (e) => {
-                    try {
-                        // Grab desired month
-                        selectedMonth = parseInt(e.target.value)
-                        // update the map
-                        changeSightingPreference()
-                    } catch (error) {
-                        console.log(error)
-                    }
+                  try {
+                    // Grab desired month
+                    selectedMonth = parseInt(e.target.value)
+                    // update the map
+                    changeSightingPreference()
+                  } catch (error) {
+                    console.log(error)
+                  }
                 })
+              }
 
             })
 
