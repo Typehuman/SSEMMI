@@ -82,7 +82,7 @@ export const dbService = async () => {
 // Retreive all entries in the db
 export const dbGetAll = (unauth = false) => {
   if (unauth) {
-    const lastWeek = Date.now() - (60 * 60 * 24 * 7 * 72 * 1000)
+    const lastWeek = Date.now() - (60 * 60 * 24 * 7 * 4 * 1000)
     return db.query((doc) => {
       if (dayjs(doc.created.substr(0, 10).split(' ')[0], ['YYYY-MM-DD', 'MM/DD/YY']).isSameOrAfter(dayjs(lastWeek))) {
         return doc

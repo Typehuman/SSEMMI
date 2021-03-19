@@ -28,7 +28,10 @@
 
 <script>
 import mapboxgl from 'mapbox-gl';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+dayjs.extend(customParseFormat)
+
 
 export default {
     name: 'Map',
@@ -96,15 +99,23 @@ export default {
                 'December'
             ]
 
+            const isHome = (this.$route.path === '/home')
             // On load event
             map.on('load', function() {
               const today = new Date();
 
                 // Initialise default value for year and month
                 let selectedYear = today.getFullYear()
-                let selectedMonth = today.getMonth()
+                let selectedMonth = today.getMonth() + 1
 
-                // Set layer to display sightings
+              // Set the defaults
+              // update text in the UI
+              if (!isHome) {
+                document.getElementById('active-date').innerText = months[selectedMonth] + " " + selectedYear
+                document.getElementById('year-list').value = selectedYear
+                document.getElementById('month-slider').value = selectedMonth
+              }
+              // Set layer to display sightings
                 map.addLayer({
                     id: 'ssemmi-map-layer',
                     type: 'circle',
@@ -156,29 +167,31 @@ export default {
                     document.getElementById('active-date').innerText = months[selectedMonth]+ " " +selectedYear
                 }
 
+              if (!isHome) {
                 // Listener function to monitor selected option for YEAR
                 document.getElementById('year-list').addEventListener('change', (e) => {
-                    try {
-                        // Grab desired year
-                        selectedYear = parseInt(e.target.value)
-                        // update the map
-                        changeSightingPreference()
-                    } catch (error) {
-                        console.log(error)
-                    }
+                  try {
+                    // Grab desired year
+                    selectedYear = parseInt(e.target.value)
+                    // update the map
+                    changeSightingPreference()
+                  } catch (error) {
+                    console.log(error)
+                  }
                 })
 
                 // Listener function to monitor selected option for MONTH
                 document.getElementById('month-slider').addEventListener('input', (e) => {
-                    try {
-                        // Grab desired month
-                        selectedMonth = parseInt(e.target.value)
-                        // update the map
-                        changeSightingPreference()
-                    } catch (error) {
-                        console.log(error)
-                    }
+                  try {
+                    // Grab desired month
+                    selectedMonth = parseInt(e.target.value)
+                    // update the map
+                    changeSightingPreference()
+                  } catch (error) {
+                    console.log(error)
+                  }
                 })
+              }
 
             })
 
@@ -222,14 +235,14 @@ export default {
                         let filtered_long = (isNaN(value.longitude)) ? 1 : value.longitude
                         let filtered_lat = (isNaN(value.latitude)) ? 1 : value.latitude
                         let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
-                        let filtered_date = moment(new Date('2011-01-01 20:00:00'))
+                        let filtered_date = dayjs('2011-01-01 20:00:00')
                         let f_month = 1
                         let f_year = 2011
 
                         if(filtered_date.isValid()) {
-                            filtered_date = moment(new Date(value.created))
-                            f_month = filtered_date.get('month') + 1
-                            f_year = filtered_date.get('year')
+                            filtered_date = dayjs(value.created.substr(0, 10).split(' ')[0], ['YYYY-MM-DD', 'MM/DD/YY'])
+                            f_month = filtered_date.month() + 1
+                            f_year = filtered_date.year()
                         }
 
                         const sightingEntry = {
