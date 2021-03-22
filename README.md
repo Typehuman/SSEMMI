@@ -2,6 +2,7 @@
 This is the public repository for the SSEMMI project: A decentralised and communitarian project aiming at pooling citizen science data in support of whale and environmental observations
 
 <br>
+
 ## Installation and running locally
   
 
@@ -45,6 +46,7 @@ This will start the front-end build and serving and a localhost port will be gen
 
 
 <br>
+
 ## API
 Below you can find the different ways you can interact and contribute to the data
 in SSEMMI. Note that some functionalities are only availabe to use if you have the
