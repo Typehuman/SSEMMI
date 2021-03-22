@@ -2,12 +2,59 @@
 This is the public repository for the SSEMMI project: A decentralised and communitarian project aiming at pooling citizen science data in support of whale and environmental observations
 
 
+## Installation and running locally
+  
+
+```
+
+$ npm install
+
+```
+
+Install all dependencies and packages of the backend
+
+```
+
+$ cd src/client && npm install
+
+```
+
+Install all dependencies and packages of the front-end
+
+Once dependencies of both "ends" have been installed you can run test the application on a local server by doing the following:
+
+```
+
+$ npm run start
+
+or
+
+$ npm run dev
+
+```
+
+Use this within the main directory to start the backend activity of the server as well as the database. Note that if you were to use "npm run dev" it triggers a hotfix or a live reload if changes were to be made to the code.
+
+```
+
+$ cd src/client && npm run serve
+
+```
+
+This will start the front-end build and serving and a localhost port will be generated for local development use. Note that the "cd src/client" script is only used if you are in the main directory.
+
+
+
 ## API
 Below you can find the different ways you can interact and contribute to the data
 in SSEMMI. Note that some functionalities are only availabe to use if you have the
 appropriate credentials.
 
+
+
+
 # orcasound-api v0.0.0
+
 
 
 
