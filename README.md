@@ -1,7 +1,7 @@
 # SSEMMI
 This is the public repository for the SSEMMI project: A decentralised and communitarian project aiming at pooling citizen science data in support of whale and environmental observations
 
-
+<br>
 ## Installation and running locally
   
 
@@ -44,7 +44,7 @@ $ cd src/client && npm run serve
 This will start the front-end build and serving and a localhost port will be generated for local development use. Note that the "cd src/client" script is only used if you are in the main directory.
 
 
-
+<br>
 ## API
 Below you can find the different ways you can interact and contribute to the data
 in SSEMMI. Note that some functionalities are only availabe to use if you have the
