@@ -24,14 +24,18 @@ currentDate = String(currentDate)
 
 // Formatting on current date for API parameter
 var currentDayFormat = `${yyyy}-${mm}-${dd}`
-
 // Current day format to display sightings since the current year
 export const conserveApi = `https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=${currentDayFormat}&species=Orcinus%20orca`
 
+const conHistory = 'https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=2020-01-01&species=Orcinus%20orca'
+
 // Retreive data from the URL
-export const loadApi = async (api) => {
+export const loadApi = async (api, loadHistory = false) => {
   // Initialise the user data to be a bot designed for spotter CRON jobs
   const userBot = await User.findById(process.env.SPOTTER_BOT_ID)
+  if (loadHistory) {
+    api = conHistory
+  }
 
   // Request connection to the API
   request(api, async (err, resp, body) => {

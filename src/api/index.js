@@ -62,14 +62,14 @@ router.get('/apiv1/import',
   token({ required: true, roles: ['admin'] }),
   async (req, res, next) => {
     try {
-      await loadApi(conserveApi)
+      await loadApi(conserveApi, true)
       // GOOGLE SHEETS DATA LOAD
       await omLoadSpreadsheet()
       await Promise.all(setTimeout(async () => {
         // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
         // as Google has a maximum request calls with the same API.
         await csLoadSpreadsheet()
-      }, 5000))
+      }, 10000))
     } catch (e) {
       console.error(`There was an error loading the data ${e}`)
       res.sendStatus(500)
@@ -87,13 +87,13 @@ cron.schedule('0 23 * * * ', () => {
 })
 
 // CRON job to pull from Orca Map google spreadsheet every Sunday at 1AM
-cron.schedule('* 1 * * Sunday', () => {
+cron.schedule('* 22 * * *', () => {
   console.log('Preparing scheduled load of ORCA MAP....................')
   omLoadSpreadsheet()
 })
 
 // CRON job to pull from Citizen Science google spreadsheet every Sunday at 3AM
-cron.schedule('* 3 * * Sunday', () => {
+cron.schedule('* 21 * * *', () => {
   console.log('Preparing scheduled load of CITIZEN SCIENCE.............')
   csLoadSpreadsheet()
 })
