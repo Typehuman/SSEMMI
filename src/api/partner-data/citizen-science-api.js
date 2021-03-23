@@ -1,6 +1,6 @@
-import { dbPost } from '../../services/orbitdb'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import User, { schema } from '../user/model'
+import { checkDb } from './utils'
 
 /**
  *----- CITIZEN SCIENCE GOOGLE SHEET DATA -> DB (LOADING METHODS) -----
@@ -75,7 +75,7 @@ export const csLoadSpreadsheet = async () => {
     const sheetRows = await sheet.getRows({ offset: 0 })
 
     // Map all row values from current workbook as JSON payload
-    await Promise.all(sheetRows.map( async (entry, index) => {
+    await Promise.all(sheetRows.map(async (entry, index) => {
       try {
         console.log('Adding data from CITIZEN SCIENCE documents to the DB....')
 
@@ -85,16 +85,9 @@ export const csLoadSpreadsheet = async () => {
         // Map Google sheets data to fit SSEMMI DB fields and formatting
         const entryFormatted = ssemmiFormatting(entry, index)
 
-        // Add data into the decentralised database
-        await dbPost(entryFormatted, userBot)
-
-        console.log(`Entry count: ${count}\n`)
-
-        // Display success alert of entry added to the db
-        console.log(entryFormatted)
-        console.log(`SSEMMI ID ${entryFormatted.ssemmi_id} successfully added to the db \n`)
+        await checkDb(entryFormatted, userBot)
       } catch (error) {
-        console.log(error)
+        console.log('There was an error adding to the db ', error)
       }
     }))
 

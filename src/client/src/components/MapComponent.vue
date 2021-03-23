@@ -1,3 +1,4 @@
+<script src="../../../services/orbitdb/index.js"></script>
 <template>
     <div>
         <div id='mapContainer'></div>

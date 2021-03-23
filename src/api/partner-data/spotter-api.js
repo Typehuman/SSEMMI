@@ -1,5 +1,5 @@
 import request from 'request'
-import { dbPost } from '../../services/orbitdb'
+import { checkDb } from './utils'
 import User, { schema } from '../user/model'
 
 /**
@@ -67,15 +67,13 @@ export const loadApi = async (api) => {
         try {
           // Add data into SSEMMI decentralised database
           console.log(`Adding data from date ${currentDayFormat} to the DB....`)
-          await dbPost(source_input, userBot)
           // Tracks the entry count to log/trace
           count += 1
           console.log(`Entry count: ${count}\n`)
           // Display data from entry load
-          console.log(source_input)
-          console.log(`SSEMMI ID ${source_input.ssemmi_id} successfully added to the db \n`)
+          await checkDb(source_input, userBot)
         } catch (error) {
-          console.log(error)
+          console.log('There was an error adding to the db ', error)
         }
       }
       // Show the number of entries of the day from the Spotter API
