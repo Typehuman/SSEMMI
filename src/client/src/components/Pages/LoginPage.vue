@@ -39,7 +39,7 @@ export default {
       this.$store.dispatch('auth_request', this.loginData)
       .then( () => {
         // Redirect to page upon login --admins will be redirected to register
-        this.$router.replace({name: 'Dashboard'})
+        this.$router.replace({name: 'DataExplorer'})
       })
     }
   }

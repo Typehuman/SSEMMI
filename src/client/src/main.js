@@ -63,7 +63,7 @@ const router = new Router({
         let isLegitUser = store.state.token != null
 
         if(isAuthenticated && isLegitUser && hasToken) {
-          next('/dashboard')
+          next('/data-explorer')
         } else {
           next()
         }
@@ -89,7 +89,7 @@ const router = new Router({
         let isLegitUser = store.state.token != null
 
         if(isAuthenticated && isLegitUser && hasToken) {
-          next('/dashboard')
+          next('/data-explorer')
         } else {
           next()
         }
@@ -138,7 +138,7 @@ const router = new Router({
           next('/login')
         }
         else if(!isAdmin) {
-          next('/dashboard')
+          next('/data-explorer')
         }
         else {
           next()
