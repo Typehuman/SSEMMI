@@ -34,7 +34,8 @@ $ npm run dev
 
 ```
 
-Use this within the main directory to start the backend activity of the server as well as the database. Note that if you were to use "npm run dev" it triggers a hotfix or a live reload if changes were to be made to the code.
+Use this within the main directory to start the backend activity of the server as well as the database. 
+ > Note that if you were to use "npm run dev" it triggers a hotfix or a live reload if changes were to be made to the code.
 
 ```
 
@@ -42,7 +43,8 @@ $ cd src/client && npm run serve
 
 ```
 
-This will start the front-end build and serving and a localhost port will be generated for local development use. Note that the "cd src/client" script is only used if you are in the main directory.
+This will start the front-end build and serving and a localhost port will be generated for local development use. 
+ > Note that the "cd src/client" script is only used if you are in the main directory.
 
 
 <br>
@@ -85,7 +87,7 @@ appropriate credentials.
 	- [Update password](#update-password)
 	- [Update user](#update-user)
 	
-
+- [Direct Interactions With OrbitDB](#direct-interactions-with-orbitdb)
 
 # Auth
 
@@ -328,3 +330,10 @@ appropriate credentials.
 | name			| String			| **optional** <p>User's name.</p>							|
 | picture			| String			| **optional** <p>User's picture.</p>							|
 | isApproved			| String			| **optional** <p>if the user is approved by admin.</p>							|
+
+
+# Direct Interactions With OrbitDB
+
+The following is a link to the github repository of Orbit DB. There you can find the API documentation to the docs type Orbit DB database which is used with SSEMMI, along with the full documentation of the database.
+
+https://github.com/orbitdb/orbit-db/blob/master/API.md#orbitdbdocsnameaddress-options
