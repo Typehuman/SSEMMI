@@ -17,11 +17,16 @@
             <div class='slider-class' id='sliderbar'>
                 <p>Sightings: <label id='active-date'>January 2020</label></p>
                 <input id='month-slider' class='widget-row' type="range" min="1" max="12" step="1" value="0" />
+                <!-- Year filter -->
                 <label for="year-list">Choose a year: </label>
                 <select id="year-list">
                     <option value="2020" selected>2020</option>
                     <option value="2021">2021</option>
                 </select>
+                <br />
+                <!-- Last 14 days filter -->
+                <input type="checkbox" id="last-fourteen-days-check" name="last-fourteen-days-check" value="Last 14 Days">
+                <label for="last-fourteen-days-check">Show last 14 days</label><br>
             </div>
         </div>
     </div>
@@ -106,13 +111,14 @@ export default {
               const today = new Date();
 
                 // Initialise default value for year and month
+                let selectedDay = today.getDate()
                 let selectedYear = today.getFullYear()
                 let selectedMonth = today.getMonth() + 1
 
               // Set the defaults
               // update text in the UI
               if (!isHome) {
-                document.getElementById('active-date').innerText = months[selectedMonth] + " " + selectedYear
+                document.getElementById('active-date').innerText = selectedDay + " "+ months[selectedMonth] + " " + selectedYear
                 document.getElementById('year-list').value = selectedYear
                 document.getElementById('month-slider').value = selectedMonth
               }
@@ -149,6 +155,7 @@ export default {
                         },
                     filter: [
                         'all',
+                        ['==', ['to-number', ['get', 'day']], selectedDay],
                         ['==', ['to-number', ['get', 'month']], selectedMonth],
                         ['==', ['to-number', ['get', 'year']], selectedYear]
                     ]
@@ -168,7 +175,45 @@ export default {
                     document.getElementById('active-date').innerText = months[selectedMonth]+ " " +selectedYear
                 }
 
+                let showLastFourteen = () => {
+                    // Get current day and last two weeks date as epoch
+                    let currentDay = today.getTime()
+                    let lastfourteen = new Date(dayjs().subtract(14, "day")).getTime()
+
+                    // Filter for date range of current day and last fourteen days
+                    let preferenceFilter = [
+                        "all",     
+                        ["<=", ['get', 'epoch_date'], currentDay],
+                        [">=", ['get', 'epoch_date'], lastfourteen]
+                    ]
+
+                    // update the map
+                    map.setFilter('ssemmi-map-layer', preferenceFilter)
+
+                    // update text in the UI
+                    document.getElementById('active-date').innerText = "Last 14 days"
+                }
+
               if (!isHome) {
+                // Filter to show data within the last 14 days from current date
+                let lastFourteenCheckbox = document.getElementById('last-fourteen-days-check')
+                lastFourteenCheckbox.addEventListener('change', (e) => {
+                  try {
+                    if (lastFourteenCheckbox.checked) {
+                        // Show data from last fourteen days
+                        showLastFourteen()
+                    } else {
+                        // Reset to current day filter
+                        selectedDay = today.getDate()
+                        selectedYear = today.getFullYear()
+                        selectedMonth = today.getMonth() + 1
+                        changeSightingPreference()
+                    }
+                  } catch (error) {
+                    console.log(error)
+                  }
+                })
+
                 // Listener function to monitor selected option for YEAR
                 document.getElementById('year-list').addEventListener('change', (e) => {
                   try {
@@ -237,15 +282,19 @@ export default {
                         let filtered_lat = (isNaN(value.latitude)) ? 1 : value.latitude
                         let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
                         let filtered_date = dayjs('2011-01-01 20:00:00')
+                        let f_day = 1
                         let f_month = 1
                         let f_year = 2011
+                        let f_epoch_date = new Date().getTime()
 
                         if(filtered_date.isValid()) {
                             filtered_date = dayjs(value.created.substr(0, 10).split(' ')[0], ['YYYY-MM-DD', 'MM/DD/YY'])
+                            f_day = filtered_date.date()
                             f_month = filtered_date.month() + 1
                             f_year = filtered_date.year()
+                            f_epoch_date = new Date(filtered_date).getTime()
                         }
-
+                        
                         const sightingEntry = {
                             "type": "Feature",
                             "geometry": {
@@ -256,8 +305,10 @@ export default {
                                 "entity": value.data_source_entity,
                                 "ssemmi_id": value.ssemmi_id,
                                 "created": value.created,
+                                "day": f_day,
                                 "month": f_month,
                                 "year": f_year,
+                                "epoch_date": f_epoch_date,
                                 "no_sighted": filtered_sightings,
                                 "witness": value.data_source_witness,
                                 "comments": value.data_source_comments,
