@@ -2,7 +2,7 @@
 <template>
     <div>
         <div id='mapContainer'></div>
-        <div id='widget'>
+        <div id='widget' v-if="isAuth">
           <div v-if="isAuth && getParent === 'Visualiser'">
             <h2>Sightings</h2>
             <div class='widget-row colors'></div>
@@ -289,19 +289,22 @@ export default {
                     ['==', ['to-number', ['get', 'year']], selectedYear]
                   ]
                 })
-                // Listener function to monitor selected option for DAY
-                document.getElementById('day-slider').addEventListener('change', (e) => {
-                  try {
-                    // Grab desired date
-                    selectedDay = dayjs(parseInt(e.target.value)).date()
-                    selectedMonth = dayjs(parseInt(e.target.value)).month() + 1
-                    selectedYear = dayjs(parseInt(e.target.value)).year()
-                    // update the map
-                    changeSightingPreference()
-                  } catch (error) {
-                    console.log(error)
-                  }
-                })
+
+                if (currentPage === 'Visualiser') {
+                  // Listener function to monitor selected option for DAY
+                  document.getElementById('day-slider').addEventListener('change', (e) => {
+                    try {
+                      // Grab desired date
+                      selectedDay = dayjs(parseInt(e.target.value)).date()
+                      selectedMonth = dayjs(parseInt(e.target.value)).month() + 1
+                      selectedYear = dayjs(parseInt(e.target.value)).year()
+                      // update the map
+                      changeSightingPreference()
+                    } catch (error) {
+                      console.log(error)
+                    }
+                  })
+                }
               }
               // Action to change the sightings filter based on preference
                 let changeSightingPreference = () => {
