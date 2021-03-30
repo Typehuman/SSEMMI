@@ -2,7 +2,8 @@
 <template>
     <div>
         <div id='mapContainer'></div>
-        <div id='widget' v-if="isAuth">
+        <div id='widget'>
+          <div v-if="isAuth && getParent === 'Visualiser'">
             <h2>Sightings</h2>
             <div class='widget-row colors'></div>
             <div class='widget-row labels'>
@@ -23,6 +24,20 @@
                     <option value="2021">2021</option>
                 </select>
             </div>
+          </div>
+          <div v-else-if="isAuth && getParent === 'Heatmap'">
+            <h2>Historical Sightings</h2>
+            <br>
+            <div class='slider-class' id='sliderbar'>
+              <p>Sightings: <label id='active-date'>January-March 2020</label></p>
+              <input id='month-slider' class='widget-row' type="range" min="3" max="12" step="1" value="0" />
+              <label for="year-list">Choose a year: </label>
+              <select id="year-list">
+                <option value="2020" selected>2020</option>
+                <option value="2021">2021</option>
+              </select>
+            </div>
+          </div>
         </div>
     </div>
 </template>
@@ -100,6 +115,7 @@ export default {
                 'December'
             ]
 
+            const currentPage = this.getParent;
             const isHome = (this.$route.path === '/home')
             // On load event
             map.on('load', function() {
@@ -112,151 +128,163 @@ export default {
               // Set the defaults
               // update text in the UI
               if (!isHome) {
-                document.getElementById('active-date').innerText = months[selectedMonth] + " " + selectedYear
+                const initText = (currentPage === 'Heatmap' ? months[selectedMonth-2]+ "-" + months[selectedMonth] + " " + selectedYear : months[selectedMonth]+ " " +selectedYear)
+                document.getElementById('active-date').innerText = initText
                 document.getElementById('year-list').value = selectedYear
                 document.getElementById('month-slider').value = selectedMonth
               }
-
-              map.addLayer({
-                id: 'ssemmi-heat-layer',
-                type: 'heatmap',
-                source: {
-                  type: 'geojson',
-                  data: geoData
-                },
-                minZoom: 0,
-                paint: {
-                  // increase weight as diameter breast height increases
-                  'heatmap-weight': [
-                  'interpolate',
-                  ['linear'],
-                  ['get', 'no_sighted'],
-                  1,
-                  2,
-                  3,
-                  4
-                  ],
-                  // Increase the heatmap color weight weight by zoom level
-                  // heatmap-intensity is a multiplier on top of heatmap-weight
-                  'heatmap-intensity': [
-                    'interpolate',
-                    ['linear'],
-                    ['zoom'],
-                    3,
-                    1,
-                    4,
-                    3
-                  ],
-                  // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-                  // Begin color ramp at 0-stop with a 0-transparancy color
-                  // to create a blur-like effect.
-                  'heatmap-color': [
-                  'interpolate',
-                  ['linear'],
-                  ['heatmap-density'],
-                  0,
-                  'rgba(33,102,172,.1)',
-                  0.2,
-                  'rgb(103,169,207)',
-                  0.4,
-                  'rgb(209,229,240)',
-                  0.6,
-                  'rgb(253,219,199)',
-                  0.8,
-                  'rgb(233,156,119)',
-                  1,
-                  'rgb(227,67,86)'
-                ],
-                  // Adjust the heatmap radius by zoom level
-                  'heatmap-radius': [
-                  'interpolate',
-                  ['linear'],
-                  ['zoom'],
-                  10,
-                  20,
-                  30,
-                  50
-                ],
-                  // Transition from heatmap to circle layer by zoom level
-                'heatmap-opacity': [
-                'interpolate',
-                ['linear'],
-                ['zoom'],
-                6,
-                1,
-                9,
-                0
-              ]
-            },
+              if (currentPage === 'Heatmap') {
+                map.addLayer({
+                    id: 'ssemmi-heat-layer',
+                    type: 'heatmap',
+                    source: {
+                      type: 'geojson',
+                      data: geoData
+                    },
+                    minZoom: 0,
+                    paint: {
+                      // increase weight as diameter breast height increases
+                      'heatmap-weight': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'no_sighted'],
+                        1,
+                        2,
+                        3,
+                        4
+                      ],
+                      // Increase the heatmap color weight weight by zoom level
+                      // heatmap-intensity is a multiplier on top of heatmap-weight
+                      'heatmap-intensity': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        3,
+                        1,
+                        4,
+                        3
+                      ],
+                      // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+                      // Begin color ramp at 0-stop with a 0-transparancy color
+                      // to create a blur-like effect.
+                      'heatmap-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['heatmap-density'],
+                        0,
+                        'rgba(33,102,172,.1)',
+                        0.2,
+                        'rgb(103,169,207)',
+                        0.4,
+                        'rgb(209,229,240)',
+                        0.6,
+                        'rgb(253,219,199)',
+                        0.8,
+                        'rgb(233,156,119)',
+                        1,
+                        'rgb(227,67,86)'
+                      ],
+                      // Adjust the heatmap radius by zoom level
+                      'heatmap-radius': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        10,
+                        20,
+                        30,
+                        50
+                      ],
+                      // Transition from heatmap to circle layer by zoom level
+                      'heatmap-opacity': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        6,
+                        1,
+                        9,
+                        0
+                      ]
+                    },
+                    filter: [
+                      'all',
+                      ['<=', ['to-number', ['get', 'month']], selectedMonth],
+                      ['>=', ['to-number', ['get', 'month']], ['-', selectedMonth, 2]],
+                      ['==', ['to-number', ['get', 'year']], selectedYear]
+                    ]
+                  }
+                )
+              } else {
+                // Set layer to display sightings
+                map.addLayer({
+                  id: 'ssemmi-map-layer',
+                  type: 'circle',
+                  source: {
+                    type: 'geojson',
+                    data: geoData
+                  },
+                  //minzoom: 14,
+                  paint: {
+                    // Set size of circle pinpoint based on how large the sighting is
+                    'circle-radius': [
+                      'interpolate',
+                      ['linear'],
+                      ['to-number', ['get', 'no_sighted']],
+                      0, 4,
+                      5, 12
+                    ],
+                    // Set colour of circle pinpoint based of number of sightings
+                    'circle-color': [
+                      'interpolate',
+                      ['linear'],
+                      ['to-number', ['get', 'no_sighted']],
+                      0, '#2DC4B2',
+                      1, '#3BB3C3',
+                      2, '#669EC4',
+                      3, '#8B88B6',
+                      4, '#A2719B',
+                      5, '#aa5e79'
+                    ],
+                    'circle-opacity': 0.9
+                  },
                   filter: [
                     'all',
-                    ['<=', ['to-number', ['get', 'month']], ['+', selectedMonth, 3]],
-                    ['>=', ['to-number', ['get', 'month']], selectedMonth],
+                    ['==', ['to-number', ['get', 'month']], selectedMonth],
                     ['==', ['to-number', ['get', 'year']], selectedYear]
                   ]
-            }
-            )
+                })
 
-              // Set layer to display sightings
-              map.addLayer({
-                id: 'ssemmi-map-layer',
-                type: 'circle',
-                source: {
-                  type: 'geojson',
-                  data: geoData
-                },
-                //minzoom: 14,
-                paint: {
-                  // Set size of circle pinpoint based on how large the sighting is
-                  'circle-radius': [
-                    'interpolate',
-                    ['linear'],
-                    ['to-number', ['get', 'no_sighted']],
-                    0, 4,
-                    5, 12
-                  ],
-                  // Set colour of circle pinpoint based of number of sightings
-                  'circle-color': [
-                    'interpolate',
-                    ['linear'],
-                    ['to-number', ['get', 'no_sighted']],
-                    0, '#2DC4B2',
-                    1, '#3BB3C3',
-                    2, '#669EC4',
-                    3, '#8B88B6',
-                    4, '#A2719B',
-                    5, '#aa5e79'
-                  ],
-                  'circle-opacity': 0.9
-                },
-                filter: [
-                  'all',
-                  ['==', ['to-number', ['get', 'month']], selectedMonth],
-                  ['==', ['to-number', ['get', 'year']], selectedYear]
-                ]
-              })
-
-
+              }
               // Action to change the sightings filter based on preference
                 let changeSightingPreference = () => {
-                    let preferenceFilterCircle = [
-                        'all',
-                        ['==', ['to-number', ['get', 'month']], selectedMonth],
-                        ['==', ['to-number', ['get', 'year']], selectedYear]
-                    ]
+                    let preferenceFilter
+                    let mapLayer
+                    let innerText
 
-                    let preferenceFilterHeat =[
-                      'all',
-                        ['<=', ['to-number', ['get', 'month']], ['+', selectedMonth, 1]],
-                        ['>=', ['to-number', ['get', 'month']], ['-', selectedMonth, 1]],
-                        ['==', ['to-number', ['get', 'year']], selectedYear]
-                    ]
+                   if (currentPage === 'Heatmap') {
+                     preferenceFilter =[
+                       'all',
+                       ['<=', ['to-number', ['get', 'month']], selectedMonth],
+                       ['>=', ['to-number', ['get', 'month']], ['-', selectedMonth, 2]],
+                       ['==', ['to-number', ['get', 'year']], selectedYear]
+                       ]
+                     mapLayer = 'ssemmi-heat-layer'
+                     innerText = months[selectedMonth-2]+ "-" + months[selectedMonth] + " " + selectedYear
+
+                   } else {
+                     preferenceFilter = [
+                       'all',
+                       ['==', ['to-number', ['get', 'month']], selectedMonth],
+                       ['==', ['to-number', ['get', 'year']], selectedYear]
+                     ]
+
+                     mapLayer = 'ssemmi-map-layer'
+                     innerText = months[selectedMonth]+ " " +selectedYear
+                   }
                     // update the map
-                    map.setFilter('ssemmi-map-layer', preferenceFilterCircle)
-                    map.setFilter('ssemmi-heat-layer', preferenceFilterHeat)
+                    map.setFilter(mapLayer, preferenceFilter)
 
                     // update text in the UI
-                    document.getElementById('active-date').innerText = months[selectedMonth]+ " " +selectedYear
+                    document.getElementById('active-date').innerText =innerText
                 }
 
               if (!isHome) {
@@ -284,6 +312,7 @@ export default {
                   }
                 })
               }
+
 
             })
 
@@ -366,6 +395,9 @@ export default {
         isAuth() {
             return this.$store.state.isAuthenticated
         },
+        getParent() {
+          return this.$parent.$options.name
+        }
     }
 }
 </script>

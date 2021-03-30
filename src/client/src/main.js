@@ -8,6 +8,7 @@ import Dashboard from './components/Pages/DashboardPage'
 import Register from './components/Pages/RegisterPage'
 import Approvals from './components/Pages/ApprovalsPage'
 import Visualiser from './components/Pages/VisualiserPage'
+import Heatmap from './components/Pages/HeatmapPage'
 import About from './components/Pages/AboutPage'
 import Home from './components/Pages/HomePage'
 import axios from 'axios'
@@ -150,6 +151,12 @@ const router = new Router({
       path: '/data-explorer',
       name: 'DataExplorer',
       component: Visualiser
+    },
+    {
+      // Visualiser page to view data visualisations
+      path: '/historical',
+      name: 'Historical',
+      component: Heatmap
     }
   ]
 })
