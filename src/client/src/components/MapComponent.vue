@@ -15,18 +15,9 @@
             </div>
             <br>
             <div class='slider-class' id='sliderbar'>
-                <p>Sightings: <label id='active-date'>January 2020</label></p>
-                <input id='month-slider' class='widget-row' type="range" min="1" max="12" step="1" value="0" />
-                <!-- Year filter -->
-                <label for="year-list">Choose a year: </label>
-                <select id="year-list">
-                    <option value="2020" selected>2020</option>
-                    <option value="2021">2021</option>
-                </select>
-                <br />
-                <!-- Last 14 days filter -->
-                <input type="checkbox" id="last-fourteen-days-check" name="last-fourteen-days-check" value="Last 14 Days">
-                <label for="last-fourteen-days-check">Show last 14 days</label><br>
+                <p><label id='active-date'>Loading date...</label></p>
+                <!-- Last 14 days slider -->
+                <input id='day-slider' class='widget-row' type="range" min="1" max="14" step="1" value="14" />
             </div>
         </div>
     </div>
@@ -111,16 +102,26 @@ export default {
               const today = new Date();
 
                 // Initialise default value for year and month
-                let selectedDay = today.getDate()
                 let selectedYear = today.getFullYear()
                 let selectedMonth = today.getMonth() + 1
+                let selectedDay = today.getDate()
 
               // Set the defaults
               // update text in the UI
               if (!isHome) {
-                document.getElementById('active-date').innerText = selectedDay + " "+ months[selectedMonth] + " " + selectedYear
-                document.getElementById('year-list').value = selectedYear
-                document.getElementById('month-slider').value = selectedMonth
+                document.getElementById('active-date').innerText = "Sightings displayed for " +selectedDay + " "+ months[selectedMonth] + " " + selectedYear
+
+                // Initialise current date in slider
+                let daySlider = document.getElementById('day-slider')
+                let daySliderEpoch = today.getTime()
+
+                // Get current day and last two weeks date
+                let lastFourteenEpoch = new Date(dayjs(today).subtract(14, "day")).getTime()
+
+                // Set maximun and minimum range of slider as date and 14 days past, respectively.
+                daySlider.max = daySliderEpoch
+                daySlider.min = lastFourteenEpoch
+                daySlider.value = daySliderEpoch
               }
               // Set layer to display sightings
                 map.addLayer({
@@ -163,8 +164,10 @@ export default {
 
                 // Action to change the sightings filter based on preference
                 let changeSightingPreference = () => {
+                    // Set new filter preferences
                     let preferenceFilter = [
                         'all',
+                        ['==', ['to-number', ['get', 'day']], selectedDay],
                         ['==', ['to-number', ['get', 'month']], selectedMonth],
                         ['==', ['to-number', ['get', 'year']], selectedYear]
                     ]
@@ -172,65 +175,18 @@ export default {
                     map.setFilter('ssemmi-map-layer', preferenceFilter)
 
                     // update text in the UI
-                    document.getElementById('active-date').innerText = months[selectedMonth]+ " " +selectedYear
-                }
-
-                let showLastFourteen = () => {
-                    // Get current day and last two weeks date as epoch
-                    let currentDay = today.getTime()
-                    let lastfourteen = new Date(dayjs().subtract(14, "day")).getTime()
-
-                    // Filter for date range of current day and last fourteen days
-                    let preferenceFilter = [
-                        "all",     
-                        ["<=", ['get', 'epoch_date'], currentDay],
-                        [">=", ['get', 'epoch_date'], lastfourteen]
-                    ]
-
-                    // update the map
-                    map.setFilter('ssemmi-map-layer', preferenceFilter)
-
-                    // update text in the UI
-                    document.getElementById('active-date').innerText = "Last 14 days"
+                    document.getElementById('active-date').innerText = "Sightings displayed for " +selectedDay+ " " +months[selectedMonth]+ " " +selectedYear
                 }
 
               if (!isHome) {
-                // Filter to show data within the last 14 days from current date
-                let lastFourteenCheckbox = document.getElementById('last-fourteen-days-check')
-                lastFourteenCheckbox.addEventListener('change', (e) => {
-                  try {
-                    if (lastFourteenCheckbox.checked) {
-                        // Show data from last fourteen days
-                        showLastFourteen()
-                    } else {
-                        // Reset to current day filter
-                        selectedDay = today.getDate()
-                        selectedYear = today.getFullYear()
-                        selectedMonth = today.getMonth() + 1
-                        changeSightingPreference()
-                    }
-                  } catch (error) {
-                    console.log(error)
-                  }
-                })
 
-                // Listener function to monitor selected option for YEAR
-                document.getElementById('year-list').addEventListener('change', (e) => {
+                // Listener function to monitor selected option for DAY
+                document.getElementById('day-slider').addEventListener('change', (e) => {
                   try {
-                    // Grab desired year
-                    selectedYear = parseInt(e.target.value)
-                    // update the map
-                    changeSightingPreference()
-                  } catch (error) {
-                    console.log(error)
-                  }
-                })
-
-                // Listener function to monitor selected option for MONTH
-                document.getElementById('month-slider').addEventListener('input', (e) => {
-                  try {
-                    // Grab desired month
-                    selectedMonth = parseInt(e.target.value)
+                    // Grab desired date
+                    selectedDay = dayjs(parseInt(e.target.value)).date()
+                    selectedMonth = dayjs(parseInt(e.target.value)).month() + 1
+                    selectedYear = dayjs(parseInt(e.target.value)).year()
                     // update the map
                     changeSightingPreference()
                   } catch (error) {
