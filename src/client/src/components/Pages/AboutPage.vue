@@ -22,16 +22,24 @@
                 laborum.
             </p>
         </div>
-        <mdb-btn outline="black" id="about-btn-contact">Contact Us</mdb-btn>
+        <div id="about-links">
+            <mdb-row>
+            <mdb-btn outline="black" id="about-contact-btn">Contact Us</mdb-btn>
+            </mdb-row>
+            <mdb-row>
+                <mdb-btn outline="black" id="about-contact-btn"><a href="https://github.com/Typehuman/SSEMMI">Github <i class="fab fa-github"></i></a></mdb-btn>
+            </mdb-row>
+        </div>
     </div>
 </template>
 
 <script>
-import { mdbBtn } from 'mdbvue'
+import { mdbRow, mdbBtn } from 'mdbvue'
 
 export default {
     name: 'About',
     components: {
+        mdbRow,
         mdbBtn
     },
 }
@@ -52,7 +60,17 @@ export default {
     display: inline-table;
 }
 
-#about-contact-btn {
-    float: right;
+#about-links {
+    padding: 5%;
+    margin-left: 5%;
+    display: inline-table;
+}
+
+#about-links .row{
+    display: grid;
+}
+
+#about-contact-btn a {
+    color:black;
 }
 </style>
