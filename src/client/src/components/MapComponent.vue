@@ -16,13 +16,9 @@
             </div>
             <br>
             <div class='slider-class' id='sliderbar'>
-                <p>Sightings: <label id='active-date'>January 2020</label></p>
-                <input id='month-slider' class='widget-row' type="range" min="1" max="12" step="1" value="0" />
-                <label for="year-list">Choose a year: </label>
-                <select id="year-list">
-                    <option value="2020" selected>2020</option>
-                    <option value="2021">2021</option>
-                </select>
+                <p><label id='active-date'>Loading date...</label></p>
+                <!-- Last 14 days slider -->
+                <input id='day-slider' class='widget-row' type="range" min="1" max="14" step="1" value="14" />
             </div>
           </div>
           <div v-else-if="isAuth && getParent === 'Heatmap'">
@@ -124,14 +120,31 @@ export default {
                 // Initialise default value for year and month
                 let selectedYear = today.getFullYear()
                 let selectedMonth = today.getMonth() + 1
+                let selectedDay = today.getDate()
 
               // Set the defaults
               // update text in the UI
               if (!isHome) {
-                const initText = (currentPage === 'Heatmap' ? months[selectedMonth-2]+ "-" + months[selectedMonth] + " " + selectedYear : months[selectedMonth]+ " " +selectedYear)
+                const initText = (currentPage === 'Heatmap' ? months[selectedMonth-2]+ "-" + months[selectedMonth] + " " + selectedYear
+                  : "Sightings displayed for " +selectedDay + " "+ months[selectedMonth] + " " + selectedYear)
                 document.getElementById('active-date').innerText = initText
-                document.getElementById('year-list').value = selectedYear
-                document.getElementById('month-slider').value = selectedMonth
+
+                // Initialise current date in slider
+                if (currentPage === 'Visualiser') {
+                  let daySlider = document.getElementById('day-slider')
+                  let daySliderEpoch = today.getTime()
+
+                  // Get current day and last two weeks date
+                  let lastFourteenEpoch = new Date(dayjs(today).subtract(14, "day")).getTime()
+
+                  // Set maximun and minimum range of slider as date and 14 days past, respectively.
+                  daySlider.max = daySliderEpoch
+                  daySlider.min = lastFourteenEpoch
+                  daySlider.value = daySliderEpoch
+                } else {
+                  document.getElementById('year-list').value = selectedYear
+                  document.getElementById('month-slider').value = selectedMonth
+                }
               }
               if (currentPage === 'Heatmap') {
                 map.addLayer({
@@ -213,6 +226,29 @@ export default {
                     ]
                   }
                 )
+                // Listener function to monitor selected option for YEAR
+                document.getElementById('year-list').addEventListener('change', (e) => {
+                  try {
+                    // Grab desired year
+                    selectedYear = parseInt(e.target.value)
+                    // update the map
+                    changeSightingPreference()
+                  } catch (error) {
+                    console.log(error)
+                  }
+                })
+
+                // Listener function to monitor selected option for MONTH
+                document.getElementById('month-slider').addEventListener('input', (e) => {
+                  try {
+                    // Grab desired month
+                    selectedMonth = parseInt(e.target.value)
+                    // update the map
+                    changeSightingPreference()
+                  } catch (error) {
+                    console.log(error)
+                  }
+                })
               } else {
                 // Set layer to display sightings
                 map.addLayer({
@@ -248,11 +284,24 @@ export default {
                   },
                   filter: [
                     'all',
+                    ['==', ['to-number', ['get', 'day']], selectedDay],
                     ['==', ['to-number', ['get', 'month']], selectedMonth],
                     ['==', ['to-number', ['get', 'year']], selectedYear]
                   ]
                 })
-
+                // Listener function to monitor selected option for DAY
+                document.getElementById('day-slider').addEventListener('change', (e) => {
+                  try {
+                    // Grab desired date
+                    selectedDay = dayjs(parseInt(e.target.value)).date()
+                    selectedMonth = dayjs(parseInt(e.target.value)).month() + 1
+                    selectedYear = dayjs(parseInt(e.target.value)).year()
+                    // update the map
+                    changeSightingPreference()
+                  } catch (error) {
+                    console.log(error)
+                  }
+                })
               }
               // Action to change the sightings filter based on preference
                 let changeSightingPreference = () => {
@@ -261,7 +310,7 @@ export default {
                     let innerText
 
                    if (currentPage === 'Heatmap') {
-                     preferenceFilter =[
+                     preferenceFilter = [
                        'all',
                        ['<=', ['to-number', ['get', 'month']], selectedMonth],
                        ['>=', ['to-number', ['get', 'month']], ['-', selectedMonth, 2]],
@@ -273,46 +322,21 @@ export default {
                    } else {
                      preferenceFilter = [
                        'all',
+                       ['==', ['to-number', ['get', 'day']], selectedDay],
                        ['==', ['to-number', ['get', 'month']], selectedMonth],
                        ['==', ['to-number', ['get', 'year']], selectedYear]
                      ]
 
                      mapLayer = 'ssemmi-map-layer'
-                     innerText = months[selectedMonth]+ " " +selectedYear
+                     innerText = "Sightings displayed for " +selectedDay+ " " +months[selectedMonth]+ " " +selectedYear
                    }
+
                     // update the map
                     map.setFilter(mapLayer, preferenceFilter)
 
                     // update text in the UI
                     document.getElementById('active-date').innerText =innerText
                 }
-
-              if (!isHome) {
-                // Listener function to monitor selected option for YEAR
-                document.getElementById('year-list').addEventListener('change', (e) => {
-                  try {
-                    // Grab desired year
-                    selectedYear = parseInt(e.target.value)
-                    // update the map
-                    changeSightingPreference()
-                  } catch (error) {
-                    console.log(error)
-                  }
-                })
-
-                // Listener function to monitor selected option for MONTH
-                document.getElementById('month-slider').addEventListener('input', (e) => {
-                  try {
-                    // Grab desired month
-                    selectedMonth = parseInt(e.target.value)
-                    // update the map
-                    changeSightingPreference()
-                  } catch (error) {
-                    console.log(error)
-                  }
-                })
-              }
-
 
             })
 
@@ -357,13 +381,17 @@ export default {
                         let filtered_lat = (isNaN(value.latitude)) ? 1 : value.latitude
                         let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
                         let filtered_date = dayjs('2011-01-01 20:00:00')
+                        let f_day = 1
                         let f_month = 1
                         let f_year = 2011
+                        let f_epoch_date = new Date().getTime()
 
                         if(filtered_date.isValid()) {
                             filtered_date = dayjs(value.created.substr(0, 10).split(' ')[0], ['YYYY-MM-DD', 'MM/DD/YY'])
+                            f_day = filtered_date.date()
                             f_month = filtered_date.month() + 1
                             f_year = filtered_date.year()
+                            f_epoch_date = new Date(filtered_date).getTime()
                         }
 
                         const sightingEntry = {
@@ -376,8 +404,10 @@ export default {
                                 "entity": value.data_source_entity,
                                 "ssemmi_id": value.ssemmi_id,
                                 "created": value.created,
+                                "day": f_day,
                                 "month": f_month,
                                 "year": f_year,
+                                "epoch_date": f_epoch_date,
                                 "no_sighted": filtered_sightings,
                                 "witness": value.data_source_witness,
                                 "comments": value.data_source_comments,
