@@ -1,64 +1,4 @@
-# SSEMMI
-This is the public repository for the SSEMMI project: A decentralised and communitarian project aiming at pooling citizen science data in support of whale and environmental observations
-
-<br>
-
-## Installation and running locally
-  
-
-```
-
-$ npm install
-
-```
-
-Install all dependencies and packages of the backend
-
-```
-
-$ cd src/client && npm install
-
-```
-
-Install all dependencies and packages of the front-end
-
-Once dependencies of both "ends" have been installed you can run test the application on a local server by doing the following:
-
-```
-
-$ npm run start
-
-or
-
-$ npm run dev
-
-```
-
-Use this within the main directory to start the backend activity of the server as well as the database. 
- > Note that if you were to use "npm run dev" it triggers a hotfix or a live reload if changes were to be made to the code.
-
-```
-
-$ cd src/client && npm run serve
-
-```
-
-This will start the front-end build and serving and a localhost port will be generated for local development use. 
- > Note that the "cd src/client" script is only used if you are in the main directory.
-
-
-<br>
-
-## API
-Below you can find the different ways you can interact and contribute to the data
-in SSEMMI. Note that some functionalities are only availabe to use if you have the
-appropriate credentials.
-
-
-
-
 # orcasound-api v0.0.0
-
 
 
 
@@ -87,7 +27,7 @@ appropriate credentials.
 	- [Update password](#update-password)
 	- [Update user](#update-user)
 	
-- [Direct Interactions With OrbitDB](#direct-interactions-with-orbitdb)
+
 
 # Auth
 
@@ -332,8 +272,3 @@ appropriate credentials.
 | isApproved			| String			| **optional** <p>if the user is approved by admin.</p>							|
 
 
-# Direct Interactions With OrbitDB
-
-The following is a link to the github repository of Orbit DB. There you can find the API documentation to the docs type Orbit DB database which is used with SSEMMI, along with the full documentation of the database.
-
-https://github.com/orbitdb/orbit-db/blob/master/API.md#orbitdbdocsnameaddress-options
