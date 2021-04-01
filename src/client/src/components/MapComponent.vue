@@ -56,7 +56,11 @@ export default {
     },
     created() {
         // Fetch data from server upon instance creation
-        this.loadSightings()
+        if (this.geoJSONSightings.length === 0) {
+          this.loadSightings()
+        } else {
+          this.mapSightings()
+        }
     },
     mounted() {
         // Mounted to continuously monitor for changes
