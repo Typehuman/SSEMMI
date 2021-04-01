@@ -21,7 +21,7 @@
           <button type='submit' class='btn'>Submit</button>
         </fieldset>
       </form>
-      <h2 id="logForLogin" class="animated bounce infinite slow" v-if="showLoggingIn">{{logMsgLogin}}</h2>
+      <h3 id="logForLogin" class="animated bounce infinite slower" v-if="isLoggingIn">{{logMsgLogin}}</h3>
     </section>
   </div>
 </div>
@@ -33,14 +33,14 @@ export default {
   data() {
     return {
       loginData: {},
-      showLoggingIn: false,
+      isLoggingIn: false,
       logMsgLogin: ""
     }
   },
   methods: {
     loginMethod() {
       // Hide login message before clicking on submit login details
-      this.showLoggingIn = true
+      this.isLoggingIn = true
       this.logMsgLogin = "Attempting to log you in....."
 
       this.$store.dispatch('auth_request', this.loginData)      
