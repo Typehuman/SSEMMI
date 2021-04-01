@@ -60,11 +60,11 @@ export default {
     },
     mounted() {
         // Mounted to continuously monitor for changes
-        this.mapSightings()
+        //this.mapSightings()
     },
     updated() {
         // Mounted to continuously monitor for changes
-        this.mapSightings()
+        //this.mapSightings()
     },
     methods: {
       mapSightings() {
