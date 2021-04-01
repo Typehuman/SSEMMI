@@ -249,7 +249,7 @@ export const store = new Vuex.Store(
             // Login success
             console.log(`Login successful, Hello ${user.data.user.name}`)
 
-            resolve(user)
+            resolve("Login Success!")
           })
           // Check for request errors
           .catch(err => {
@@ -257,8 +257,7 @@ export const store = new Vuex.Store(
             commit('setAuthentication', false)
             sessionStorage.removeItem('userToken')
             console.log(err)
-            alert("Sorry your login details were invalid")
-            reject(err)
+            reject("Sorry your login details were invalid")
           })
         })
       },

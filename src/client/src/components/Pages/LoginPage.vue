@@ -21,6 +21,7 @@
           <button type='submit' class='btn'>Submit</button>
         </fieldset>
       </form>
+      <h2 id="logForLogin" class="animated bounce infinite slow" v-if="showLoggingIn">{{logMsgLogin}}</h2>
     </section>
   </div>
 </div>
@@ -31,15 +32,29 @@ export default {
   name: 'Login',
   data() {
     return {
-      loginData: {}
+      loginData: {},
+      showLoggingIn: false,
+      logMsgLogin: ""
     }
   },
   methods: {
     loginMethod() {
-      this.$store.dispatch('auth_request', this.loginData)
-      .then( () => {
+      // Hide login message before clicking on submit login details
+      this.showLoggingIn = true
+      this.logMsgLogin = "Attempting to log you in....."
+
+      this.$store.dispatch('auth_request', this.loginData)      
+      .then( (loginMessage) => {
+        console.log(loginMessage)
+        // Will change the log upon submit for login to be successful
+        this.logMsgLogin = loginMessage
         // Redirect to page upon login --admins will be redirected to register
         this.$router.replace({name: 'DataExplorer'})
+      })
+      .catch( (loginMessage) => {
+        console.log(loginMessage)
+        // Will change the log upon submit for login to be invalid
+        this.logMsgLogin = loginMessage
       })
     }
   }
