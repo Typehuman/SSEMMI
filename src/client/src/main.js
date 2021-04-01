@@ -7,11 +7,17 @@ import Login from './components/Pages/LoginPage'
 import Dashboard from './components/Pages/DashboardPage'
 import Register from './components/Pages/RegisterPage'
 import Approvals from './components/Pages/ApprovalsPage'
+import Visualiser from './components/Pages/VisualiserPage'
+import Heatmap from './components/Pages/HeatmapPage'
+import About from './components/Pages/AboutPage'
+import Home from './components/Pages/HomePage'
 import axios from 'axios'
 import Clipboard from 'v-clipboard'
 import 'bootstrap-css-only/css/bootstrap.min.css'
 import 'mdbvue/lib/css/mdb.min.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import IPFS from 'ipfs'
+import OrbitDB from 'orbit-db'
 
 Vue.config.productionTip = false
 
@@ -35,7 +41,33 @@ const router = new Router({
         ]
       },
       redirect: {
-        name: 'Login'
+        name: 'Home'
+      }
+    },
+    {
+      // Login page
+      path: '/home',
+      name: 'Home',
+      meta: {
+        title: 'SSEMMI Client',
+        metaTags: [
+          {
+            name: 'SSEMMI Client',
+            content: 'SSEMMI Client'
+          }
+        ]
+      },
+      component: Home,
+      beforeEnter: (to, from, next) => {
+        let hasToken = sessionStorage.getItem('userToken')
+        let isAuthenticated = store.state.isAuthenticated === true
+        let isLegitUser = store.state.token != null
+
+        if(isAuthenticated && isLegitUser && hasToken) {
+          next('/data-explorer')
+        } else {
+          next()
+        }
       }
     },
     {
@@ -54,11 +86,11 @@ const router = new Router({
       component: Login,
       beforeEnter: (to, from, next) => {
         let hasToken = sessionStorage.getItem('userToken')
-        let isAuthenticated = store.state.isAuthenticated == true
+        let isAuthenticated = store.state.isAuthenticated === true
         let isLegitUser = store.state.token != null
 
         if(isAuthenticated && isLegitUser && hasToken) {
-          next('/dashboard')
+          next('/data-explorer')
         } else {
           next()
         }
@@ -71,7 +103,7 @@ const router = new Router({
       component: Dashboard,
       beforeEnter: (to, from, next) => {
         let hasToken = sessionStorage.getItem('userToken')
-        let isRestricted = store.state.isAuthenticated == false
+        let isRestricted = store.state.isAuthenticated === false
         let isLegitUser = store.state.token != null
 
         if(isRestricted && !isLegitUser && !hasToken) {
@@ -88,25 +120,43 @@ const router = new Router({
       component: Register
     },
     {
+      // Register page to create new users - admin only
+      path: '/about',
+      name: 'About',
+      component: About
+    },
+    {
       // Approvals page to confirm user registration
       path: '/approvals',
       name: 'Approvals',
       component: Approvals,
       beforeEnter: (to, from, next) => {
         let hasToken = sessionStorage.getItem('userToken')
-        let isRestricted = store.state.isAuthenticated == false
+        let isRestricted = store.state.isAuthenticated === false
         let isLegitUser = store.state.token != null
-        let isAdmin = store.state.isAdmin == true
+        let isAdmin = store.state.isAdmin === true
         if(isRestricted && !isLegitUser && !hasToken) {
           next('/login')
         }
         else if(!isAdmin) {
-          next('/dashboard')
+          next('/data-explorer')
         }
         else {
           next()
         }
       }
+    },
+    {
+      // Visualiser page to view data visualisations
+      path: '/data-explorer',
+      name: 'DataExplorer',
+      component: Visualiser
+    },
+    {
+      // Visualiser page to view data visualisations
+      path: '/historical',
+      name: 'Historical',
+      component: Heatmap
     }
   ]
 })
@@ -121,7 +171,8 @@ export const store = new Vuex.Store(
       token: null,
       userDetails: [],
       isAdmin: false,
-      userRequestList: []
+      userRequestList: [],
+      sightings: []
     },
     mutations: {
       setAuthentication(state, status) {
@@ -138,6 +189,9 @@ export const store = new Vuex.Store(
       },
       setUserRequestList(state, list) {
         state.userRequestList = list
+      },
+      setSightings(state, sightings) {
+        state.sightings = sightings
       }
     },
     getters: {
@@ -149,6 +203,9 @@ export const store = new Vuex.Store(
       },
       getUserRequestList: state => {
         return state.userRequestList
+      },
+      getSightings: state => {
+        return state.sightings
       }
     },
     actions: {
@@ -216,7 +273,7 @@ export const store = new Vuex.Store(
           resolve('Logged out')
         })
       },
-      get_user_requests({commit}) {
+      get_user_requests({commit}) { //DEPRECATED
         return new Promise( (resolve,reject) => {
           // Check if user has admin priviledges
           if (store.state.isAdmin) {
@@ -242,8 +299,109 @@ export const store = new Vuex.Store(
             })
           } else {
             // Show error if access to it fails
-            throw console.error('Sorry you are not authorised to fetch the data');
+            const errMsg = 'Sorry you are not authorised to fetch the data'
+            alert(errMsg)
+            throw console.error(errMsg)
           }
+        })
+      },
+      async get_ipfs_sightings({commit}) {
+        try {
+            // optional settings for the ipfs instance
+            const ipfsOptions = {
+              repo: './ipfs',
+              EXPERIMENTAL: { pubsub: true },
+              preload: { enabled: false },
+              config: {
+                Addresses: {
+                  Swarm: [
+                    '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
+                    '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
+                    '/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/',
+                    '/dns4/libp2p-rdv.vps.revolunet.com/tcp/443/wss/p2p-webrtc-star/'
+                  ]
+                }
+              }
+            }
+
+            // Create IPFS instance with optional config
+            const ipfs = await IPFS.create(ipfsOptions)
+            console.log(ipfs)
+
+            // Create OrbitDB instance
+            const orbitdb = await OrbitDB.createInstance(ipfs)
+            console.log(orbitdb)
+
+            // Connect to the peer id of the backend orbitdb database (NOTE: this will be an env variable)
+            await orbitdb._ipfs.swarm.connect('/ip4/127.0.0.1/tcp/4003/ws/p2p/QmWdwcHK2ih8VzP9jacLPKGBdmxzZf1F3Nvo9pqj5Q4QcN')
+
+            // create database
+            const db2 = await orbitdb.docs('/orbitdb/zdpuB2kQmxqdBZvCZDxU5SmzxLt9xnDvyjPQnMSuqrrLuYVrQ/ssemmi-api-ingestor')
+
+            // Emit log message when db has synced with another peer
+            db2.events.on('replicated', (address) => {
+              console.log(`Replicated ${address}`)
+              const getData = db2.get('')
+              // console.log(getData)
+              // Set data from synchronisation into store
+              commit('setSightings', getData)
+            })
+
+             // Emit a log message upon synchronisation with another peer
+             db2.events.on('write', (address, entry) => {
+              console.log(`
+                ${address} Database to write. \n
+                Entry: ${entry}.
+              `)
+            })
+
+            // Emit a error message upon error handling if something happens during the creation of the IPFS node.
+            db2.events.on('error', (error) => {
+              console.log(`Database creation error: \n ${error}.`)
+            })
+
+            //Load locally persisted db state from memory
+            await db2.load()
+
+            console.info(`The location of the database is ${db2.address.toString()}`)
+
+            // Log message upon successful db setup
+            console.log("Database setup successful! \n")
+
+        } catch (e) {
+            console.log(e)
+        }
+      },
+      get_sightings({commit}) {
+        return new Promise( (resolve,reject) => {
+          let requestAuth = {}
+          let endpoint
+          // Check if user has access token
+          if (store.state.userDetails.token) {
+            endpoint = '/apiv1/sightings'
+            // Format the token into header for requesting sightings requests
+            requestAuth.headers = {
+                'Authorization': 'Bearer ' + store.state.userDetails.token,
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            } else {
+            endpoint = '/apiv1/sightings/current'
+            requestAuth.headers = {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }
+
+            // Pass headers of admin to retreive user requests
+            axios.get(`${process.env.VUE_APP_WEB_SERVER_URL}${endpoint}`, requestAuth)
+            // Add list of users into the store of user requests
+            .then( sightings => {
+              resolve(sightings.data)
+              commit('setSightings', sightings.data)
+            })
+            .catch(err => {
+              console.error(err)
+              reject()
+            })
         })
       }
     },

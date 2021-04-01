@@ -1,6 +1,6 @@
-import { dbPost } from '../../services/orbitdb'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import User, { schema } from '../user/model'
+import { checkDb } from './utils'
 
 /**
  *----- ORCA MAP GOOGLE SHEET API DATA -> DB (LOADING METHODS) -----
@@ -92,15 +92,9 @@ export const omLoadSpreadsheet = async () => {
         // Map Google sheets data to fit SSEMMI DB fields and formatting
         const count = index + 1
         const entryFormatted = ssemmiFormatting(entry, count)
-        // Add data into the decentralised database
-        await dbPost(entryFormatted, userBot)
-        // Tracks the entry count to log/trace
-        console.log(`Entry count: ${count}\n`)
-        // Display success alert of entry added to the db
-        console.log(entryFormatted)
-        console.log(`SSEMMI ID ${entryFormatted.ssemmi_id} successfully added to the db \n`)
+        await checkDb(entryFormatted, userBot)
       } catch (error) {
-        console.log(error)
+        console.log('There was an error adding to the db ', error)
       }
     }))
 

@@ -1,7 +1,7 @@
 // LOGIN PAGE
 
 <template>
-<div class="container" id='app'>
+<div class="login-container">
   <div class="login">
     <!-- Title and header on the UI -->
     <header class="login--header">
@@ -39,7 +39,7 @@ export default {
       this.$store.dispatch('auth_request', this.loginData)
       .then( () => {
         // Redirect to page upon login --admins will be redirected to register
-        this.$router.replace({name: 'Dashboard'})
+        this.$router.replace({name: 'DataExplorer'})
       })
     }
   }
@@ -66,13 +66,14 @@ fieldset {
   border: none;
 }
 
-.container {
+.login-container {
   background: none;
   width: 400px;
-  margin: 4rem auto 0;
+  top: 150px;
   text-align: center;
   box-shadow: 0 1rem 1rem 0 rgba(0, 0, 0, .15);
   position: relative;
+  margin: auto;
 }
 
 .login {

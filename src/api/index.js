@@ -1,5 +1,5 @@
-import { Router } from 'express'
-import { dbGetAll, dbGetItem, dbPost, dbDelete, dbQueryTrusted } from '../services/orbitdb'
+import express, { Router } from 'express'
+import path from 'path'
 import { loadApi, conserveApi } from './partner-data/spotter-api'
 import { csLoadSpreadsheet } from './partner-data/citizen-science-api'
 import { omLoadSpreadsheet } from './partner-data/orca-map-api'
@@ -9,6 +9,8 @@ import passwordReset from './password-reset'
 import dataIngestion from './data-ingestion'
 import cors from 'cors'
 import { token } from '../services/passport/index'
+import cron from 'node-cron'
+import app from '../app'
 
 const router = new Router()
 
@@ -41,13 +43,14 @@ router.route('/')
     res.send('Hello')
   })
 
+router.use('/docs', express.static('src/docs'))
 /**
  *----- USER AND AUTHENTICATION ROUTING METHODS -----
  */
 
 //  CORS Whitelist prod and local frontend URLs for the application
 const corsWhitelist = {
-  origin: ["ssemmi-api.typehuman.dev", "localhost:8082"]
+  origin: ['ssemmi-api.typehuman.dev', 'localhost:8082']
 }
 
 router.use('/apiv1/users', cors(corsWhitelist), user)
@@ -59,36 +62,40 @@ router.get('/apiv1/import',
   token({ required: true, roles: ['admin'] }),
   async (req, res, next) => {
     try {
-    await loadApi(conserveApi)
-    // GOOGLE SHEETS DATA LOAD
-    await omLoadSpreadsheet()
-    await Promise.all(setTimeout(async () => {
+      await loadApi(conserveApi, true)
+      // GOOGLE SHEETS DATA LOAD
+      await omLoadSpreadsheet()
+      await Promise.all(setTimeout(async () => {
         // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
         // as Google has a maximum request calls with the same API.
         await csLoadSpreadsheet()
-    }, 5000))
-  } catch(e) {
-    console.error(`There was an error loading the data ${e}`)
-    res.sendStatus(500)
-  }
-})
+      }, 10000))
+    } catch (e) {
+      console.error(`There was an error loading the data ${e}`)
+      res.sendStatus(500)
+    }
+  })
 
 /**
- *----- LOADING DATA FROM API INTO DB METHODS -----
+ *----- SCHEDULED JOBS TO LOAD PARTNER-DATA INTO API -----
  */
-// Load data from CONSERVE.IO SPOTTER API
-/* loadApi(conserveApi)
-// GOOGLE SHEETS DATA LOAD
-  .then(
-    omLoadSpreadsheet)
-  .catch((err) => console.log('Error Loading Spotter API:' + '\n' + err))
- .then( () => {
-     setTimeout( () => {
-         // Load data from CITIZEN SCIENCE after 5 seconds of loading the previous data
-         // as Google has a maximum request calls with the same API.
-         csLoadSpreadsheet()
-     }, 5000)
- })
-  .catch((err) => console.log(err + '\n' + 'Error Loading Google sheets'))
-*/
+
+// CRON job to pull from Spotter API every day at 11PM to extract data at the end of the day
+cron.schedule('0 23 * * * ', () => {
+  console.log('Preparing scheduled load of SPOTTER API.................')
+  loadApi(conserveApi)
+})
+
+// CRON job to pull from Orca Map google spreadsheet every Sunday at 1AM
+cron.schedule('* 22 * * *', () => {
+  console.log('Preparing scheduled load of ORCA MAP....................')
+  omLoadSpreadsheet()
+})
+
+// CRON job to pull from Citizen Science google spreadsheet every Sunday at 3AM
+cron.schedule('* 21 * * *', () => {
+  console.log('Preparing scheduled load of CITIZEN SCIENCE.............')
+  csLoadSpreadsheet()
+})
+
 export default router

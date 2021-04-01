@@ -1,5 +1,5 @@
 import request from 'request'
-import { dbPost } from '../../services/orbitdb'
+import { checkDb } from './utils'
 import User, { schema } from '../user/model'
 
 /**
@@ -24,12 +24,18 @@ currentDate = String(currentDate)
 
 // Formatting on current date for API parameter
 var currentDayFormat = `${yyyy}-${mm}-${dd}`
-export const conserveApi = `https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=2020-01-01&end=${currentDayFormat}&species=Orcinus%20orca`
+// Current day format to display sightings since the current year
+export const conserveApi = `https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=${currentDayFormat}&species=Orcinus%20orca`
+
+const conHistory = 'https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=2020-01-01&species=Orcinus%20orca'
 
 // Retreive data from the URL
-export const loadApi = async (api) => {
+export const loadApi = async (api, loadHistory = false) => {
   // Initialise the user data to be a bot designed for spotter CRON jobs
   const userBot = await User.findById(process.env.SPOTTER_BOT_ID)
+  if (loadHistory) {
+    api = conHistory
+  }
 
   // Request connection to the API
   request(api, async (err, resp, body) => {
@@ -65,15 +71,13 @@ export const loadApi = async (api) => {
         try {
           // Add data into SSEMMI decentralised database
           console.log(`Adding data from date ${currentDayFormat} to the DB....`)
-          await dbPost(source_input, userBot)
           // Tracks the entry count to log/trace
           count += 1
           console.log(`Entry count: ${count}\n`)
           // Display data from entry load
-          console.log(source_input)
-          console.log(`SSEMMI ID ${source_input.ssemmi_id} successfully added to the db \n`)
+          await checkDb(source_input, userBot)
         } catch (error) {
-          console.log(error)
+          console.log('There was an error adding to the db ', error)
         }
       }
       // Show the number of entries of the day from the Spotter API
