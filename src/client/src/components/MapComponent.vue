@@ -421,7 +421,7 @@ export default {
                         this.geoJSONSightings.push(sightingEntry)
                     }
                 })
-              this.$forceUpdate()
+              this.mapSightings()
             })
         }
     },
