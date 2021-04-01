@@ -5,25 +5,25 @@ This is the public repository for the SSEMMI project: A decentralised and commun
 
 ## Installation and running locally
   
-
+Install all dependencies and packages of the backend
 ```
 
 $ npm install
 
 ```
 
-Install all dependencies and packages of the backend
+<br>
 
+Install all dependencies and packages of the front-end
 ```
 
 $ cd src/client && npm install
 
 ```
 
-Install all dependencies and packages of the front-end
+<br>
 
 Once dependencies of both "ends" have been installed you can run test the application on a local server by doing the following:
-
 ```
 
 $ npm run start
@@ -33,17 +33,17 @@ or
 $ npm run dev
 
 ```
-
-Use this within the main directory to start the backend activity of the server as well as the database. 
+Use this within the root directory to start the backend activity of the server as well as the database. 
  > Note that if you were to use "npm run dev" it triggers a hotfix or a live reload if changes were to be made to the code.
 
+<br>
+
+This will start the front-end build and serving and a localhost port will be generated for local development use.
 ```
 
 $ cd src/client && npm run serve
 
-```
-
-This will start the front-end build and serving and a localhost port will be generated for local development use. 
+``` 
  > Note that the "cd src/client" script is only used if you are in the main directory.
 
 
