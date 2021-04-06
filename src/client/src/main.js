@@ -253,11 +253,27 @@ export const store = new Vuex.Store(
           })
           // Check for request errors
           .catch(err => {
+            // Initialise error message if server is having problems
+            let errMsg = "Something went wrong! Please try again shortly."
+
+            // Clear authentication
             commit('setUserToken', null)
             commit('setAuthentication', false)
+
+            // Clear token
             sessionStorage.removeItem('userToken')
-            console.log(err)
-            reject("Unable to login. Please check your details or connection.")
+
+            // Check network and set error message if network is inactive
+            if (!err.response) {
+              errMsg = "There is a network error, Please try again shortly."
+            } else {
+              // Set error message if user details do not match
+              if (err.response.status == 400) {
+                errMsg = "Your username or password did not match, please try again."
+              }
+            }
+
+            reject(errMsg)
           })
         })
       },
