@@ -16,5 +16,6 @@ jobs:
 
           command: |
             cd ~/ssemmi-api
+            ls
             ./build_and_deploy.sh
             echo 'Deployment successful to digital ocean'
