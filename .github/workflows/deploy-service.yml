@@ -15,6 +15,6 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }} # User of the server you want to ssh into
 
           script: |
-            cd ~/ssemmi-api/src/client
+            cd ~/ssemmi-api
             ./build_and_deploy.sh
             echo 'Deployment successful to digital ocean'
