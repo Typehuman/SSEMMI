@@ -17,7 +17,6 @@ jobs:
 
           command: |
             cd ~/ssemmi-api
-            source ~/.bashrc
             echo 'Starting deployment process'
             git pull
             cd src/client
