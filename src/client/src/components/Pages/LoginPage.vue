@@ -52,7 +52,7 @@ export default {
     loginMethod() {
       // Hide login message before clicking on submit login details
       this.isLoggingIn = true
-      this.logMsgLogin = "Attempting to log you in....."
+      this.logMsgLogin = "Logging you in....."
       this.logMsgColour = "secondary"
 
       this.$store.dispatch('auth_request', this.loginData)      
