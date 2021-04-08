@@ -16,6 +16,13 @@ jobs:
 
           command: |
             cd ~/ssemmi-api
+            echo 'Starting deployment process'
             git pull
-            ./build_and_deploy.sh
+            cd src/client
+            echo 'Begin build process'
+            npm run build
+            sudo cp -R dist/* /var/www/html/
+            echo 'Restarting backend'
+            pm2 restart 0
+            echo 'Deployment complete'
             echo 'Deployment successful to digital ocean'
