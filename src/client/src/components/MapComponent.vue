@@ -219,7 +219,7 @@ export default {
                         6,
                         1,
                         9,
-                        0
+                        1
                       ]
                     },
                     filter: [
