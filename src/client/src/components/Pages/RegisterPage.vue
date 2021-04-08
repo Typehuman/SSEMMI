@@ -6,7 +6,7 @@
       <!-- UI for passing register details -->
       <div>
         <form class='register--form' @submit="register">
-          <h1 id="register-heading">Invite Users</h1>
+          <h1 id="register-heading">Register</h1>
           <fieldset>
             <mdb-input placeholder="Email:" name="Email" v-model.trim="registerUserData.initEmail" type="email" required/>
           </fieldset>
@@ -23,31 +23,11 @@
       </div>
     </section>
   </div>
-  <div id="register-list-container">
-    <mdb-tbl hover>
-      <mdb-tbl-head>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Invite sent</th>
-          <th>Status</th>
-        </tr>
-      </mdb-tbl-head>
-      <mdb-tbl-body>
-        <tr>
-          <th>John Doe</th>
-          <td>jdoe@testmail.com</td>
-          <td>11.12 AM 31/01/21</td>
-          <td>Invite Sent</td>
-        </tr>
-      </mdb-tbl-body>
-    </mdb-tbl>
-  </div>
 </div>
 </template>
 
 <script>
-import { mdbInput, mdbBtn, mdbTbl, mdbTblHead, mdbTblBody } from 'mdbvue';
+import { mdbInput, mdbBtn } from 'mdbvue';
 import axios from 'axios';
 
 export default {
@@ -55,9 +35,6 @@ export default {
   components: {
     mdbInput,
     mdbBtn,
-    mdbTbl,
-    mdbTblHead,
-    mdbTblBody
   },
   data() {
     return {
@@ -114,13 +91,6 @@ export default {
     width: 40%;
     margin: auto;
     position: relative;
-  }
-
-  #register-list-container {
-    width: 80%;
-    padding: 10%;
-    /* margin: auto; */
-    /* display: inline-table; */
   }
 
   #register-heading {

@@ -6,7 +6,7 @@
       <router-link to="/" v-if="!isAuth" class='btn'>Home</router-link>
       <router-link to="/login" v-if="!isAuth" class='btn'>Login</router-link>
       <router-link to="/dashboard" v-if="isAuth" class='btn'>Dashboard</router-link>
-      <router-link to="/register" class='btn'>Register</router-link>
+      <router-link to="/register" v-if="!isAuth" class='btn'>Register</router-link>
       <router-link to="/about" class='btn'>About</router-link>
       <router-link to="/data-explorer" class='btn' v-if="isAuth">Data Explorer</router-link>
       <router-link to="/historical" class='btn' v-if="isAuth">Historical</router-link>
