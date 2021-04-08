@@ -3,7 +3,7 @@
     <mdb-row>
         <mdb-col lg="6" class="mb-4">
           <mdb-card>
-            <mdb-card-header>{{componentHeader}}</mdb-card-header>
+            <mdb-card-header v-if="withHeader">{{componentHeader}}</mdb-card-header>
             <mdb-card-body>
                 <slot></slot>
             </mdb-card-body>
@@ -26,7 +26,8 @@ export default {
         mdbCardHeader
     },
     props: {
-        componentHeader: String
+        componentHeader: String,
+        withHeader: Boolean
     }
     
 }

@@ -1,26 +1,44 @@
 <template>
-  <div id="app">
-    <!-- Adding dependency for mapbox css for map visualisation -->
-    <div id="nav">
-      <router-link id="title" to="/" class='btn'>SSEMMI Client</router-link>
-      <router-link to="/" v-if="!isAuth" class='btn'>Home</router-link>
-      <router-link to="/login" v-if="!isAuth" class='btn'>Login</router-link>
-      <router-link to="/dashboard" v-if="isAuth" class='btn'>Dashboard</router-link>
-      <router-link to="/register" class='btn'>Register</router-link>
-      <router-link to="/about" class='btn'>About</router-link>
-      <router-link to="/data-explorer" class='btn' v-if="isAuth">Data Explorer</router-link>
-      <router-link to="/historical" class='btn' v-if="isAuth">Historical</router-link>
-      <router-link to="/approvals" v-if="isAdmin" class='btn'>Approvals</router-link>
-      <button to="/" @click="logoutMethod" class='btn' v-if="isAuth">Logout</button>
+  <div>
+    <div id="navbar-top">
+      <mdb-navbar color="black" dark>
+        <mdb-navbar-brand router to="/">
+          <!-- <router-link id="title" to="/" class='btn'>SSEMMI Client</router-link> -->
+          SSEMMI Client
+        </mdb-navbar-brand>
+        <mdb-navbar-toggler>
+          <mdb-navbar-nav right>
+            <mdb-nav-item router to="/login" v-if="!isAuth" >Login</mdb-nav-item> 
+            <mdb-nav-item router to="/dashboard" v-if="isAuth" >Dashboard</mdb-nav-item>
+            <mdb-nav-item router to="/register" >Register</mdb-nav-item>
+            <mdb-nav-item router to="/about" >About</mdb-nav-item>
+            <mdb-nav-item router to="/data-explorer" v-if="isAuth" >Data Explorer</mdb-nav-item>
+            <mdb-nav-item router to="/historical" v-if="isAuth" >Historical</mdb-nav-item>
+            <mdb-nav-item router to="/approvals" v-if="isAdmin" >Approvals</mdb-nav-item>
+            <mdb-nav-item router to="/" @click="logoutMethod" v-if="isAuth" >Logout</mdb-nav-item>
+          </mdb-navbar-nav>
+        </mdb-navbar-toggler>
+      </mdb-navbar>
     </div>
-    <router-view/>
+    <div id="app">
+      <!-- Adding dependency for mapbox css for map visualisation -->
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { mdbNavbar, mdbNavbarBrand, mdbNavbarToggler, mdbNavbarNav, mdbNavItem } from 'mdbvue';
 
 export default {
+  components: {
+    mdbNavbar,
+    mdbNavbarBrand,
+    mdbNavbarToggler,
+    mdbNavbarNav,
+    mdbNavItem
+  },
   created() {
     axios.interceptors.response.use(undefined, (err) => {
       return new Promise( (resolve, reject) => {
@@ -63,6 +81,7 @@ export default {
   color: #2c3e50;
   /* margin-top: 60px; */
   text-align: center;
+  clear: both;
 }
 
 #title {
@@ -74,20 +93,10 @@ export default {
   float: left;
 }
 
-#nav {
-  font-weight: bold;
-  display: block;
-  float: right;
-  text-align: right;
-  width: 100%;
-  background: grey;
-  position: sticky;
+#navbar-top li {
+  /* Adding space between each navbar items. "li" is used as mdb-nav-item will be compiled into list components */
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
-#nav .btn {
-  background: white;
-  box-shadow: inset 0 0 2px 0 #EEEEEE;
-  padding: .3rem 1rem .4rem;
-  cursor: pointer;
-}
 </style>

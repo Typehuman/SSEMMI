@@ -21,33 +21,46 @@
           <button type='submit' class='btn'>Submit</button>
         </fieldset>
       </form>
-      <h3 id="logForLogin" class="animated bounce infinite slower" v-if="isLoggingIn">{{logMsgLogin}}</h3>
+      <br />
+      <mdb-container>
+        <mdb-alert :color="logMsgColour" v-if="isLoggingIn">{{logMsgLogin}}</mdb-alert>
+      </mdb-container>
+      <!-- <h3 id="logForLogin" class="animated bounce infinite slower" v-if="isLoggingIn">{{logMsgLogin}}</h3> -->
     </section>
   </div>
 </div>
 </template>
 
 <script>
+import { mdbContainer, mdbAlert } from 'mdbvue'
+
 export default {
   name: 'Login',
+  components: {
+    mdbContainer,
+    mdbAlert
+  },
   data() {
     return {
       loginData: {},
       isLoggingIn: false,
-      logMsgLogin: ""
+      logMsgLogin: "",
+      logMsgColour: "secondary"
     }
   },
   methods: {
     loginMethod() {
       // Hide login message before clicking on submit login details
       this.isLoggingIn = true
-      this.logMsgLogin = "Attempting to log you in....."
+      this.logMsgLogin = "Logging you in....."
+      this.logMsgColour = "secondary"
 
       this.$store.dispatch('auth_request', this.loginData)      
       .then( (loginMessage) => {
         console.log(loginMessage)
         // Will change the log upon submit for login to be successful
         this.logMsgLogin = loginMessage
+        this.logMsgColour = "success"
         // Redirect to page upon login --admins will be redirected to register
         this.$router.replace({name: 'DataExplorer'})
       })
@@ -55,6 +68,7 @@ export default {
         console.log(loginMessage)
         // Will change the log upon submit for login to be invalid
         this.logMsgLogin = loginMessage
+        this.logMsgColour = "danger"
       })
     }
   }
