@@ -26,4 +26,3 @@ jobs:
             echo 'Restarting backend'
             pm2 restart 0
             echo 'Deployment complete'
-            echo 'Deployment successful to digital ocean'
