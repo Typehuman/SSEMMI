@@ -10,7 +10,7 @@
           <mdb-navbar-nav right>
             <mdb-nav-item router to="/login" v-if="!isAuth" >Login</mdb-nav-item> 
             <mdb-nav-item router to="/dashboard" v-if="isAuth" >Dashboard</mdb-nav-item>
-            <mdb-nav-item router to="/register" >Register</mdb-nav-item>
+            <mdb-nav-item router to="/register" v-if="!isAuth">Register</mdb-nav-item>
             <mdb-nav-item router to="/about" >About</mdb-nav-item>
             <mdb-nav-item router to="/data-explorer" v-if="isAuth" >Data Explorer</mdb-nav-item>
             <mdb-nav-item router to="/historical" v-if="isAuth" >Historical</mdb-nav-item>
