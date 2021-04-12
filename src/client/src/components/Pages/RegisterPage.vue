@@ -14,12 +14,41 @@
             <mdb-input placeholder="Confirm email:" v-model.trim="registerUserData.email" name="Confirm email" type="email" required/>
           </fieldset>
           <fieldset>
-            <mdb-input placeholder="Password:" v-model.trim="registerUserData.password" name="Password" type="password" required/>
+            <mdb-input placeholder="Password:" v-model.trim="registerUserData.initPassword" name="Password" type="password" required/>
           </fieldset>
           <fieldset>
-            <mdb-btn type='submit' color="white" style="right: 32%">Invite User</mdb-btn>
+            <mdb-input placeholder="Confirm Password:" v-model.trim="registerUserData.password" name="Confirm Password" type="password" required/>
+          </fieldset>
+          <fieldset>
+            <mdb-btn type='submit' color="white" style="right: 32%">Sign Up</mdb-btn>
           </fieldset>
         </form>
+      </div>
+    </section>
+    <!-- Component for explainer text -->
+    <section id="div-explainer">
+      <mdb-card>
+        <mdb-card-body>
+          <mdb-card-title>Title</mdb-card-title>
+          <mdb-card-text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit anim id est laborum.
+          </mdb-card-text>
+          <mdb-card-text>Explainer text</mdb-card-text>
+        </mdb-card-body>
+      </mdb-card>
+    </section>
+    <!-- Checkbox to enquire purpose of signing up and use of application -->
+    <section id="section-on-use">
+      <p>How do you want to use SSEMMI?</p>
+      <div>
+        <mdb-input type="checkbox" id="checkOne" name="check3" label="Material unchecked" />
+        <br>
+        <mdb-input type="checkbox" id="checkTwo" name="check4" label="Material checked" />
+        <br>
       </div>
     </section>
   </div>
@@ -27,7 +56,7 @@
 </template>
 
 <script>
-import { mdbInput, mdbBtn } from 'mdbvue';
+import { mdbInput, mdbBtn, mdbCard, mdbCardBody, mdbCardTitle, mdbCardText } from 'mdbvue';
 import axios from 'axios';
 
 export default {
@@ -35,6 +64,10 @@ export default {
   components: {
     mdbInput,
     mdbBtn,
+    mdbCard,
+    mdbCardBody,
+    mdbCardTitle,
+    mdbCardText
   },
   data() {
     return {
@@ -51,12 +84,17 @@ export default {
       }
 
       if (this.registerUserData.email != this.registerUserData.initEmail) {
-        alert('Email does not match.')
+        alert('Emails do not match.')
         return false
       }
 
       if (!this.registerUserData.password) {
         alert('Password required.')
+        return false
+      }
+
+      if (this.registerUserData.email != this.registerUserData.initPassword) {
+        alert('Passwords do not match.')
         return false
       }
       // Check for event error to prevent propagation
@@ -96,5 +134,22 @@ export default {
   #register-heading {
     position: relative;
     right: 32%;
+  }
+
+  #div-explainer {
+    width: 40%;
+    top: 6vh;
+    right: -30vh;
+    margin: 10px;
+    background-color: transparent;
+    display: inline-block;
+  }
+
+  #section-on-use {
+    width: 40%;
+    right: -30vh;
+    margin: 10px;
+    background-color: transparent;
+    display: block;
   }
 </style>
