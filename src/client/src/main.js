@@ -57,18 +57,7 @@ const router = new Router({
           }
         ]
       },
-      component: Home,
-      beforeEnter: (to, from, next) => {
-        let hasToken = sessionStorage.getItem('userToken')
-        let isAuthenticated = store.state.isAuthenticated === true
-        let isLegitUser = store.state.token != null
-
-        if(isAuthenticated && isLegitUser && hasToken) {
-          next('/data-explorer')
-        } else {
-          next()
-        }
-      }
+      component: Home
     },
     {
       // Login page

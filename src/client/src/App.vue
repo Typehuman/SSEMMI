@@ -2,20 +2,30 @@
   <div>
     <div id="navbar-top">
       <mdb-navbar color="black" dark>
-        <mdb-navbar-brand router to="/">
+        <mdb-navbar-brand router to="/home">
           <!-- <router-link id="title" to="/" class='btn'>SSEMMI Client</router-link> -->
           SSEMMI Client
         </mdb-navbar-brand>
         <mdb-navbar-toggler>
           <mdb-navbar-nav right>
-            <mdb-nav-item router to="/login" v-if="!isAuth" >Login</mdb-nav-item> 
-            <mdb-nav-item router to="/dashboard" v-if="isAuth" >Dashboard</mdb-nav-item>
-            <mdb-nav-item router to="/register" v-if="!isAuth">Register</mdb-nav-item>
             <mdb-nav-item router to="/about" >About</mdb-nav-item>
-            <mdb-nav-item router to="/data-explorer" v-if="isAuth" >Data Explorer</mdb-nav-item>
-            <mdb-nav-item router to="/historical" v-if="isAuth" >Historical</mdb-nav-item>
-            <mdb-nav-item router to="/approvals" v-if="isAdmin" >Approvals</mdb-nav-item>
-            <mdb-nav-item router to="/" @click="logoutMethod" v-if="isAuth" >Logout</mdb-nav-item>
+            <mdb-nav-item router to="/dashboard" v-if="isAuth" >Contribute</mdb-nav-item>
+            <mdb-dropdown tag="li" class="nav-item" v-if="isAuth">
+              <mdb-dropdown-toggle tag="a" navLink slot="toggle" >Browse</mdb-dropdown-toggle>
+              <mdb-dropdown-menu>
+                <mdb-dropdown-item router to="/data-explorer" v-if="isAuth" >Short-term</mdb-dropdown-item>
+                <mdb-dropdown-item router to="/historical" v-if="isAuth" >Historical</mdb-dropdown-item>
+              </mdb-dropdown-menu>
+            </mdb-dropdown>
+            <mdb-dropdown id="dropdown-manage" tag="li" class="nav-item">
+              <mdb-dropdown-toggle tag="a" navLink slot="toggle" >Manage</mdb-dropdown-toggle>
+              <mdb-dropdown-menu left>
+                <mdb-dropdown-item router to="/login" v-if="!isAuth" >Login</mdb-dropdown-item>
+                <mdb-dropdown-item router to="/register" >Invite</mdb-dropdown-item>
+                <mdb-dropdown-item router to="/approvals" v-if="isAdmin" >Manage Users</mdb-dropdown-item>
+                <mdb-dropdown-item @click="logoutMethod" href="/" v-if="isAuth" >Logout</mdb-dropdown-item>
+              </mdb-dropdown-menu>
+            </mdb-dropdown>
           </mdb-navbar-nav>
         </mdb-navbar-toggler>
       </mdb-navbar>
@@ -29,7 +39,7 @@
 
 <script>
 import axios from 'axios'
-import { mdbNavbar, mdbNavbarBrand, mdbNavbarToggler, mdbNavbarNav, mdbNavItem } from 'mdbvue';
+import { mdbNavbar, mdbNavbarBrand, mdbNavbarToggler, mdbNavbarNav, mdbNavItem, mdbDropdown, mdbDropdownToggle, mdbDropdownMenu, mdbDropdownItem } from 'mdbvue';
 
 export default {
   components: {
@@ -37,7 +47,11 @@ export default {
     mdbNavbarBrand,
     mdbNavbarToggler,
     mdbNavbarNav,
-    mdbNavItem
+    mdbNavItem,
+    mdbDropdown,
+    mdbDropdownToggle,
+    mdbDropdownMenu,
+    mdbDropdownItem
   },
   created() {
     axios.interceptors.response.use(undefined, (err) => {
@@ -97,6 +111,10 @@ export default {
   /* Adding space between each navbar items. "li" is used as mdb-nav-item will be compiled into list components */
   padding-right: 10px;
   padding-left: 10px;
+}
+
+#dropdown-manage .dropdown-menu {
+  left: -50;
 }
 
 </style>
