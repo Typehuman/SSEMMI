@@ -2,10 +2,10 @@
 <div>
   <!-- Title and header on the UI -->
   <div style="padding: 5%">
-    <section class="register--section">
+    <section  class="register--section">
       <!-- UI for passing register details -->
       <div>
-        <form class='register--form' @submit="register">
+        <form v-if="!inviteSubmitted"  class='register--form' @submit="register">
           <h1 id="register-heading">Register</h1>
           <fieldset>
             <mdb-input placeholder="Email:" name="Email" v-model.trim="registerUserData.initEmail" type="email" required/>
@@ -21,6 +21,31 @@
           </fieldset>
           <fieldset>
             <mdb-btn type='submit' color="white" style="right: 32%">Sign Up</mdb-btn>
+          </fieldset>
+        </form>
+      </div>
+      <!-- Checkbox to enquire purpose of signing up and use of application (pop up after signup submission) -->
+      <div v-if="inviteSubmitted">
+        <form class='use-ssemmi-form align-items-center' @submit="register">
+          <h1 id="use-ssemmi-heading">How do you want to use SSEMMI?</h1>
+          <br>
+          <fieldset>
+            <mdb-input type="checkbox" name="BrowseData" />
+            <label for="BrowseData">Browse Data</label>
+          </fieldset>
+          <br>
+          <fieldset>
+            <mdb-input type="checkbox" name="BrowseData" />
+            <label for="BrowseData">Contribute Data</label>
+          </fieldset>
+          <br>
+          <fieldset>
+            <mdb-input type="checkbox" name="BrowseData" />
+            <label for="BrowseData">Other</label>
+          </fieldset>
+          <br>
+          <fieldset>
+            <mdb-btn type='submit' color="white" style="right: 25%">Submit</mdb-btn>
           </fieldset>
         </form>
       </div>
@@ -40,16 +65,6 @@
           <mdb-card-text>Explainer text</mdb-card-text>
         </mdb-card-body>
       </mdb-card>
-    </section>
-    <!-- Checkbox to enquire purpose of signing up and use of application -->
-    <section id="section-on-use">
-      <p>How do you want to use SSEMMI?</p>
-      <div>
-        <mdb-input type="checkbox" id="checkOne" name="check3" label="Material unchecked" />
-        <br>
-        <mdb-input type="checkbox" id="checkTwo" name="check4" label="Material checked" />
-        <br>
-      </div>
     </section>
   </div>
 </div>
@@ -73,7 +88,8 @@ export default {
     return {
       registerUserData: {},
       errors: [],
-      VUE_APP_MASTER_KEY: process.env.VUE_APP_MASTER_KEY
+      VUE_APP_MASTER_KEY: process.env.VUE_APP_MASTER_KEY,
+      inviteSubmitted: false
     };
   },
   methods: {
@@ -93,7 +109,7 @@ export default {
         return false
       }
 
-      if (this.registerUserData.email != this.registerUserData.initPassword) {
+      if (this.registerUserData.password != this.registerUserData.initPassword) {
         alert('Passwords do not match.')
         return false
       }
@@ -111,7 +127,8 @@ export default {
       // Redirect to requested page
       .then( regUser => {
         console.log(`Successfully added ${regUser.data}`)
-        this.$router.push({name: 'Dashboard'})
+        // this.$router.push({name: 'Dashboard'})
+        this.inviteSubmitted = true;
       })
       // Check for request errors
       .catch(err => {
@@ -147,9 +164,18 @@ export default {
 
   #section-on-use {
     width: 40%;
-    right: -30vh;
-    margin: 10px;
-    background-color: transparent;
+    padding-left: 70px;
     display: block;
+  }
+
+  .use-ssemmi-form label {
+    float: left;
+    clear: left;
+  }
+
+  #section-on-use ul {
+    /* margin: 0; */
+    list-style: none;
+    float: left;
   }
 </style>
