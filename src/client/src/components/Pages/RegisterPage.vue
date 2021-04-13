@@ -127,7 +127,7 @@ export default {
       // Redirect to requested page
       .then( regUser => {
         console.log(`Successfully added ${regUser.data}`)
-        // this.$router.push({name: 'Dashboard'})
+        // Once data successfully submitted, the use enquiry box will show up
         this.inviteSubmitted = true;
       })
       // Check for request errors
