@@ -33,12 +33,12 @@
             <br>
             <fieldset>
               <mdb-input type="checkbox" name="BrowseData" />
-              <label for="BrowseData">Contribute Data</label>
+              <label for="ContributeData">Contribute Data</label>
             </fieldset>
             <br>
             <fieldset>
               <mdb-input type="checkbox" name="BrowseData" />
-              <label for="BrowseData">Other</label>
+              <label for="OtherUse">Other</label>
             </fieldset>
             <br>
             <fieldset id="btn-signup-submit">
