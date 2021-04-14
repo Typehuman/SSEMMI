@@ -5,7 +5,7 @@ import { toEthereumAddress } from 'did-jwt'
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   User.find(query, select, cursor)
-    .then((users) => users.map((user) => user.view()))
+    .then((users) => users.map((user) => user.view(true)))
     .then(success(res))
     .catch(next)
 
@@ -16,8 +16,8 @@ export const show = ({ params }, res, next) =>
     .then(success(res))
     .catch(next)
 
-export const showUserRequests =({ querymen: { query, select, cursor } }, res, next) =>
-    User.find(query, select, cursor)
+export const showUserRequests = ({ querymen: { query, select, cursor } }, res, next) =>
+  User.find(query, select, cursor)
     .then((users) => users.filter((user) => (user.isApproved == false) ? user.view() : false))
     .then(success(res))
     .catch(next)
@@ -28,15 +28,15 @@ export const showMe = ({ user }, res) =>
 export const create = ({ bodymen: { body } }, res, next) => {
   // Create a key pair
   try {
-  const sepCurve = new EC('secp256k1')
-  const userKey = sepCurve.genKeyPair()
+    const sepCurve = new EC('secp256k1')
+    const userKey = sepCurve.genKeyPair()
 
-  // Generate user DID and Primary key
-  const userDid = `did:ethr:${toEthereumAddress(userKey.getPublic('hex'))}`
-  const userPk = userKey.getPrivate('hex')
-  body.did = userDid
-  body.pKey = userPk
-  console.info('body:',body)
+    // Generate user DID and Primary key
+    const userDid = `did:ethr:${toEthereumAddress(userKey.getPublic('hex'))}`
+    const userPk = userKey.getPrivate('hex')
+    body.did = userDid
+    body.pKey = userPk
+    console.info('body:', body)
   } catch (e) {
     console.error('There was an error adding the user: ', e)
   }
@@ -56,7 +56,7 @@ export const create = ({ bodymen: { body } }, res, next) => {
         next(err)
       }
     })
-  }
+}
 
 export const update = ({ bodymen: { body }, params, user }, res, next) =>
   User.findById(params.id === 'me' ? user.id : params.id)

@@ -8,13 +8,13 @@
         </mdb-navbar-brand>
         <mdb-navbar-toggler>
           <mdb-navbar-nav right>
-            <mdb-nav-item router to="/login" v-if="!isAuth" >Login</mdb-nav-item> 
+            <mdb-nav-item router to="/login" v-if="!isAuth" >Login</mdb-nav-item>
             <mdb-nav-item router to="/dashboard" v-if="isAuth" >Dashboard</mdb-nav-item>
             <mdb-nav-item router to="/register" v-if="!isAuth">Register</mdb-nav-item>
             <mdb-nav-item router to="/about" >About</mdb-nav-item>
             <mdb-nav-item router to="/data-explorer" v-if="isAuth" >Data Explorer</mdb-nav-item>
             <mdb-nav-item router to="/historical" v-if="isAuth" >Historical</mdb-nav-item>
-            <mdb-nav-item router to="/approvals" v-if="isAdmin" >Approvals</mdb-nav-item>
+            <mdb-nav-item router to="/manage-users" v-if="isAuth && isAdmin" >Manager Users</mdb-nav-item>
             <mdb-nav-item router to="/" @click="logoutMethod" v-if="isAuth" >Logout</mdb-nav-item>
           </mdb-navbar-nav>
         </mdb-navbar-toggler>

@@ -1,40 +1,85 @@
 <template>
   <div>
-    <div id="request-table-heading">
-        <h1 id="request-table-title">Pending Requests</h1>
+    <div class="table-heading">
+        <h1 class="request-table-title">Manage Users</h1>
     </div>
-    <div id="user-table">
-        <mdb-datatable-2
-            v-model="userReqTable"
-            @selected="selected = $event"
-        />
-        <div id="decision-btn">
-            <button to="/" @click="approveUserMethod" class="btn">Approve</button>
-            <button to="/" @click="rejectUserMethod" class="btn">Deny</button>
-        </div>
+    <div>
+      <h2 >Pending Approval</h2>
+    </div>
+    <div class="user-table">
+      <mdb-tbl v-if="(userReqTable.rows.length > 0)" btn responsive
+               :pagination="(userReqTable.rows > 10)"
+      >
+        <mdb-tbl-head>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </mdb-tbl-head>
+        <mdb-tbl-body>
+          <tr v-for="item in userReqTable.rows" :key="item.reference">
+            <td>{{ item.name }}</td>
+            <td>{{ item.email }}</td>
+            <td>{{ item.createdAt }}</td>
+            <td><button to="/" @click="approveUserMethod(item)" class="btn">Approve</button>
+              <button to="/" @click="deleteUserMethod(item)" class="btn btn-right">Deny</button></td>
+          </tr>
+        </mdb-tbl-body>
+      </mdb-tbl>
+      <div v-else>
+        There are no users waiting to be approved.
+      </div>
+    </div>
+    <div>
+      <h2 class="subheading">Permissions</h2>
+    </div>
+    <div class="user-table">
+      <mdb-tbl btn responsive
+               :pagination="(userTable.rows > 10)"
+      >
+        <mdb-tbl-head>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Created</th>
+            <th>Type</th>
+            <th>Actions</th>
+          </tr>
+        </mdb-tbl-head>
+        <mdb-tbl-body>
+          <tr v-for="item in userTable.rows" :key="item.reference">
+            <td>{{ item.name }}</td>
+            <td>{{ item.email }}</td>
+            <td>{{ item.createdAt }}</td>
+            <td>{{ item.type }}</td>
+            <td><button to="/" @click="switchUserRoleMethod(item)" class="btn">{{ (item.type === 'user'? 'Make Admin' : 'Make User') }}</button>
+              <button to="/" @click="deleteUserMethod(item)" class="btn btn-right"><mdb-icon icon="times-circle" size="lg" /> Delete</button></td>
+          </tr>
+        </mdb-tbl-body>
+      </mdb-tbl>
     </div>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
-  import { mdbDatatable2 } from 'mdbvue'
+  import {  mdbTblHead, mdbTblBody, mdbTbl, mdbIcon } from 'mdbvue'
 
   export default {
     name: 'DatatablePage',
     components: {
-      mdbDatatable2
+      mdbTbl,
+      mdbTblHead,
+      mdbTblBody,
+      mdbIcon
     },
     data() {
       return {
         selected: null,
         userReqTable: {
           columns: [
-            {
-              label: 'Reference',
-              field: 'reference',
-              sort: 'asc'
-            },
             {
               label: 'Name',
               field: 'name',
@@ -49,10 +94,30 @@
               label: 'Requested At',
               field: 'createdAt',
               sort: 'asc'
+            }
+          ],
+          rows: []
+        },
+        userTable: {
+          columns: [
+            {
+              label: 'Name',
+              field: 'name',
+              sort: 'asc'
             },
             {
-              label: 'id',
-              field: 'id',
+              label: 'Email',
+              field: 'email',
+              sort: 'asc'
+            },
+            {
+              label: 'Created At',
+              field: 'createdAt',
+              sort: 'asc'
+            },
+            {
+              label: 'Type',
+              field: 'type',
               sort: 'asc'
             }
           ],
@@ -62,20 +127,20 @@
     },
     mounted() {
       this.loadUserRequest()
+      this.loadUsers()
     },
     methods: {
-      approveUserMethod() {
+      approveUserMethod(item) {
         // Check for event error to prevent propagation
         event.preventDefault()
-
         const regUserRequst = {
           'isApproved': true,
-          'name': this.selected.name,
+          'name': item.name,
           'access_token': this.$store.getters.getUserToken
         }
 
         //Header post method to pass user details by passing created user details
-        axios.put(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${this.selected.id}`, regUserRequst)
+        axios.put(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${item.id}`, regUserRequst)
         // Redirect to requested page
         .then( regUser => {
           console.log(`Added ${regUser.data}`)
@@ -86,10 +151,30 @@
           console.log(err)
         })
       },
-      rejectUserMethod() {
+      switchUserRoleMethod(item) {
         // Check for event error to prevent propagation
         event.preventDefault()
-
+        const regUserRequest = {
+          'role': (item.type === 'user' ? 'admin': 'user'),
+          'name': item.name,
+          'access_token': this.$store.getters.getUserToken
+        }
+        console.log(regUserRequest)
+        //Header post method to pass user details by passing created user details
+        axios.put(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${item.id}`, regUserRequest)
+          // Redirect to requested page
+          .then( regUser => {
+            console.log(`Added ${regUser.data}`)
+            location.reload()
+          })
+          // Check for request errors
+          .catch(err => {
+            console.log(err)
+          })
+      },
+      deleteUserMethod(item) {
+        // Check for event error to prevent propagation
+        event.preventDefault()
         const requestAuth = {
           headers: {
             'Authorization': 'Bearer ' + this.$store.getters.getUserToken,
@@ -98,22 +183,28 @@
         }
 
         //Header post method to pass user details by passing created user details
-        axios.delete(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${this.selected.id}`, requestAuth)
-        // Redirect to requested page
-        .then( regUser => {
-          console.log(`Deleted ${regUser.data}`)
-          location.reload()
-        })
-        // Check for request errors
-        .catch(err => {
-          console.log(err)
-        })
-      },
+        axios.delete(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${item.id}`, requestAuth)
+          // Redirect to requested page
+          .then(regUser => {
+            console.log(`Deleted ${regUser.data}`)
+
+            // check to see which function called the delete method
+            if (item.type === undefined) {
+              this.loadUserRequest()
+            } else {
+              this.loadUsers()
+            }
+          })
+          // Check for request errors
+          .catch(err => {
+            console.log(err)
+          })
+    },
       loadUserRequest() {
         this.$store.dispatch("get_user_requests")
         .then(res => {
           let getList = JSON.parse(JSON.stringify(res.data))
-
+          this.userReqTable.rows = [];
           for (let i = 0; i < getList.length; i++) {
             let userMap = {
               reference: i+1,
@@ -125,28 +216,50 @@
             this.userReqTable.rows.push(userMap)
           }
         })
+      },
+      loadUsers() {
+        this.$store.dispatch("get_users")
+          .then(res => {
+            let getList = JSON.parse(JSON.stringify(res.data))
+            this.userTable.rows = [];
+            for (let i = 0; i < getList.length; i++) {
+              let userMap = {
+                reference: i+1,
+                name: getList[i].name,
+                email: getList[i].email,
+                createdAt: getList[i].createdAt,
+                type: getList[i].role,
+                id: getList[i].id
+              }
+              this.userTable.rows.push(userMap)
+            }
+          })
       }
     }
   }
 </script>
 
 <style scoped>
-  #user-table {
+  .user-table {
     width: 50%;
     padding: 10px;
     margin: auto;
     position: relative;
   }
 
-  #decision-btn {
-    float: right;
+  .subheading {
+    padding-top: 5%;
   }
 
-  #request-table-heading {
+  .table-heading {
     padding: 5%;
 }
 
-  #request-table-title {
+  .request-table-title {
       float: left;
+  }
+
+  .btn-right {
+    float:right;
   }
 </style>
