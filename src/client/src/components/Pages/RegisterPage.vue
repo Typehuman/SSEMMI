@@ -145,8 +145,7 @@ export default {
   }
 
   #register-heading {
-    position: relative;
-    right: 37%;
+    text-align: justify;
   }
 
   #div-explainer {
@@ -170,8 +169,7 @@ export default {
   }
 
   #use-ssemmi-heading {
-    position: relative;
-    right: 22%;
+    text-align: justify;
     font-weight: 300;
   }
 
