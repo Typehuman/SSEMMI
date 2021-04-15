@@ -22,7 +22,7 @@
               <mdb-dropdown-menu left>
                 <mdb-dropdown-item router to="/login" v-if="!isAuth" >Login</mdb-dropdown-item>
                 <mdb-dropdown-item router to="/register" >Invite</mdb-dropdown-item>
-                <mdb-dropdown-item router to="/approvals" v-if="isAdmin" >Manage Users</mdb-dropdown-item>
+                <mdb-dropdown-item router to="/manage-users" v-if="isAuth & isAdmin" >Manage Users</mdb-dropdown-item>
                 <mdb-dropdown-item @click="logoutMethod" href="/" v-if="isAuth" >Logout</mdb-dropdown-item>
               </mdb-dropdown-menu>
             </mdb-dropdown>

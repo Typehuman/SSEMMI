@@ -6,7 +6,7 @@ import Router from 'vue-router'
 import Login from './components/Pages/LoginPage'
 import Dashboard from './components/Pages/DashboardPage'
 import Register from './components/Pages/RegisterPage'
-import Approvals from './components/Pages/ApprovalsPage'
+import ManageUsers from './components/Pages/ApprovalsPage'
 import Visualiser from './components/Pages/VisualiserPage'
 import Heatmap from './components/Pages/HeatmapPage'
 import About from './components/Pages/AboutPage'
@@ -115,10 +115,10 @@ const router = new Router({
       component: About
     },
     {
-      // Approvals page to confirm user registration
-      path: '/approvals',
-      name: 'Approvals',
-      component: Approvals,
+      // Manage Users page to confirm user registration
+      path: '/manage-users',
+      name: 'ManageUsers',
+      component: ManageUsers,
       beforeEnter: (to, from, next) => {
         let hasToken = sessionStorage.getItem('userToken')
         let isRestricted = store.state.isAuthenticated === false
@@ -178,6 +178,9 @@ export const store = new Vuex.Store(
       },
       setUserRequestList(state, list) {
         state.userRequestList = list
+      },
+      setUserList(state, list) {
+        state.userList = list
       },
       setSightings(state, sightings) {
         state.sightings = sightings
@@ -301,6 +304,38 @@ export const store = new Vuex.Store(
               console.error(err)
               reject()
             })
+          } else {
+            // Show error if access to it fails
+            const errMsg = 'Sorry you are not authorised to fetch the data'
+            alert(errMsg)
+            throw console.error(errMsg)
+          }
+        })
+      },
+      get_users({commit}) {
+        return new Promise( (resolve,reject) => {
+          // Check if user has admin priviledges
+          if (store.state.isAdmin) {
+            // Format the admin level header for requesting user requests
+            const requestAuth = {
+              headers: {
+                'Authorization': 'Bearer ' + store.state.userDetails.token,
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            }
+
+            // Pass headers of admin to rtrieve users
+            axios.get(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users`, requestAuth)
+              // Add list of users into the store of users
+              .then( users => {
+                // console.log(users.data)
+                commit('setUserList', users.data)
+                resolve(users)
+              })
+              .catch(err => {
+                console.error(err)
+                reject()
+              })
           } else {
             // Show error if access to it fails
             const errMsg = 'Sorry you are not authorised to fetch the data'

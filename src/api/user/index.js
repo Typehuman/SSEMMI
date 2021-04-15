@@ -41,7 +41,6 @@ router.get('/requests',
   query(),
   showUserRequests)
 
-
 /**
  * @api {get} /users/me Retrieve current user
  * @apiName RetrieveCurrentUser
@@ -103,7 +102,7 @@ router.post('/',
  */
 router.put('/:id',
   token({ required: true, roles: ['admin'] }),
-  body({ name, picture, isApproved }),
+  body({ name, picture, isApproved, role }),
   update)
 
 /**
