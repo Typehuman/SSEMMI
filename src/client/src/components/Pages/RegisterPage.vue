@@ -24,7 +24,7 @@
           </fieldset>
           <!-- Checkbox to enquire purpose of signing up and use of application (pop up after signup submission) -->
           <div class='use-ssemmi-form align-items-center'>
-            <h5 id="use-ssemmi-heading">How do you want to use SSEMMI?</h5>
+            <h5 id="use-ssemmi-heading">How do you intend to use SSEMMI?</h5>
             <br>
             <fieldset>
               <mdb-input type="checkbox" name="BrowseData" />
@@ -146,7 +146,7 @@ export default {
 
   #register-heading {
     position: relative;
-    right: 32%;
+    right: 37%;
   }
 
   #div-explainer {
@@ -171,7 +171,8 @@ export default {
 
   #use-ssemmi-heading {
     position: relative;
-    right: 15%;
+    right: 22%;
+    font-weight: 300;
   }
 
   #section-on-use ul {
