@@ -3,7 +3,6 @@
     <div id="navbar-top">
       <mdb-navbar color="black" dark>
         <mdb-navbar-brand router to="/home">
-          <!-- <router-link id="title" to="/" class='btn'>SSEMMI Client</router-link> -->
           SSEMMI Client
         </mdb-navbar-brand>
         <mdb-navbar-toggler>

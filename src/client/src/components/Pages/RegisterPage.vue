@@ -23,6 +23,7 @@
             <br>
           </fieldset>
           <!-- Checkbox to enquire purpose of signing up and use of application (pop up after signup submission) -->
+          <!-- NEED to implement data type to store in database -->
           <div class='use-ssemmi-form align-items-center'>
             <h5 id="use-ssemmi-heading">How do you intend to use SSEMMI?</h5>
             <br>
