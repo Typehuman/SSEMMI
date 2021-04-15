@@ -156,6 +156,7 @@
         event.preventDefault()
         const regUserRequest = {
           'role': (item.type === 'user' ? 'admin': 'user'),
+          'isApproved': true,
           'name': item.name,
           'access_token': this.$store.getters.getUserToken
         }
