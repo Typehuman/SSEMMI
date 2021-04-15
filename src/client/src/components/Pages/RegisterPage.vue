@@ -2,7 +2,7 @@
 <div>
   <!-- Title and header on the UI -->
   <div style="padding: 5%">
-    <section class="register--section">
+    <section  class="register--section">
       <!-- UI for passing register details -->
       <div>
         <form class='register--form' @submit="register">
@@ -14,20 +14,63 @@
             <mdb-input placeholder="Confirm email:" v-model.trim="registerUserData.email" name="Confirm email" type="email" required/>
           </fieldset>
           <fieldset>
-            <mdb-input placeholder="Password:" v-model.trim="registerUserData.password" name="Password" type="password" required/>
+            <mdb-input placeholder="Password:" v-model.trim="registerUserData.initPassword" name="Password" type="password" required/>
           </fieldset>
           <fieldset>
-            <mdb-btn type='submit' color="white" style="right: 32%">Invite User</mdb-btn>
+            <mdb-input placeholder="Confirm Password:" v-model.trim="registerUserData.password" name="Confirm Password" type="password" required/>
           </fieldset>
+          <fieldset>
+            <br>
+          </fieldset>
+          <!-- Checkbox to enquire purpose of signing up and use of application (pop up after signup submission) -->
+          <!-- NEED to implement data type to store in database -->
+          <div class='use-ssemmi-form align-items-center'>
+            <h5 id="use-ssemmi-heading">How do you intend to use SSEMMI?</h5>
+            <br>
+            <fieldset>
+              <mdb-input type="checkbox" name="BrowseData" />
+              <label for="BrowseData">Browse Data</label>
+            </fieldset>
+            <br>
+            <fieldset>
+              <mdb-input type="checkbox" name="BrowseData" />
+              <label for="ContributeData">Contribute Data</label>
+            </fieldset>
+            <br>
+            <fieldset>
+              <mdb-input type="checkbox" name="BrowseData" />
+              <label for="OtherUse">Other</label>
+            </fieldset>
+            <br>
+            <fieldset id="btn-signup-submit">
+              <mdb-btn type='submit' color="white" style="right: 0%">Sign Up</mdb-btn>
+            </fieldset>
+          </div>
         </form>
       </div>
+    </section>
+    <!-- Component for explainer text -->
+    <section id="div-explainer">
+      <mdb-card>
+        <mdb-card-body>
+          <mdb-card-title>Title</mdb-card-title>
+          <mdb-card-text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit anim id est laborum.
+          </mdb-card-text>
+          <mdb-card-text>Explainer text</mdb-card-text>
+        </mdb-card-body>
+      </mdb-card>
     </section>
   </div>
 </div>
 </template>
 
 <script>
-import { mdbInput, mdbBtn } from 'mdbvue';
+import { mdbInput, mdbBtn, mdbCard, mdbCardBody, mdbCardTitle, mdbCardText } from 'mdbvue';
 import axios from 'axios';
 
 export default {
@@ -35,6 +78,10 @@ export default {
   components: {
     mdbInput,
     mdbBtn,
+    mdbCard,
+    mdbCardBody,
+    mdbCardTitle,
+    mdbCardText
   },
   data() {
     return {
@@ -51,12 +98,17 @@ export default {
       }
 
       if (this.registerUserData.email != this.registerUserData.initEmail) {
-        alert('Email does not match.')
+        alert('Emails do not match.')
         return false
       }
 
       if (!this.registerUserData.password) {
         alert('Password required.')
+        return false
+      }
+
+      if (this.registerUserData.password != this.registerUserData.initPassword) {
+        alert('Passwords do not match.')
         return false
       }
       // Check for event error to prevent propagation
@@ -94,7 +146,42 @@ export default {
   }
 
   #register-heading {
-    position: relative;
-    right: 32%;
+    text-align: justify;
+  }
+
+  #div-explainer {
+    width: 40%;
+    top: 6vh;
+    right: -30vh;
+    margin: 10px;
+    background-color: transparent;
+    display: inline-block;
+  }
+
+  #section-on-use {
+    width: 40%;
+    padding-left: 70px;
+    display: block;
+  }
+
+  .use-ssemmi-form label {
+    float: left;
+    clear: left;
+  }
+
+  #use-ssemmi-heading {
+    text-align: justify;
+    font-weight: 300;
+  }
+
+  #section-on-use ul {
+    /* margin: 0; */
+    list-style: none;
+    float: left;
+  }
+
+  #btn-signup-submit {
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
 </style>

@@ -3,7 +3,6 @@
     <div id="navbar-top">
       <mdb-navbar color="black" dark>
         <mdb-navbar-brand router to="/home">
-          <!-- <router-link id="title" to="/" class='btn'>SSEMMI Client</router-link> -->
           SSEMMI Client
         </mdb-navbar-brand>
         <mdb-navbar-toggler>
@@ -17,15 +16,16 @@
                 <mdb-dropdown-item router to="/historical" v-if="isAuth" >Historical</mdb-dropdown-item>
               </mdb-dropdown-menu>
             </mdb-dropdown>
-            <mdb-dropdown id="dropdown-manage" tag="li" class="nav-item">
+            <mdb-dropdown id="dropdown-manage" tag="li" class="nav-item" v-if="isAuth">
               <mdb-dropdown-toggle tag="a" navLink slot="toggle" >Manage</mdb-dropdown-toggle>
               <mdb-dropdown-menu left>
-                <mdb-dropdown-item router to="/login" v-if="!isAuth" >Login</mdb-dropdown-item>
                 <mdb-dropdown-item router to="/register" >Invite</mdb-dropdown-item>
                 <mdb-dropdown-item router to="/manage-users" v-if="isAuth & isAdmin" >Manage Users</mdb-dropdown-item>
                 <mdb-dropdown-item @click="logoutMethod" href="/" v-if="isAuth" >Logout</mdb-dropdown-item>
               </mdb-dropdown-menu>
             </mdb-dropdown>
+            <mdb-nav-item router to="/login" v-if="!isAuth">Login</mdb-nav-item>
+            <mdb-nav-item router to="/register" v-if="!isAuth">Sign Up</mdb-nav-item>
           </mdb-navbar-nav>
         </mdb-navbar-toggler>
       </mdb-navbar>
