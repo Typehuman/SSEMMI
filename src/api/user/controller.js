@@ -1,7 +1,9 @@
 import { success, notFound } from '../../services/response/'
 import { User } from '.'
+import UserToken from './token.model'
 import { ec as EC } from 'elliptic'
 import { toEthereumAddress } from 'did-jwt'
+import randomString from 'randomstring'
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   User.find(query, select, cursor)
@@ -58,6 +60,35 @@ export const create = ({ bodymen: { body } }, res, next) => {
     })
 }
 
+const generateToken = (userId, name) => {
+  const token = randomString.generate(18)
+  const userToken = new UserToken()
+  userToken.user = userId
+  userToken.name = name
+  userToken.token = token
+  return userToken.save()
+}
+
+export const createToken = async ({ bodymen: { body }, params, user }, res, next) => {
+  try {
+    const { name } = body
+    const { id } = params
+    const resToken = await generateToken(id, name)
+    res.json(resToken)
+  } catch (e) {
+    console.error('There was an error creating a token: ', e)
+    res.status(500)
+  }
+}
+
+export const showTokens = ({ params }, res, next) =>
+  UserToken.find({
+    user: params.id
+  })
+    .then(notFound(res))
+    .then(success(res))
+    .catch(next)
+
 export const update = ({ bodymen: { body }, params, user }, res, next) =>
   User.findById(params.id === 'me' ? user.id : params.id)
     .then(notFound(res))
@@ -104,5 +135,12 @@ export const destroy = ({ params }, res, next) =>
   User.findById(params.id)
     .then(notFound(res))
     .then((user) => user ? user.remove() : null)
+    .then(success(res, 204))
+    .catch(next)
+
+export const deleteToken = ({ params }, res, next) =>
+  UserToken.findById(params.id)
+    .then(notFound(res))
+    .then((userToken) => userToken ? userToken.remove() : null)
     .then(success(res, 204))
     .catch(next)
