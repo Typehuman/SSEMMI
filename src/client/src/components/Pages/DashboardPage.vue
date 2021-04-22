@@ -31,7 +31,7 @@
           <td>{{ item.name }}</td>
           <td>{{ item.token }}</td>
           <td>{{ item.createdAt }}</td>
-          <td><mdb-btn size="sm" to="/" v-clipboard="copyToken" class="btn">Copy</mdb-btn>
+          <td><mdb-btn size="sm" to="/" v-clipboard="() => copyToken(item)" class="btn">Copy</mdb-btn>
              <mdb-btn size="sm" to="/" @click="deleteToken(item)"  class="btn">Delete</mdb-btn></td>
         </tr>
       </mdb-tbl-body>
@@ -87,10 +87,10 @@ export default {
     }
   },
   methods: {
-    copyToken () {
+    copyToken (item) {
       try {
         alert('Token copied!')
-        return this.userToken
+        return item.token
       } catch (error) {
         alert('Sorry, unable to copy your token :(')
       }
@@ -117,8 +117,7 @@ export default {
       this.modal = false
 
       this.$store.dispatch('create_token', this.tokenName)
-        .then((token) => {
-          console.log(token)
+        .then(() => {
           this.loadUserTokens()
         })
         .catch((error) => {

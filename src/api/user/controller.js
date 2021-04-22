@@ -73,8 +73,6 @@ export const createToken = async ({ bodymen: { body }, params, user }, res, next
   try {
     const { name } = body
     const { id } = params
-    console.log('body', body)
-    console.log('params', params)
     const resToken = await generateToken(id, name)
     res.json(resToken)
   } catch (e) {
