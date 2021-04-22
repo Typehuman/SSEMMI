@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { token } from '../../services/passport'
+import { token, userToken } from '../../services/passport'
 import { dbGetAll, dbGetItem, dbPost, dbDelete, dbQueryTrusted } from '../../services/orbitdb'
 
 const router = new Router()
@@ -15,7 +15,7 @@ router
    * @apiParam {String} access_token User access_token.
    * @apiSuccess {Object} List of sightings.
    */
-  .get(token({ required: true }), (req, res) => {
+  .get(userToken(), (req, res) => {
     res.send(dbGetAll())
   })
   /**
@@ -27,7 +27,7 @@ router
    * @apiSuccess {Object} Entry of sighting.
    * @apiError 400 Invalid input.
    */
-  .post(token({ required: true }), (req, res) => {
+  .post(userToken(), (req, res) => {
     if (!req.body) {
       res.send('Invalid input 400')
       return
@@ -60,7 +60,7 @@ router
    * @apiParam {String} access_token User access_token.
    * @apiSuccess {Object} Sighting based on id.
    */
-  .get(token({ required: true }), (req, res) => {
+  .get(userToken(), (req, res) => {
     res.send(dbGetItem(req.params.id))
   })
   /**
@@ -71,7 +71,7 @@ router
    * @apiParam {String} access_token User access_token.
    * @apiSuccess {Object} 200 Deleted sighting entry.
    */
-  .delete(token({ required: true }), (req, res) => {
+  .delete(userToken(), (req, res) => {
     res.send(dbDelete(req.params.id))
   })
 // // PUT specific data
@@ -90,7 +90,7 @@ router
    * @apiParam {String} access_token User access_token.
    * @apiSuccess {Object} Sightings with trusted source.
    */
-  .get(token({ required: true }), (req, res) => {
+  .get(userToken(), (req, res) => {
     res.send(dbQueryTrusted())
   })
 

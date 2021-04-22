@@ -5,6 +5,7 @@ import { Strategy as BearerStrategy } from 'passport-http-bearer'
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 import { jwtSecret, masterKey } from '../../config'
 import User, { schema } from '../../api/user/model'
+import UserToken from '../../api/user/token.model'
 
 export const password = () => (req, res, next) =>
   passport.authenticate('password', { session: false }, (err, user, info) => {
@@ -21,6 +22,9 @@ export const password = () => (req, res, next) =>
 
 export const master = () =>
   passport.authenticate('master', { session: false })
+
+export const userToken = () =>
+  passport.authenticate('userToken', { session: false })
 
 export const token = ({ required, roles = User.roles } = {}) => (req, res, next) =>
   passport.authenticate('token', { session: false }, (err, user, info) => {
@@ -58,6 +62,26 @@ passport.use('master', new BearerStrategy((token, done) => {
   } else {
     done(null, false)
   }
+}))
+
+passport.use('userToken', new BearerStrategy(async (token, done) => {
+  if (token === masterKey) {
+    done(null, {})
+    return null
+  }
+  const userToken = await UserToken.findOne({ token })
+  if (!userToken) {
+    done(null, false)
+    return null
+  }
+
+  const user = await User.findById(userToken.user)
+  if (!user) {
+    done(null, false)
+    return null
+  }
+  done(null, user)
+  return null
 }))
 
 passport.use('token', new JwtStrategy({

@@ -182,6 +182,9 @@ export const store = new Vuex.Store(
       setUserList(state, list) {
         state.userList = list
       },
+      setTokenList(state, list) {
+        state.tokenList = list
+      },
       setSightings(state, sightings) {
         state.sightings = sightings
       }
@@ -288,7 +291,7 @@ export const store = new Vuex.Store(
             const requestAuth = {
               headers: {
                 'Authorization': 'Bearer ' + store.state.userDetails.token,
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
               }
             }
 
@@ -342,6 +345,65 @@ export const store = new Vuex.Store(
             alert(errMsg)
             throw console.error(errMsg)
           }
+        })
+      },
+      get_user_tokens({commit}) {
+        return new Promise( (resolve,reject) => {
+
+            // Format the admin level header for requesting user requests
+            const requestAuth = {
+              headers: {
+                'Authorization': 'Bearer ' + store.state.userDetails.token,
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            }
+
+            // Pass headers of admin to rtrieve users
+            axios.get(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${store.state.userDetails.user.id}/tokens`, requestAuth)
+              // Add list of users into the store of users
+              .then( tokens => {
+                // console.log(users.data)
+                commit('setTokenList', tokens.data)
+                resolve(tokens)
+              })
+              .catch(err => {
+                console.error(err)
+                reject()
+              })
+        })
+      },
+      // eslint-disable-next-line no-unused-vars
+      create_token({ commit }, tokenName) {
+        return new Promise ((resolve, reject) => {
+          const requestAuth = {
+            headers: {
+              'Authorization': 'Bearer ' + store.state.userDetails.token,
+              //'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }
+
+          console.log(tokenName)
+          //Header post method to authenticate login by passing login details
+          axios.post(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${store.state.userDetails.user.id}/tokens`,
+            {
+              name: tokenName
+            },
+            requestAuth
+          )
+            .then( token => {
+              resolve(token)
+            })
+            // Check for request errors
+            .catch(err => {
+              // Initialise error message if server is having problems
+              let errMsg = "Something went wrong! Please try again shortly."
+
+              // Check network and set error message if network is inactive
+              if (!err.response) {
+                errMsg = "There is a network error, Please try again shortly."
+              }
+              reject(errMsg)
+            })
         })
       },
       async get_ipfs_sightings({commit}) {
@@ -420,8 +482,8 @@ export const store = new Vuex.Store(
             endpoint = '/apiv1/sightings'
             // Format the token into header for requesting sightings requests
             requestAuth.headers = {
-                'Authorization': 'Bearer ' + store.state.userDetails.token,
-                'Content-Type': 'application/x-www-form-urlencoded'
+              'Authorization': 'Bearer ' + process.env.VUE_APP_MASTER_KEY,
+              'Content-Type': 'application/x-www-form-urlencoded'
               }
             } else {
             endpoint = '/apiv1/sightings/current'

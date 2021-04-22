@@ -2,7 +2,19 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { password as passwordAuth, master, token } from '../../services/passport'
-import { index, showMe, show, create, update, updatePassword, destroy, showUserRequests } from './controller'
+import {
+  index,
+  showMe,
+  show,
+  create,
+  update,
+  updatePassword,
+  destroy,
+  showUserRequests,
+  createToken,
+  showTokens,
+  deleteToken
+} from './controller'
 import { schema } from './model'
 export User, { schema } from './model'
 
@@ -76,7 +88,7 @@ router.get('/:id',
  * @apiParam {String} [picture] User's picture.
  * @apiParam {String} [isApproved] if the user is approved by admin.
  * @apiParam {String=user,admin} [role=user] User's role.
- * @apiSuccess (Sucess 201) {Object} user User's data.
+ * @apiSuccess (Success 201) {Object} user User's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 401 Master access only.
  * @apiError 409 Email already registered.
@@ -134,5 +146,51 @@ router.put('/:id/password',
 router.delete('/:id',
   token({ required: true, roles: ['admin'] }),
   destroy)
+
+/**
+ * @api {post} /users/tokens Create user token
+ * @apiName CreateUserToken
+ * @apiGroup User
+ * @apiPermission master
+ * @apiParam {String} access_token Master access_token.
+ * @apiParam {String} name of token.
+ * @apiParam {String} user id
+ * @apiSuccess (Success 201) {Object} user token
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 401 Master access only.
+ */
+router.post('/:id/tokens',
+  token({ required: true }),
+  body({ name }),
+  createToken)
+
+/**
+ * @api {get} /users/tokens Get user tokens
+ * @apiName GetUserTokens
+ * @apiGroup User
+ * @apiPermission master
+ * @apiParam {String} user id
+ * @apiSuccess (Success 201) {Object} user tokend
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 401 Master access only.
+ */
+router.get('/:id/tokens',
+  token({ required: true }),
+  body({ name }),
+  showTokens)
+
+/**
+ * @api {delete} /users/tokens/:id Delete token
+ * @apiName DeleteToken
+ * @apiGroup User
+ * @apiPermission admin
+ * @apiParam {String} access_token User access_token.
+ * @apiSuccess (Success 204) 204 No Content.
+ * @apiError 401 Authorized access only.
+ * @apiError 404 Token not found.
+ */
+router.delete('/tokens/:id',
+  token({ required: true }),
+  deleteToken)
 
 export default router

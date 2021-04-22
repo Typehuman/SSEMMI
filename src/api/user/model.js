@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt'
 import mongoose, { Schema } from 'mongoose'
 import mongooseKeywords from 'mongoose-keywords'
 import { env } from '../../config'
+import UserToken from './token.model'
+import randomString from 'randomstring'
 
 const roles = ['user', 'admin']
 
@@ -71,6 +73,23 @@ userSchema.pre('save', function (next) {
     this.password = hash
     next()
   }).catch(next)
+})
+
+userSchema.pre('save', async function (next) {
+  try {
+    if (!this.token) {
+      await UserToken.create({
+        name: 'Default',
+        user: this._id,
+        token: randomString.generate()
+      })
+      next()
+    } else {
+      next()
+    }
+  } catch (e) {
+    next()
+  }
 })
 
 userSchema.methods = {
