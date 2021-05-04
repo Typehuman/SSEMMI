@@ -19,8 +19,10 @@ jobs:
             cd ~/ssemmi-api
             echo 'Starting deployment process'
             git pull
-            cd src/client
             echo 'Begin build process'
+            npm i
+            cd src/client
+            npm i
             npm run build
             sudo cp -R dist/* /var/www/html/
             echo 'Restarting backend'
