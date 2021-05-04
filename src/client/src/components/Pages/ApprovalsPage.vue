@@ -23,8 +23,8 @@
             <td>{{ item.name }}</td>
             <td>{{ item.email }}</td>
             <td>{{ item.createdAt }}</td>
-            <td><button to="/" @click="approveUserMethod(item)" class="btn">Approve</button>
-              <button to="/" @click="deleteUserMethod(item)" class="btn btn-right">Deny</button></td>
+            <td><mdb-btn size="sm" to="/" @click="approveUserMethod(item)" class="btn">Approve</mdb-btn>
+              <mdb-btn size="sm" to="/" @click="deleteUserMethod(item)" class="btn btn-right">Deny</mdb-btn></td>
           </tr>
         </mdb-tbl-body>
       </mdb-tbl>
@@ -54,8 +54,8 @@
             <td>{{ item.email }}</td>
             <td>{{ item.createdAt }}</td>
             <td>{{ item.type }}</td>
-            <td><button to="/" @click="switchUserRoleMethod(item)" class="btn">{{ (item.type === 'user'? 'Make Admin' : 'Make User') }}</button>
-              <button to="/" @click="deleteUserMethod(item)" class="btn btn-right"><mdb-icon icon="times-circle" size="lg" /> Delete</button></td>
+            <td class="center-text"><mdb-btn size="sm" to="/" @click="switchUserRoleMethod(item)" class="btn center">{{ (item.type === 'user'? 'Make Admin' : 'Revoke Admin') }}</mdb-btn>
+              <mdb-btn size="sm" to="/" @click="deleteUserMethod(item)" class="btn btn-right"><mdb-icon icon="times-circle" /> Delete</mdb-btn></td>
           </tr>
         </mdb-tbl-body>
       </mdb-tbl>
@@ -65,7 +65,7 @@
 
 <script>
   import axios from 'axios'
-  import {  mdbTblHead, mdbTblBody, mdbTbl, mdbIcon } from 'mdbvue'
+  import {  mdbTblHead, mdbTblBody, mdbTbl, mdbIcon, mdbBtn } from 'mdbvue'
 
   export default {
     name: 'DatatablePage',
@@ -73,7 +73,8 @@
       mdbTbl,
       mdbTblHead,
       mdbTblBody,
-      mdbIcon
+      mdbIcon,
+      mdbBtn
     },
     data() {
       return {

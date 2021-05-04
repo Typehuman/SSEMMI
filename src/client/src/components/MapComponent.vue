@@ -296,7 +296,7 @@ export default {
 
                 if (currentPage === 'Visualiser') {
                   // Listener function to monitor selected option for DAY
-                  document.getElementById('day-slider').addEventListener('change', (e) => {
+                  document.getElementById('day-slider').addEventListener('input', (e) => {
                     try {
                       // Grab desired date
                       selectedDay = dayjs(parseInt(e.target.value)).date()
