@@ -65,6 +65,7 @@
 
 <script>
   import axios from 'axios'
+  import dayjs from 'dayjs'
   import {  mdbTblHead, mdbTblBody, mdbTbl, mdbIcon, mdbBtn } from 'mdbvue'
 
   export default {
@@ -212,7 +213,7 @@
               reference: i+1,
               name: getList[i].name,
               email: getList[i].email,
-              createdAt: getList[i].createdAt,
+              createdAt: dayjs(getList[i].createdAt).format('DD-MMM-YYYY'),
               id: getList[i]._id
             }
             this.userReqTable.rows.push(userMap)
@@ -229,7 +230,7 @@
                 reference: i+1,
                 name: getList[i].name,
                 email: getList[i].email,
-                createdAt: getList[i].createdAt,
+                createdAt: dayjs(getList[i].createdAt).format('DD-MMM-YYYY'),
                 type: getList[i].role,
                 id: getList[i].id
               }

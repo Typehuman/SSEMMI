@@ -13,13 +13,14 @@ import {
   showUserRequests,
   createToken,
   showTokens,
-  deleteToken
+  deleteToken,
+  updateProfile
 } from './controller'
 import { schema } from './model'
 export User, { schema } from './model'
 
 const router = new Router()
-const { email, password, name, picture, isApproved, role } = schema.tree
+const { email, password, name, picture, isApproved, website, role } = schema.tree
 
 /**
  * @api {get} /users Retrieve users
@@ -163,6 +164,34 @@ router.post('/:id/tokens',
   token({ required: true }),
   body({ name }),
   createToken)
+
+/**
+ * @api {post} /users/profile Create/update user profile
+ * @apiName CreateUserProfile
+ * @apiGroup User
+ * @apiPermission master
+ * @apiParam {String} access_token Master access_token.
+ * @apiParam {String} [name] Contributor name.
+ * @apiParam {String} [website] Contributor website.
+ * @apiParam {String} [logoFile] Base64 of contributor logo.
+ * @apiParam {String} user id
+ * @apiSuccess (Success 201) {Object} user profile
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 401 Master access only.
+ */
+router.post('/:id/profile',
+  token({ required: true }),
+  body({
+    name,
+    website,
+    logoFile: {
+      type: String
+    },
+    fileName: {
+      type: String
+    }
+  }),
+  updateProfile)
 
 /**
  * @api {get} /users/tokens Get user tokens

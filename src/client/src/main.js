@@ -185,6 +185,9 @@ export const store = new Vuex.Store(
       setTokenList(state, list) {
         state.tokenList = list
       },
+      setProfile(state, profile) {
+        state.profile = profile
+      },
       setSightings(state, sightings) {
         state.sightings = sightings
       }
@@ -192,6 +195,9 @@ export const store = new Vuex.Store(
     getters: {
       getUserToken: state => {
         return state.token
+      },
+      getProfile: state => {
+        return state.profile
       },
       getUserDetails: state => {
         return state.userDetails.user
@@ -392,6 +398,39 @@ export const store = new Vuex.Store(
           )
             .then( token => {
               resolve(token)
+            })
+            // Check for request errors
+            .catch(err => {
+              // Initialise error message if server is having problems
+              let errMsg = "Something went wrong! Please try again shortly."
+
+              // Check network and set error message if network is inactive
+              if (!err.response) {
+                errMsg = "There is a network error, Please try again shortly."
+              }
+              reject(errMsg)
+            })
+        })
+      },
+      // eslint-disable-next-line no-unused-vars
+      update_profile({ commit }, formData) {
+        return new Promise ((resolve, reject) => {
+          const requestAuth = {
+            headers: {
+              'Authorization': 'Bearer ' + store.state.userDetails.token,
+              //'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }
+
+          console.log(formData)
+          //Header post method to authenticate login by passing login details
+          axios.post(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${store.state.userDetails.user.id}/profile`,
+            formData,
+            requestAuth
+          )
+            .then( profile => {
+              commit('setProfile', profile.data)
+              resolve(profile)
             })
             // Check for request errors
             .catch(err => {

@@ -129,6 +129,13 @@ export const dbPost = (data, user) => {
   if (data.length === 0) {
     return false
   }
+
+  data.profile = {
+    name: user.name,
+    logo: user.ipfsLogo,
+    website: user.website
+  }
+
   // Regenerate the EC key and sign the object
   const curve = new EC('secp256k1')
   const userKey = curve.keyFromPrivate(user.pKey, 'hex')

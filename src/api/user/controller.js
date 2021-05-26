@@ -4,6 +4,9 @@ import UserToken from './token.model'
 import { ec as EC } from 'elliptic'
 import { toEthereumAddress } from 'did-jwt'
 import randomString from 'randomstring'
+import FormData from 'form-data'
+import fetch from 'node-fetch'
+import fs from 'fs'
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   User.find(query, select, cursor)
@@ -77,6 +80,56 @@ export const createToken = async ({ bodymen: { body }, params, user }, res, next
     res.json(resToken)
   } catch (e) {
     console.error('There was an error creating a token: ', e)
+    res.status(500)
+  }
+}
+
+// This function is largely based on IPFS add from uportlandia/node_scripts/create_issuers.js
+const uploadIPFS = async (filepath) => {
+  const logoImage = fs.readFileSync(filepath)
+  try {
+    const uploadForm = new FormData()
+    uploadForm.append('file', logoImage)
+    const ipfsRes = await fetch('https://ipfs.infura.io:5001/api/v0/add?pin=true', {
+      method: 'post',
+      body: uploadForm
+    })
+    const hash = (await ipfsRes.json()).Hash
+    return `/ipfs/${hash}`
+  } catch (e) {
+    console.error(`There was an error uploading to ipfs: ${e}`)
+    throw e
+  }
+}
+
+export const updateProfile = async ({ bodymen: { body }, params, user }, res, next) => {
+  try {
+    const { name, logoFile, website, fileName } = body
+    const tempFile = logoFile.replace(/^data:image\/\w+;base64,/, '')
+    const buffImg = Buffer.from(tempFile, 'base64')
+    const filePath = `tmp/${fileName}`
+    await fs.writeFile(filePath, buffImg, (err) => {
+      if (err) { console.log(err) } else {
+        console.log('Temporary file written successfully\n')
+      }
+    })
+    const { id } = params
+    const user = await User.findById(id)
+    const ipfsUrl = await uploadIPFS(filePath)
+    /* await fs.unlink(filePath, (err) => {
+      if (err) { console.log(err) } else {
+        console.log('Temporary file deleted\n')
+      }
+    }) */
+    console.log(ipfsUrl)
+    user.name = name
+    user.logo = logoFile
+    user.ipfsLogo = ipfsUrl
+    user.website = website
+    await user.save()
+    res.json({ name: user.name, website: user.website, logoFile: user.logo, ipfsLogo: user.ipfsLogo })
+  } catch (e) {
+    console.error('There was an error updating a profile: ', e)
     res.status(500)
   }
 }

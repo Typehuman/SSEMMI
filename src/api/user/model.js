@@ -36,6 +36,15 @@ const userSchema = new Schema({
     type: String,
     trim: true
   },
+  logo: {
+    type: String
+  },
+  ipfsLogo: {
+    type: String
+  },
+  website: {
+    type: String
+  },
   did: {
     type: String
   },
@@ -77,7 +86,8 @@ userSchema.pre('save', function (next) {
 
 userSchema.pre('save', async function (next) {
   try {
-    if (!this.token) {
+    const tokens = await UserToken.findOne({ user: this._id })
+    if (!tokens) {
       await UserToken.create({
         name: 'Default',
         user: this._id,
@@ -95,7 +105,7 @@ userSchema.pre('save', async function (next) {
 userSchema.methods = {
   view (full) {
     const view = {}
-    let fields = ['id', 'name', 'picture', 'role', 'isApproved']
+    let fields = ['id', 'name', 'picture', 'role', 'logo', 'website', 'isApproved']
 
     if (full) {
       fields = [...fields, 'email', 'createdAt']

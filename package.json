@@ -60,6 +60,7 @@
     "did-jwt": "^4.6.2",
     "elliptic": "^6.5.3",
     "express": "^4.17.1",
+    "form-data": "^4.0.0",
     "google-spreadsheet": "^3.0.13",
     "ipfs": "^0.50.2",
     "jsonwebtoken": "^8.5.1",
@@ -68,6 +69,7 @@
     "mongoose-keywords": "^0.4.0",
     "morgan": "^1.9.1",
     "node-cron": "^2.0.3",
+    "node-fetch": "^2.6.1",
     "object-hash": "^2.0.3",
     "orbit-db": "^0.26.0",
     "orbit-db-identity-provider": "^0.3.1",
@@ -80,6 +82,7 @@
     "randomstring": "^1.1.5",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
-    "swagger-jsdoc": "^4.0.0"
+    "swagger-jsdoc": "^4.0.0",
+    "vue-upload-component": "^2.8.22"
   }
 }

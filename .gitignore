@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
 public
-.tmp
+.tmp/*
 .idea
 .log
 dist

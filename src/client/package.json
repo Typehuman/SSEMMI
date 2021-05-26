@@ -17,6 +17,7 @@
     "orbit-db": "^0.26.0",
     "v-clipboard": "^2.2.3",
     "vue": "^2.6.12",
+    "vue-avatar": "^2.3.3",
     "vuex-persistedstate": "^4.0.0-beta.1"
   },
   "devDependencies": {
