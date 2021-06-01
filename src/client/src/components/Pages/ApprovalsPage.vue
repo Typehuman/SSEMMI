@@ -142,7 +142,7 @@
         }
 
         //Header post method to pass user details by passing created user details
-        axios.put(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${item.id}`, regUserRequst)
+        axios.put(`${process.env.VUE_APP_WEB_SERVER_URL}/v1/users/${item.id}`, regUserRequst)
         // Redirect to requested page
         .then( regUser => {
           console.log(`Added ${regUser.data}`)
@@ -164,7 +164,7 @@
         }
         console.log(regUserRequest)
         //Header post method to pass user details by passing created user details
-        axios.put(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${item.id}`, regUserRequest)
+        axios.put(`${process.env.VUE_APP_WEB_SERVER_URL}/v1/users/${item.id}`, regUserRequest)
           // Redirect to requested page
           .then( regUser => {
             console.log(`Added ${regUser.data}`)
@@ -186,7 +186,7 @@
         }
 
         //Header post method to pass user details by passing created user details
-        axios.delete(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/${item.id}`, requestAuth)
+        axios.delete(`${process.env.VUE_APP_WEB_SERVER_URL}/v1/users/${item.id}`, requestAuth)
           // Redirect to requested page
           .then(regUser => {
             console.log(`Deleted ${regUser.data}`)

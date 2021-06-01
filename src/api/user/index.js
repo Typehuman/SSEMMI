@@ -27,6 +27,7 @@ const { email, password, name, picture, isApproved, website, role } = schema.tre
  * @apiName RetrieveUsers
  * @apiGroup User
  * @apiPermission admin
+ * @apiPrivate
  * @apiParam {String} access_token User access_token.
  * @apiUse listParams
  * @apiSuccess {Object[]} users List of users.
@@ -43,6 +44,7 @@ router.get('/',
  * @apiName RetrieveCurrentUserRequests
  * @apiGroup User
  * @apiPermission admin
+ * @apiPrivate
  * @apiParam {String} access_token User access_token.
  * @apiSuccess {Object} user request User's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
@@ -81,6 +83,7 @@ router.get('/:id',
  * @api {post} /users Create user
  * @apiName CreateUser
  * @apiGroup User
+ * @apiPrivate
  * @apiPermission master
  * @apiParam {String} access_token Master access_token.
  * @apiParam {String} email User's email.
@@ -139,7 +142,9 @@ router.put('/:id/password',
  * @apiName DeleteUser
  * @apiGroup User
  * @apiPermission admin
+ * @apiPrivate
  * @apiParam {String} access_token User access_token.
+ * @apiParam {Number} id The user id to be deleted.
  * @apiSuccess (Success 204) 204 No Content.
  * @apiError 401 Admin access only.
  * @apiError 404 User not found.
@@ -149,13 +154,13 @@ router.delete('/:id',
   destroy)
 
 /**
- * @api {post} /users/tokens Create user token
+ * @api {post} /users/:id/tokens Create user token
  * @apiName CreateUserToken
  * @apiGroup User
  * @apiPermission master
  * @apiParam {String} access_token Master access_token.
- * @apiParam {String} name of token.
- * @apiParam {String} user id
+ * @apiParam {String} [name] name of token.
+ * @apiParam {Number} id user id
  * @apiSuccess (Success 201) {Object} user token
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 401 Master access only.
@@ -166,7 +171,7 @@ router.post('/:id/tokens',
   createToken)
 
 /**
- * @api {post} /users/profile Create/update user profile
+ * @api {post} /users/:id/profile Create/update user profile
  * @apiName CreateUserProfile
  * @apiGroup User
  * @apiPermission master
@@ -174,7 +179,7 @@ router.post('/:id/tokens',
  * @apiParam {String} [name] Contributor name.
  * @apiParam {String} [website] Contributor website.
  * @apiParam {String} [logoFile] Base64 of contributor logo.
- * @apiParam {String} user id
+ * @apiParam {Number} id user id
  * @apiSuccess (Success 201) {Object} user profile
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 401 Master access only.
@@ -194,11 +199,11 @@ router.post('/:id/profile',
   updateProfile)
 
 /**
- * @api {get} /users/tokens Get user tokens
+ * @api {get} /users/:id/tokens Get user tokens
  * @apiName GetUserTokens
  * @apiGroup User
  * @apiPermission master
- * @apiParam {String} user id
+ * @apiParam {Number} id user id
  * @apiSuccess (Success 201) {Object} user tokend
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 401 Master access only.
@@ -213,7 +218,8 @@ router.get('/:id/tokens',
  * @apiName DeleteToken
  * @apiGroup User
  * @apiPermission admin
- * @apiParam {String} access_token User access_token.
+ * @apiParam {String} access_token User access_token
+ * @apiParam {String} id user token id
  * @apiSuccess (Success 204) 204 No Content.
  * @apiError 401 Authorized access only.
  * @apiError 404 Token not found.

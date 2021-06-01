@@ -9,6 +9,7 @@ const router = new Router()
  * @apiName Authenticate
  * @apiGroup Auth
  * @apiPermission master
+ * @apiPrivate
  * @apiHeader {String} Authorization Basic authorization with email and password.
  * @apiParam {String} access_token Master access_token.
  * @apiSuccess (Success 201) {String} token User `access_token` to be passed to other requests.
