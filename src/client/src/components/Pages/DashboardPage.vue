@@ -1,44 +1,6 @@
 <template>
   <div>
-    <div>
-      <div class="table-heading">
-          <h1 class="table-title">Your Active Tokens</h1>
-          <mdb-btn outline="black" id="token-table-btn-new" class="btn-right" @click.native="modal = true">Create Token</mdb-btn>
-      </div>
-    <mdb-modal :show="modal" @close="modal = false" centered>
-    <mdb-modal-header>
-      <mdb-modal-title>Create Token</mdb-modal-title>
-    </mdb-modal-header>
-    <mdb-modal-body class="grey-text">
-          <mdb-input label="Add a name for your token" group type="text" validate error="wrong" success="right" v-model="tokenName"/>
-    </mdb-modal-body>
-    <mdb-modal-footer>
-      <mdb-btn color="secondary" @click.native="modal = false">Cancel</mdb-btn>
-      <mdb-btn color="primary" :disabled="tokenName === ''" @click="createToken()">Create Token</mdb-btn>
-    </mdb-modal-footer>
-    </mdb-modal>
-    <div class="token-table-container">
-      <mdb-tbl responsive>
-        <mdb-tbl-head>
-          <tr>
-            <th>Name</th>
-            <th>Token</th>
-            <th>Created</th>
-            <th>Actions</th>
-          </tr>
-        </mdb-tbl-head>
-        <mdb-tbl-body>
-          <tr v-for="item in userTokenTable.rows" :key="item.reference">
-            <td>{{ item.name }}</td>
-            <td>{{ item.token }}</td>
-            <td>{{ item.createdAt }}</td>
-            <td><mdb-btn size="sm" to="/" v-clipboard="() => copyToken(item)" class="btn">Copy</mdb-btn>
-               <mdb-btn size="sm" to="/" @click="deleteToken(item)"  class="btn">Delete</mdb-btn></td>
-          </tr>
-        </mdb-tbl-body>
-      </mdb-tbl>
-    </div>
-  </div>
+
     <div>
       <div class="contrib-heading">
         <h1 class="table-title">Contributor Profile</h1>
@@ -65,11 +27,50 @@
               </div>
               </div>
               <div class="text-center mt-3">
-                <mdb-btn type="submit" @click="submitForm()">Save</mdb-btn>
+                <mdb-btn type="submit" @click="submitForm()">{{ (profile.name !== '' ? 'Update': 'Save') }}</mdb-btn>
               </div>
             </form>
           </mdb-card-body>
         </mdb-card>
+      </div>
+    </div>
+    <div>
+      <div class="table-heading">
+        <h1 class="table-title">Your Active Tokens</h1>
+        <mdb-btn outline="black" id="token-table-btn-new" class="btn-right" @click.native="modal = true">Create Token</mdb-btn>
+      </div>
+      <mdb-modal :show="modal" @close="modal = false" centered>
+        <mdb-modal-header>
+          <mdb-modal-title>Create Token</mdb-modal-title>
+        </mdb-modal-header>
+        <mdb-modal-body class="grey-text">
+          <mdb-input label="Add a name for your token" group type="text" validate error="wrong" success="right" v-model="tokenName"/>
+        </mdb-modal-body>
+        <mdb-modal-footer>
+          <mdb-btn color="secondary" @click.native="modal = false">Cancel</mdb-btn>
+          <mdb-btn color="primary" :disabled="tokenName === ''" @click="createToken()">Create Token</mdb-btn>
+        </mdb-modal-footer>
+      </mdb-modal>
+      <div class="token-table-container">
+        <mdb-tbl responsive>
+          <mdb-tbl-head>
+            <tr>
+              <th>Name</th>
+              <th>Token</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </mdb-tbl-head>
+          <mdb-tbl-body>
+            <tr v-for="item in userTokenTable.rows" :key="item.reference">
+              <td>{{ item.name }}</td>
+              <td>{{ item.token }}</td>
+              <td>{{ item.createdAt }}</td>
+              <td><mdb-btn size="sm" to="/" v-clipboard="() => copyToken(item)" class="btn">Copy</mdb-btn>
+                <mdb-btn size="sm" to="/" @click="deleteToken(item)"  class="btn">Delete</mdb-btn></td>
+            </tr>
+          </mdb-tbl-body>
+        </mdb-tbl>
       </div>
     </div>
   </div>
@@ -216,7 +217,7 @@ export default {
       }
 
       //Header post method to pass user details by passing created user details
-      axios.delete(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/tokens/${item.id}`, requestAuth)
+      axios.delete(`${process.env.VUE_APP_WEB_SERVER_URL}/v1/users/tokens/${item.id}`, requestAuth)
         // Redirect to requested page
         .then(regUser => {
           console.log(`Deleted ${regUser.data}`)
@@ -263,6 +264,7 @@ export default {
 
 .contrib-heading {
   display:flex;
+  padding: 5% 5% 0;
 }
 
 .table-title {

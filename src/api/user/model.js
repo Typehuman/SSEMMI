@@ -105,7 +105,7 @@ userSchema.pre('save', async function (next) {
 userSchema.methods = {
   view (full) {
     const view = {}
-    let fields = ['id', 'name', 'picture', 'role', 'logo', 'website', 'isApproved']
+    let fields = ['id', 'name', 'picture', 'role', 'logo', 'website', 'ipfsLogo', 'isApproved']
 
     if (full) {
       fields = [...fields, 'email', 'createdAt']

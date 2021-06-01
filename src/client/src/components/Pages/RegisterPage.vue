@@ -121,7 +121,7 @@ export default {
       }
 
       //Header post method to pass user details by passing created user details
-      axios.post(`${process.env.VUE_APP_WEB_SERVER_URL}/apiv1/users/`, regUserRequst)
+      axios.post(`${process.env.VUE_APP_WEB_SERVER_URL}/v1/users/`, regUserRequst)
       // Redirect to requested page
       .then( regUser => {
         console.log(`Successfully added ${regUser.data}`)
