@@ -47,7 +47,18 @@ axios.get('https://ssemmi-api.typehuman.dev/v1/sightings', requestAuth)
   console.error(`There was an error getting sightings: ${err}`)
 })
 ```    
-
+5. Finally, there is the structure of the data. When you send data to the [Sightings Api](DOCS.md#markdown-header-sightings),
+only data that fits in the format will be stored. The format is shown below;
+   >- **data_source_name:** The name of the data entry
+   >- **data_source_entity:** Your organisation 
+   >- **data_source_id:** the ID of the record in your system
+   >- **created:** When was the sighting record created
+   >- **photo_url:** The URL of the photo sighting
+   >- **no_sighted:** The number of whales sighted
+   >- **latitude:** Latitude of the sighting
+   >- **longitude:** Longitude of the sighting
+   >- **data_source_witness:** The name of the witness
+   >- **data_source_comments:** Any comments added by the witness
 
 
 

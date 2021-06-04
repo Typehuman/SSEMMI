@@ -1,6 +1,8 @@
 import { Router } from 'express'
-import { token, userToken } from '../../services/passport'
+import { userToken } from '../../services/passport'
 import { dbGetAll, dbGetItem, dbPost, dbDelete, dbQueryTrusted } from '../../services/orbitdb'
+import { exportCSV } from './controller'
+import dayjs from 'dayjs'
 
 const router = new Router()
 
@@ -48,6 +50,42 @@ router
    */
   .get((req, res) => {
     res.send(dbGetAll(true))
+  })
+
+router
+  .route('/export')
+  /**
+   * @api {get} /sightings Retrieve current sightings
+   * @apiName RetrieveSightings
+   * @apiGroup Sightings
+   * @apiPermission user
+   * @apiParam {String} access_token User access_token.
+   * @apiSuccess {Object} List of sightings.
+   */
+  .get(userToken(), async (req, res) => {
+    const csv = await exportCSV()
+    res.header('Content-Type', 'text/csv')
+    res.attachment(`SSEMMI-Export-${dayjs().format('DD/MM/YYYY')}.csv`)
+
+    res.send(csv)
+  })
+
+router
+  .route('/import')
+  /**
+   * @api {get} /sightings Retrieve current sightings
+   * @apiName RetrieveSightings
+   * @apiGroup Sightings
+   * @apiPermission user
+   * @apiParam {String} access_token User access_token.
+   * @apiSuccess {Object} List of sightings.
+   */
+  .get(userToken(), async (req, res) => {
+    const csv = await exportCSV()
+    res.header('Content-Type', 'text/csv')
+    res.attachment(`SSEMMI-Export-${dayjs().format('DD/MM/YYYY')}.csv`)
+
+    res.send(csv)
   })
 
 router
