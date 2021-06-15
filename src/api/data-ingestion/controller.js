@@ -1,5 +1,7 @@
-import { dbGetAll } from '../../services/orbitdb'
+import { dbGetAll, dbPost } from '../../services/orbitdb'
 import { Parser, transforms } from 'json2csv'
+import parse from 'csv-parse/lib/sync'
+import fs from 'fs'
 
 export const exportCSV = async () => {
   try {
@@ -15,5 +17,26 @@ export const exportCSV = async () => {
     return jsonParser.parse(exportData)
   } catch (e) {
     throw e
+  }
+}
+
+export const importCSV = async (req, res) => {
+  try {
+    console.log(req.file)
+    const csvData = await fs.readFileSync(req.file.path)
+    const formattedData = parse(csvData, { columns: true, skip_empty_lines: true })
+    console.info('Import file successful read and formatted')
+    await fs.unlink(req.file.path, (err) => {
+      if (err) { console.log(err) } else {
+        console.log('Temporary file deleted\n')
+      }
+    })
+
+    await Promise.all(formattedData.map(async (rec) => {
+      await dbPost(rec, req.user)
+    }))
+    res.send({ status: 'success' })
+  } catch (e) {
+    console.error(`There was an error importing the file: ${e}`)
   }
 }

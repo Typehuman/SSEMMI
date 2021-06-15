@@ -1,8 +1,10 @@
 import { Router } from 'express'
 import { userToken } from '../../services/passport'
 import { dbGetAll, dbGetItem, dbPost, dbDelete, dbQueryTrusted } from '../../services/orbitdb'
-import { exportCSV } from './controller'
+import { exportCSV, importCSV } from './controller'
 import dayjs from 'dayjs'
+import multer from 'multer'
+import os from 'os'
 
 const router = new Router()
 
@@ -70,23 +72,40 @@ router
     res.send(csv)
   })
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, os.tmpdir())
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + dayjs() + '-' + file.originalname)
+  }
+})
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 10000000 // 10000000 Bytes = 10 MB
+  },
+  fileFilter (req, file, cb) {
+    if (!file.originalname.match(/\.(csv)$/)) {
+      // upload only csv format
+      return cb(new Error('Please upload a csv'))
+    }
+    cb(undefined, true)
+  }
+})
+
 router
   .route('/import')
   /**
-   * @api {get} /sightings Retrieve current sightings
+   * @api {post} /sightings Retrieve current sightings
    * @apiName RetrieveSightings
    * @apiGroup Sightings
    * @apiPermission user
    * @apiParam {String} access_token User access_token.
    * @apiSuccess {Object} List of sightings.
    */
-  .get(userToken(), async (req, res) => {
-    const csv = await exportCSV()
-    res.header('Content-Type', 'text/csv')
-    res.attachment(`SSEMMI-Export-${dayjs().format('DD/MM/YYYY')}.csv`)
-
-    res.send(csv)
-  })
+  .post(userToken(), upload.single('file'), importCSV)
 
 router
   .route('/:id')
