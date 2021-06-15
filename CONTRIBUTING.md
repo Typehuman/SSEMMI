@@ -9,14 +9,14 @@ the data store. Data is added through our partners (add partner data here).
 For websites that wish to contribute to, or benefit from, our open access data - follow the steps below;
 
 ### Sign up to SSEMMI Project
-1. Go to the [SSEEMMI Project website](https://sssemmi-api.typehuman.dev) and click on register
+1. Go to the [SSEEMMI Project website](https://acartia.io) and click on register
 2. Fill out the registration form and click 'Sign up'
 3. An administrator will review your request and notify you when your account is process
 
 
 ### Integrate SSEMMI with your website
 These steps can be undertaken once your account has been approved.
-1. Go to the [SSEEMMI Project website](https://sssemmi-api.typehuman.dev) and click on Login
+1. Go to the [SSEEMMI Project website](https://acartia.io) and click on Login
 2. Enter your email and password and click 'login'
 3. You will see two sections; **Contributor Profile** and **Your Active Tokens**. You can add your information to 
 Contributor Profile now, or alternatively update it later.
@@ -38,7 +38,7 @@ const requestAuth = {
       }
 
 // Pass headers of admin to retreive user requests
-axios.get('https://ssemmi-api.typehuman.dev/v1/sightings', requestAuth)
+axios.get('https://acartia.io/v1/sightings', requestAuth)
 // Add list of users into the store of user requests
 .then( sightings => {
   ## Actions that you want to take with the sightings

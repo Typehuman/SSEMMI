@@ -53,7 +53,7 @@ $ cd src/client && npm run serve
 ## API
 Below are the sightings API endpoints that can be used to create and consume open source 
 data. Before using this API, you are required to create an account and generate an API key on 
-the [SSEMMI Project Dashboard](https://ssemmi-api.typehuman.dev/).
+the [SSEMMI Project Dashboard](https://acartia.io/).
 
 More information on how to contribute data to the project can be found [here](CONTRIBUTING.md#contributing-data),
 and more information on contributing to the codebase can be found [here](CONTRIBUTING.md#contributing-code).
@@ -76,7 +76,7 @@ ___
 [Back to top](#api)
 
 ```
-POST https://ssemmi-api.typehuman.dev/api/v1/sightings
+POST https://acartia.io/api/v1/sightings
 ```
 
 ### Parameters - `Parameter`
@@ -105,7 +105,7 @@ POST https://ssemmi-api.typehuman.dev/api/v1/sightings
 [Back to top](#api)
 
 ```
-DELETE https://ssemmi-api.typehuman.dev/api/v1/sightings/:id
+DELETE https://acartia.io/api/v1/sightings/:id
 ```
 
 ### Parameters - `Parameter`
@@ -126,7 +126,7 @@ DELETE https://ssemmi-api.typehuman.dev/api/v1/sightings/:id
 [Back to top](#api)
 
 ```
-GET https://ssemmi-api.typehuman.dev/api/v1/sightings/current
+GET https://acartia.io/api/v1/sightings/current
 ```
 
 ### Success response
@@ -141,7 +141,7 @@ GET https://ssemmi-api.typehuman.dev/api/v1/sightings/current
 [Back to top](#api)
 
 ```
-GET https://ssemmi-api.typehuman.dev/api/v1/sightings/trusted
+GET https://acartia.io/api/v1/sightings/trusted
 ```
 
 ### Parameters - `Parameter`
@@ -162,7 +162,7 @@ GET https://ssemmi-api.typehuman.dev/api/v1/sightings/trusted
 [Back to top](#api)
 
 ```
-GET https://ssemmi-api.typehuman.dev/api/v1/sightings/:id
+GET https://acartia.io/api/v1/sightings/:id
 ```
 
 ### Parameters - `Parameter`
