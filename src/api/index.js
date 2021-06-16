@@ -50,7 +50,7 @@ router.use('/docs', express.static('src/docs'))
 
 //  CORS Whitelist prod and local frontend URLs for the application
 const corsWhitelist = {
-  origin: ['acartia.io', 'localhost:8082']
+  origin: ['https://acartia.io', 'http://localhost:8082']
 }
 
 router.use('/v1/users', cors(corsWhitelist), user)
