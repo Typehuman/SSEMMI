@@ -86,6 +86,7 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "swagger-jsdoc": "^4.0.0",
+    "uuid": "^8.3.2",
     "vue-upload-component": "^2.8.22"
   }
 }

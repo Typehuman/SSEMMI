@@ -138,6 +138,27 @@ router
 
 // List sightings from trusted sources
 router
+  .route('/import/getTemplate')
+  /**
+   * @api {get} /sightings/trusted Retrieve sightings marked as trusted
+   * @apiName RetrieveTrustedSighting
+   * @apiGroup Sightings
+   * @apiPermission user
+   * @apiParam {String} access_token User access_token.
+   * @apiSuccess {Object} Sightings with trusted source.
+   */
+  .get(userToken(), (req, res) => {
+    const dirPath = 'src/public/'
+    const fileName = 'acartia-import-template.csv'
+    res.download(dirPath + fileName, fileName, (err) => {
+      if (err) {
+        res.status(500).send({ message: `There was an error when trying to download the file: ${err}` })
+      }
+    })
+  })
+
+// List sightings from trusted sources
+router
   .route('/trusted')
   /**
    * @api {get} /sightings/trusted Retrieve sightings marked as trusted

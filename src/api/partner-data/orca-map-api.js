@@ -43,7 +43,6 @@ function ssemmiFormatting (entryData, count) {
   // Map entries into a SSEMMI compliant JSON format
   const source_input = {
     ssemmi_id: 'ORCAMAP' + count,
-    entry_id: new Date().getTime(),
     data_source_name: 'Orca Map',
     data_source_entity: 'Orca Map',
     data_source_id: entryData.timestamp,
@@ -54,8 +53,7 @@ function ssemmiFormatting (entryData, count) {
     longitude: entryData.longitude,
     data_source_witness: entryData.user,
     trusted: trustedInput,
-    data_source_comments: `${entryData.type} entry: ${entryData.Notes}`,
-    ssemmi_date_added: String(new Date())
+    data_source_comments: `${entryData.type} entry: ${entryData.Notes}`
   }
 
   // Return the JSON payload to advance to the next step

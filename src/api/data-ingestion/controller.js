@@ -38,5 +38,6 @@ export const importCSV = async (req, res) => {
     res.send({ status: 'success' })
   } catch (e) {
     console.error(`There was an error importing the file: ${e}`)
+    res.status(500).json({ error: e })
   }
 }

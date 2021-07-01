@@ -5,6 +5,7 @@ import vuexPersistedState from 'vuex-persistedstate'
 import Router from 'vue-router'
 import Login from './components/Pages/LoginPage'
 import Dashboard from './components/Pages/DashboardPage'
+import ManageData from './components/Pages/DataPage'
 import Register from './components/Pages/RegisterPage'
 import ManageUsers from './components/Pages/ApprovalsPage'
 import Visualiser from './components/Pages/VisualiserPage'
@@ -146,6 +147,12 @@ const router = new Router({
       path: '/historical',
       name: 'Historical',
       component: Heatmap
+    },
+    {
+      // Data import and export page
+      path: '/manage-data',
+      name: 'ManageData',
+      component: ManageData
     }
   ]
 })
@@ -543,7 +550,29 @@ export const store = new Vuex.Store(
               reject()
             })
         })
-      }
+      },
+    get_data_export() {
+      return new Promise( (resolve,reject) => {
+        let options = {}
+        const endpoint = '/v1/sightings/export'
+        // Format the token into header for requesting sightings requests
+        options.headers = {
+          'Authorization': 'Bearer ' + process.env.VUE_APP_MASTER_KEY,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+
+        options.responseType = 'blob'
+
+        axios.get(`${process.env.VUE_APP_WEB_SERVER_URL}${endpoint}`, options)
+          .then( res => {
+            resolve(res)
+          })
+          .catch(err => {
+            console.error(err)
+            reject()
+          })
+      })
+    }
     },
     plugins: [vuexPersistedState({
       storage:window.sessionStorage
