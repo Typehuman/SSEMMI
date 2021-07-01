@@ -35,7 +35,6 @@ refer to https://github.com/ipfs/js-ipfs/issues/3043 **/
 function ssemmiFormatting (entryData, count) {
   const source_input = {
     ssemmi_id: 'CITISCI' + count,
-    entry_id: new Date().getTime(),
     data_source_name: 'Citizen-Science',
     data_source_entity: 'Resolve Conservation',
     data_source_id: count,
@@ -46,8 +45,7 @@ function ssemmiFormatting (entryData, count) {
     longitude: undefinedStrChecks(entryData.longitude),
     data_source_witness: entryData['Initial Sighting Source'],
     trusted: 'N/A',
-    data_source_comments: `${entryData['Number and Behavior of Whales']}`,
-    ssemmi_date_added: String(new Date())
+    data_source_comments: `${entryData['Number and Behavior of Whales']}`
   }
   return source_input
 }

@@ -5,6 +5,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import { ec as EC } from 'elliptic'
 import ObjectHash from 'object-hash'
+import { v4 as uuidv4 } from 'uuid'
 
 // Initial ipfs setup
 console.log('Starting up IPFS js Node.... \n')
@@ -44,7 +45,7 @@ export const dbService = async () => {
     // Allow write access
     const access = {
       write: ['*'],
-      indexBy: 'ssemmi_id',
+      indexBy: 'entry_id',
       accessController: {
         type: 'orbitdb'
       }
@@ -142,6 +143,8 @@ export const dbPost = (data, user) => {
   const dataHash = ObjectHash(data)
   const signDER = userKey.sign(dataHash)
   const sigHex = { r: signDER.r.toJSON(), s: signDER.s.toJSON() }
+  data.entry_id = uuidv4()
+  data.ssemmi_date_added = String(new Date())
   data.submitter_did = user.did
   data.signature = sigHex
 

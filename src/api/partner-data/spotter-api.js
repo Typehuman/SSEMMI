@@ -52,7 +52,6 @@ export const loadApi = async (api, loadHistory = false) => {
                 refer to https://github.com/ipfs/js-ipfs/issues/3043 **/
         var source_input = {
           ssemmi_id: 'SPOTTER' + jsonData.results[i].id,
-          entry_id: new Date().getTime(),
           data_source_name: 'Spotter-API',
           data_source_entity: 'Conserve.io',
           data_source_id: jsonData.results[i].id,
@@ -63,8 +62,7 @@ export const loadApi = async (api, loadHistory = false) => {
           longitude: jsonData.results[i].longitude,
           data_source_witness: jsonData.results[i].usernm,
           trusted: jsonData.results[i].trusted,
-          data_source_comments: jsonData.results[i].comments,
-          ssemmi_date_added: currentDate
+          data_source_comments: jsonData.results[i].comments
         }
 
         // Wrap in a try catch to put into the db

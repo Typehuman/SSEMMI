@@ -116,11 +116,11 @@ export const updateProfile = async ({ bodymen: { body }, params, user }, res, ne
     const { id } = params
     const user = await User.findById(id)
     const ipfsUrl = await uploadIPFS(filePath)
-    /* await fs.unlink(filePath, (err) => {
+    await fs.unlink(filePath, (err) => {
       if (err) { console.log(err) } else {
         console.log('Temporary file deleted\n')
       }
-    }) */
+    })
     console.log(ipfsUrl)
     user.name = name
     user.logo = logoFile

@@ -17,6 +17,7 @@
               </mdb-dropdown-menu>
             </mdb-dropdown>
             <mdb-nav-item router to="/manage-users" v-if="isAuth & isAdmin" >Manage Users</mdb-nav-item>
+            <mdb-nav-item router to="/manage-data" v-if="isAuth" >Manage Data</mdb-nav-item>
             <mdb-nav-item router to="/login" v-if="!isAuth">Login</mdb-nav-item>
             <mdb-nav-item router to="/register" v-if="!isAuth">Sign Up</mdb-nav-item>
             <mdb-nav-item @click="logoutMethod" href="/" v-if="isAuth" >Logout</mdb-nav-item>
