@@ -9,6 +9,7 @@
         <h2>Import your external data</h2>
         <p>First, download the example csv file from <a @click="downloadTemplate()">here</a>.</p>
         <form>
+          <mdb-alert v-if="alert.show" :color="alert.type" @closeAlert="alert.show === false">{{this.alert.message}}</mdb-alert>
           <div>
             <div class="input-group">
               <div class="input-group-prepend">
@@ -30,13 +31,14 @@
 </template>
 
 <script>
-import { mdbBtn } from 'mdbvue'
+import { mdbBtn, mdbAlert } from 'mdbvue'
 import axios from 'axios'
 
 export default {
   name: "Dashboard",
   components: {
     mdbBtn,
+    mdbAlert
   },
   computed: {
     getProfile: function() {
@@ -53,6 +55,11 @@ export default {
       fileReady: false,
       file: null,
       tokens: [],
+      alert: {
+        show: false,
+        message: null,
+        type: null,
+      }
     }
   },
   methods: {
@@ -132,9 +139,19 @@ export default {
       axios.post(`${process.env.VUE_APP_WEB_SERVER_URL}/v1/sightings/import`, formData, request)
         .then(impRes => {
           console.log(`Imported ${impRes.data}`)
+          this.alert = {
+            show: true,
+            message: "Your records have been successfully imported",
+            type: 'success'
+          }
         })
         // Check for request errors
         .catch(err => {
+          this.alert = {
+            show: true,
+            message: "There was an error importing your records. Please check your file and try again",
+            type: 'danger'
+          }
           console.log(err)
         })
     }
