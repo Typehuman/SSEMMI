@@ -33,11 +33,11 @@ const router = new Router({
       // Reroutes to login by default upon render
       path: '/',
       meta: {
-        title: 'SSEMMI Client',
+        title: 'Acartia',
         metaTags: [
           {
-            name: 'SSEMMI Client',
-            content: 'SSEMMI Client'
+            name: 'Acartia',
+            content: "A decentralized data cooperative for sharing marine animal locations within the Salish Sea. Let’s work together to monitor and map marine wildlife -- from plankton to orcas!"
           }
         ]
       },
@@ -50,11 +50,11 @@ const router = new Router({
       path: '/home',
       name: 'Home',
       meta: {
-        title: 'SSEMMI Client',
+        title: 'Acartia',
         metaTags: [
           {
-            name: 'SSEMMI Client',
-            content: 'SSEMMI Client'
+            name: 'Acartia',
+            content: "A decentralized data cooperative for sharing marine animal locations within the Salish Sea. Let’s work together to monitor and map marine wildlife -- from plankton to orcas!"
           }
         ]
       },
@@ -65,11 +65,11 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       meta: {
-        title: 'SSEMMI Client',
+        title: 'Acartia',
         metaTags: [
           {
-            name: 'SSEMMI Client',
-            content: 'SSEMMI Client'
+            name: 'Acartia',
+            content: "A decentralized data cooperative for sharing marine animal locations within the Salish Sea. Let’s work together to monitor and map marine wildlife -- from plankton to orcas!"
           }
         ]
       },

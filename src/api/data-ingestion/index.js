@@ -67,7 +67,7 @@ router
   .get(userToken(), async (req, res) => {
     const csv = await exportCSV()
     res.header('Content-Type', 'text/csv')
-    res.attachment(`SSEMMI-Export-${dayjs().format('DD/MM/YYYY')}.csv`)
+    res.attachment(`Acartia-Export-${dayjs().format('DD/MM/YYYY')}.csv`)
 
     res.send(csv)
   })

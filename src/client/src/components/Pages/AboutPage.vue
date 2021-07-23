@@ -1,25 +1,16 @@
 <template>
-    <div id="about-container">        
+    <div id="about-container">
         <div id="about-desc">
-            <h1>About SSEMMI</h1>
+            <h1>About Acartia</h1>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                mollit anim id est laborum.
+              Acartia is a decentralized data cooperative for sharing marine animal locations within the Salish Sea.
+              It is named for one of the smallest animals in Puget Sound -- microscopic copepods
+              -- but was built to recover one of the biggest  -- the endangered Southern Resident killer whales.
             </p>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                mollit anim id est laborum.
-            </p>
-            <p>
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                laborum.
+              A demonstration of the democratizing power of Web 3.0 tech, it is capable of aggregating
+              real-time observations from a growing ecosystem of applications and sharing archived observations
+              from decades of monitoring effort.
             </p>
         </div>
         <div id="about-links">

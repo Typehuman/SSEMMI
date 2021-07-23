@@ -3,7 +3,7 @@ module.exports = {
       index: {
         entry: './src/main.js',
         template: './index.html',
-        title: 'SSEMMI Client'
+        title: 'Acartia'
       }
     }
   }

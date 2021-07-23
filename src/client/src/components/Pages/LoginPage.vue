@@ -5,7 +5,7 @@
   <div class="login">
     <!-- Title and header on the UI -->
     <header class="login--header">
-      <h1>SSEMMI CLIENT</h1>
+      <h1>Acartia</h1>
       <span>LOGIN</span>
     </header>
     <section class="login--section">
@@ -55,7 +55,7 @@ export default {
       this.logMsgLogin = "Logging you in....."
       this.logMsgColour = "secondary"
 
-      this.$store.dispatch('auth_request', this.loginData)      
+      this.$store.dispatch('auth_request', this.loginData)
       .then( (loginMessage) => {
         console.log(loginMessage)
         // Will change the log upon submit for login to be successful
