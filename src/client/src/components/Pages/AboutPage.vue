@@ -15,7 +15,7 @@
         </div>
         <div id="about-links">
             <mdb-row>
-                <mdb-btn outline="black" id="about-contact-btn">Contact Us</mdb-btn>
+                <mdb-btn outline="black" id="about-contact-btn" onclick="window.open('mailto:info@acartia.io');">Contact Us</mdb-btn>
             </mdb-row>
             <mdb-row>
                 <mdb-btn outline="black" id="about-contact-btn"><a href="https://github.com/Typehuman/SSEMMI">Github <i class="fab fa-github"></i></a></mdb-btn>
