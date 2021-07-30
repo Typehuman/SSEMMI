@@ -12,6 +12,7 @@ import Visualiser from './components/Pages/VisualiserPage'
 import Heatmap from './components/Pages/HeatmapPage'
 import About from './components/Pages/AboutPage'
 import Home from './components/Pages/HomePage'
+import Contributions from './components/Pages/ContributionPage'
 import axios from 'axios'
 import Clipboard from 'v-clipboard'
 import 'bootstrap-css-only/css/bootstrap.min.css'
@@ -114,6 +115,12 @@ const router = new Router({
       path: '/about',
       name: 'About',
       component: About
+    },
+    {
+      // Integration Guide - page explaining how to add and retrieve data from Acartia in your app
+      path: '/integrate',
+      name: 'Integrating with Acartia',
+      component: Contributions
     },
     {
       // Manage Users page to confirm user registration
