@@ -26,6 +26,7 @@ const config = {
     port: process.env.PORT || 9000,
     ip: process.env.IP || '0.0.0.0',
     apiRoot: process.env.API_ROOT || '',
+    isSSL: process.env.IS_SSL || false,
     defaultEmail: 'no-reply@orcasound-api.com',
     sendgridKey: requireProcessEnv('SENDGRID_KEY'),
     masterKey: requireProcessEnv('MASTER_KEY'),

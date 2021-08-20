@@ -6,6 +6,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import { ec as EC } from 'elliptic'
 import ObjectHash from 'object-hash'
 import { v4 as uuidv4 } from 'uuid'
+import { isSSL } from '../../config'
 
 // Initial ipfs setup
 console.log('Starting up IPFS js Node.... \n')
@@ -18,6 +19,19 @@ const ipfsOptions = {
   // sets up a our node as a "circuit relay", which means that others will be able to "hop" through our node to connect to our peers, and our node will hop over others to do the same.
   relay: { enabled: true, hop: { enabled: true, active: true } },
   repo: './data/ipfs'
+}
+
+if (isSSL) {
+  ipfsOptions.Addresses = {
+    Swarm: [
+      '/ip4/0.0.0.0/tcp/4011/ws',
+      '/ip6/::/tcp/4011/ws'
+    ]
+  }
+
+  ipfsOptions.Swarm = {
+    EnableRelayHop: true
+  }
 }
 
 // Create IPFS instance
