@@ -25,7 +25,8 @@ if (isSSL) {
   ipfsOptions.Addresses = {
     Swarm: [
       '/ip4/0.0.0.0/tcp/4011/ws',
-      '/ip6/::/tcp/4011/ws'
+      '/ip4/0.0.0.0/tcp/4002',
+      '/ip4/127.0.0.1/tcp/4003/ws'
     ]
   }
 
