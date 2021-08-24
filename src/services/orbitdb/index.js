@@ -30,11 +30,25 @@ if (isSSL) {
     ]
   }
 
+  ipfsOptions.Gateway = {
+    HTTPHeaders: {
+      'Access-Control-Allow-Headers': [
+        'X-Requested-With'
+      ],
+      'Access-Control-Allow-Methods': [
+        'GET'
+      ],
+      'Access-Control-Allow-Origin': [
+        'https://demo.acartia.io'
+      ]
+    }
+  }
+
   ipfsOptions.Swarm = {
     EnableRelayHop: true
   }
 }
-
+console.log(ipfsOptions)
 // Create IPFS instance
 const initIPFSInstance = async () => {
   return await Ipfs.create(ipfsOptions)
