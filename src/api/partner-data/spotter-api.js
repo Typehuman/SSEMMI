@@ -25,9 +25,9 @@ currentDate = String(currentDate)
 // Formatting on current date for API parameter
 var currentDayFormat = `${yyyy}-${mm}-${dd}`
 // Current day format to display sightings since the current year
-export const conserveApi = `https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=${currentDayFormat}&species=Orcinus%20orca`
+export const conserveApi = `https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=${currentDayFormat}`
 
-const conHistory = 'https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=2020-01-01&species=Orcinus%20orca'
+const conHistory = 'https://maplify.com/waseak/php/search-all-sightings.php?&BBOX=-180,0,180,90&start=2020-01-01'
 
 // Retreive data from the URL
 export const loadApi = async (api, loadHistory = false) => {
