@@ -1,4 +1,3 @@
-<script src="../../../services/orbitdb/index.js"></script>
 <template>
     <div>
         <div id='mapContainer'></div>
@@ -57,8 +56,10 @@ export default {
     created() {
         // Fetch data from server upon instance creation
         if (this.geoJSONSightings.length === 0) {
+          console.log('loading sightings')
           this.loadSightings()
         } else {
+          console.log('mapping sightings')
           this.mapSightings()
         }
     },
@@ -309,6 +310,8 @@ export default {
                     }
                   })
                 }
+
+
               }
               // Action to change the sightings filter based on preference
                 let changeSightingPreference = () => {
@@ -328,21 +331,26 @@ export default {
 
                    } else {
                      preferenceFilter = [
-                       'all',
-                       ['==', ['to-number', ['get', 'day']], selectedDay],
-                       ['==', ['to-number', ['get', 'month']], selectedMonth],
-                       ['==', ['to-number', ['get', 'year']], selectedYear]
+                       'all'
                      ]
 
                      mapLayer = 'ssemmi-map-layer'
-                     innerText = "Sightings displayed for " +selectedDay+ " " +months[selectedMonth]+ " " +selectedYear
+
+                     if (!isHome) {
+                       preferenceFilter.append(['==', ['to-number', ['get', 'day']], selectedDay])
+                       preferenceFilter.append(['==', ['to-number', ['get', 'month']], selectedMonth])
+                       preferenceFilter.append(['==', ['to-number', ['get', 'year']], selectedYear])
+                       innerText = "Sightings displayed for " +selectedDay+ " " +months[selectedMonth]+ " " +selectedYear
+                     }
                    }
 
                     // update the map
                     map.setFilter(mapLayer, preferenceFilter)
 
                     // update text in the UI
-                    document.getElementById('active-date').innerText =innerText
+                    if (!isHome) {
+                      document.getElementById('active-date').innerText = innerText
+                    }
                 }
 
             })
