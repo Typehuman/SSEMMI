@@ -112,7 +112,7 @@ export const dbService = async () => {
 // Retreive all entries in the db
 export const dbGetAll = (unauth = false) => {
   if (unauth) {
-    const last48 = Date.now() - (60 * 60 * 24 * 1000)
+    const last48 = Date.now() - (60 * 60 * 24 * 7 * 1000)
     return db.query((doc) => {
       if (dayjs(doc.created.substr(0, 10).split(' ')[0], ['YYYY-MM-DD', 'MM/DD/YY']).isSameOrAfter(dayjs(last48))) {
         return doc
