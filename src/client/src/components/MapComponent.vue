@@ -256,6 +256,7 @@ export default {
                 })
               } else {
                 // Set layer to display sightings
+                console.info('add map layer')
                 map.addLayer({
                   id: 'ssemmi-map-layer',
                   type: 'circle',
@@ -277,12 +278,12 @@ export default {
                     'circle-color': [
                       'interpolate',
                       ['linear'],
-                      ['to-number', ['get', 'no_sighted']],
-                      0, '#2DC4B2',
-                      1, '#3BB3C3',
-                      2, '#669EC4',
-                      3, '#8B88B6',
-                      4, '#A2719B',
+                      ['to-number', ['get', 'days_ago']],
+                      0, '#bb0314',
+                      1, '#520150',
+                      2, '#e7e20c',
+                      3, '#464a65',
+                      4, '#a28271',
                       5, '#aa5e79'
                     ],
                     'circle-opacity': 0.9
@@ -352,7 +353,9 @@ export default {
                       document.getElementById('active-date').innerText = innerText
                     }
                 }
-
+                if (isHome) {
+                  changeSightingPreference()
+                }
             })
 
             // Click listener to display extra information upon clicking on a sightings point
@@ -396,17 +399,21 @@ export default {
                         let filtered_lat = (isNaN(value.latitude)) ? 1 : value.latitude
                         let filtered_sightings = (isNaN(value.no_sighted)) ? 1 : value.no_sighted
                         let filtered_date = dayjs('2011-01-01 20:00:00')
+                        let days_ago = 0
                         let f_day = 1
                         let f_month = 1
                         let f_year = 2011
                         let f_epoch_date = new Date().getTime()
 
                         if(filtered_date.isValid()) {
-                            filtered_date = dayjs(value.created.substr(0, 10).split(' ')[0], ['YYYY-MM-DD', 'MM/DD/YY'])
+                            filtered_date = dayjs(value.created.substr(0, 10).split(' ')[0], ['YYYY-MM-DD', 'MM/DD/YY', 'DD/MM/YY', 'D/M/YY'])
                             f_day = filtered_date.date()
                             f_month = filtered_date.month() + 1
                             f_year = filtered_date.year()
+                            days_ago = dayjs().diff(filtered_date, 'day')
+                            console.log(days_ago)
                             f_epoch_date = new Date(filtered_date).getTime()
+
                         }
 
                         const sightingEntry = {
@@ -424,6 +431,7 @@ export default {
                                 "year": f_year,
                                 "epoch_date": f_epoch_date,
                                 "no_sighted": filtered_sightings,
+                                "days_ago": days_ago.toString(),
                                 "witness": value.data_source_witness,
                                 "comments": value.data_source_comments,
                                 "ssemmi_date_added": value.ssemmi_date_added,

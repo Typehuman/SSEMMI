@@ -3,6 +3,8 @@ import OrbitDb from 'orbit-db'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+
 import { ec as EC } from 'elliptic'
 import ObjectHash from 'object-hash'
 import { v4 as uuidv4 } from 'uuid'
@@ -58,6 +60,7 @@ let db
 
 dayjs.extend(customParseFormat)
 dayjs.extend(isSameOrAfter)
+dayjs.extend(isSameOrBefore)
 
 // Once ipfs has been setup, the db will be started
 export const dbService = async () => {
@@ -114,7 +117,10 @@ export const dbGetAll = (unauth = false) => {
   if (unauth) {
     const last48 = Date.now() - (60 * 60 * 24 * 7 * 1000)
     return db.query((doc) => {
-      if (dayjs(doc.created.substr(0, 10).split(' ')[0], ['YYYY-MM-DD', 'MM/DD/YY']).isSameOrAfter(dayjs(last48))) {
+      const createdDate = doc.created.substr(0, 10).split(' ')[0]
+
+      const formattedCDate = dayjs(createdDate, ['YYYY-MM-DD', 'MM/DD/YY', 'DD/MM/YY', 'D/M/YY'])
+      if (formattedCDate.isSameOrAfter(dayjs(last48)) && formattedCDate.isSameOrBefore(dayjs())) {
         return doc
       }
     })
