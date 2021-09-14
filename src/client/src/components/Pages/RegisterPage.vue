@@ -55,17 +55,16 @@
         <mdb-card-body>
           <mdb-card-title>Community Guidelines</mdb-card-title>
           <mdb-card-text>
-            <p>
             The goal of Acartia is to share data to further marine conservation across the Salish Sea.
             Registration is free, but membership is contingent on three community rules:
-              <ol>
+            <mdb-card-text>
+            <ol>
                 <li>Any data use will include attribution of all sources and a link back acartia.io</li>
                 <li>Any data provided will be as accurate as possible, locate species only from within marine environments, and include only organisms that are part of the Salish Sea ecosystem.</li>
                 <li>Responsible use of data and a pledge to promote and demonstrate responsible human interaction with marine wildlife, including adherence to these guidelines: bewhalewise.org, https://www.fisheries.noaa.gov/topic/marine-life-viewing-guidelines</li>
               </ol>
-            </p>
+            </mdb-card-text>
           </mdb-card-text>
-          <mdb-card-text>Explainer text</mdb-card-text>
         </mdb-card-body>
       </mdb-card>
     </section>

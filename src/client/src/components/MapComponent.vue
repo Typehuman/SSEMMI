@@ -1,20 +1,20 @@
 <template>
     <div>
         <div id='mapContainer'></div>
-        <div id='widget' v-if="isAuth">
-          <div v-if="isAuth && getParent === 'Visualiser'">
-            <h2>Sightings</h2>
+        <div id='widget'>
+          <div v-if="getParent !== 'Heatmap'">
+            <h2>Sightings Age</h2>
             <div class='widget-row colors'></div>
             <div class='widget-row labels'>
-                <div class='label'>0</div>
-                <div class='label'>1</div>
-                <div class='label'>2</div>
-                <div class='label'>3</div>
-                <div class='label'>4</div>
-                <div class='label'>5+</div>
+                <div class='label'>	&#60; 1 day</div>
+                <div class='label'>	&#60; 2 days</div>
+                <div class='label'>	&#60; 3 days</div>
+                <div class='label'>	&#60; 4 days</div>
+                <div class='label'>	&#60; 5 days</div>
+                <div class='label'>&#62; 5 days</div>
             </div>
             <br>
-            <div class='slider-class' id='sliderbar'>
+            <div v-if="isAuth && getParent === 'Visualiser'" class='slider-class' id='sliderbar'>
                 <p><label id='active-date'>Loading date...</label></p>
                 <!-- Last 14 days slider -->
                 <input id='day-slider' class='widget-row' type="range" min="1" max="14" step="1" value="14" />
@@ -280,11 +280,11 @@ export default {
                       ['linear'],
                       ['to-number', ['get', 'days_ago']],
                       0, '#bb0314',
-                      1, '#520150',
-                      2, '#e7e20c',
-                      3, '#464a65',
-                      4, '#a28271',
-                      5, '#aa5e79'
+                      1, '#bd2e2e',
+                      2, '#e70ca9',
+                      3, '#9a0fce',
+                      4, '#0f86dc',
+                      5, '#13de4d'
                     ],
                     'circle-opacity': 0.9
                   },
@@ -296,7 +296,7 @@ export default {
                   ]
                 })
 
-                if (currentPage === 'Visualiser') {
+                if (!isHome) {
                   // Listener function to monitor selected option for DAY
                   document.getElementById('day-slider').addEventListener('input', (e) => {
                     try {
@@ -338,9 +338,9 @@ export default {
                      mapLayer = 'ssemmi-map-layer'
 
                      if (!isHome) {
-                       preferenceFilter.append(['==', ['to-number', ['get', 'day']], selectedDay])
-                       preferenceFilter.append(['==', ['to-number', ['get', 'month']], selectedMonth])
-                       preferenceFilter.append(['==', ['to-number', ['get', 'year']], selectedYear])
+                       preferenceFilter.push(['==', ['to-number', ['get', 'day']], selectedDay])
+                       preferenceFilter.push(['==', ['to-number', ['get', 'month']], selectedMonth])
+                       preferenceFilter.push(['==', ['to-number', ['get', 'year']], selectedYear])
                        innerText = "Sightings displayed for " +selectedDay+ " " +months[selectedMonth]+ " " +selectedYear
                      }
                    }
@@ -470,7 +470,7 @@ export default {
 
 #widget {
     position: fixed;
-    width: 20%;
+    width: 30%;
     top: 6vh;
     left: 1vh;
     margin: 10px;
@@ -490,7 +490,7 @@ export default {
 }
 
 .colors {
-  background: linear-gradient(to right, #2dc4b2, #3bb3c3, #669ec4, #8b88b6, #a2719b, #aa5e79);
+  background: linear-gradient(to right, #bb0314, #bd2e2e, #e70ca9, #9a0fce, #0f86dc, #13de4d);
 }
 
 .label {
