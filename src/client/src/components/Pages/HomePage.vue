@@ -7,6 +7,9 @@
               A decentralized data cooperative for sharing marine animal locations within the Salish Sea.
               Let’s work together to monitor and map marine wildlife -- from plankton to orcas!
             </p>
+            <p>
+              This page shows all species located in the last 48 hours
+            </p>
             <mdb-btn outline="black" tag="a" href="/about">Learn More</mdb-btn>
         </card-component>
     </div>

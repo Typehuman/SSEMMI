@@ -284,7 +284,7 @@ export default {
                       2, '#e70ca9',
                       3, '#9a0fce',
                       4, '#0f86dc',
-                      5, '#13de4d'
+                      5, '#1f39a7'
                     ],
                     'circle-opacity': 0.9
                   },
@@ -490,7 +490,7 @@ export default {
 }
 
 .colors {
-  background: linear-gradient(to right, #bb0314, #bd2e2e, #e70ca9, #9a0fce, #0f86dc, #13de4d);
+  background: linear-gradient(to right, #bb0314, #bd2e2e, #e70ca9, #9a0fce, #0f86dc, #1f39a7);
 }
 
 .label {
