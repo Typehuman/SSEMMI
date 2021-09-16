@@ -60,6 +60,7 @@ export const loadApi = async (api, loadHistory = false) => {
           no_sighted: jsonData.results[i].number_sighted,
           latitude: jsonData.results[i].latitude,
           longitude: jsonData.results[i].longitude,
+          type: jsonData.results[i].name,
           data_source_witness: jsonData.results[i].usernm,
           trusted: jsonData.results[i].trusted,
           data_source_comments: jsonData.results[i].comments

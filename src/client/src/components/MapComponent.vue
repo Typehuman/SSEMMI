@@ -375,6 +375,7 @@ export default {
                             '<div class="container">'
                                 +'<h5><b>'+e.features[0].properties.comments+'</b></h5>'
                                 +'<p><b>Date: </b>'+e.features[0].properties.created+'</p>'
+                                +'<p><b>Type: </b>'+e.features[0].properties.type+'</p>'
                                 +'<p><b>No Sighted: </b>'+e.features[0].properties.no_sighted+'</p>'
                                 +'<p><b>Witness: </b>'+e.features[0].properties.witness+'</p>'
                                 +'<p><b>Submitter: </b> '+e.features[0].properties.entity+'</p>'
@@ -424,6 +425,7 @@ export default {
                                 "entity": value.data_source_entity,
                                 "ssemmi_id": value.ssemmi_id,
                                 "created": value.created,
+                                "type": value.type,
                                 "day": f_day,
                                 "month": f_month,
                                 "year": f_year,

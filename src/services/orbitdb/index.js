@@ -147,6 +147,7 @@ export const dbPost = (data, user) => {
     'no_sighted',
     'latitude',
     'longitude',
+    'type',
     'data_source_witness',
     'trusted',
     'data_source_comments',
