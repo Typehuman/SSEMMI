@@ -297,7 +297,10 @@ export const store = new Vuex.Store(
         return new Promise( (resolve) => {
           if (sessionStorage.getItem('userToken') != null) {
             commit('setUserToken', null)
+            commit('setUserDetails', {})
             commit('setAuthentication', false)
+            commit('setSightings', null)
+            commit('setIsAdmin', false)
             sessionStorage.clear()
           }
           resolve('Logged out')

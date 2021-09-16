@@ -373,13 +373,11 @@ export default {
                 .setLngLat(coordinates)
                 .setHTML(
                             '<div class="container">'
-                                +'<h4><b>'+e.features[0].properties.entity+'</b></h4>'
-                                +'<p><b>SSEMMI ID: </b>'+e.features[0].properties.ssemmi_id+'</p>'
-                                +'<p><b>Created: </b>'+e.features[0].properties.created+'</p>'
-                                +'<p><b>Date: </b>'+e.features[0].properties.month+'/'+ e.features[0].properties.year+'</p>'
+                                +'<h5><b>'+e.features[0].properties.comments+'</b></h5>'
+                                +'<p><b>Date: </b>'+e.features[0].properties.created+'</p>'
                                 +'<p><b>No Sighted: </b>'+e.features[0].properties.no_sighted+'</p>'
                                 +'<p><b>Witness: </b>'+e.features[0].properties.witness+'</p>'
-                                +'<p><b>Comments: </b> '+e.features[0].properties.comments+'</p>'
+                                +'<p><b>Submitter: </b> '+e.features[0].properties.entity+'</p>'
                                 +'<p><b>Date Added: </b> '+e.features[0].properties.ssemmi_date_added+'</p>'
                             +'</div>'
                             +'</div>'
