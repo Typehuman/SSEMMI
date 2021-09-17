@@ -410,7 +410,6 @@ export default {
                             f_month = filtered_date.month() + 1
                             f_year = filtered_date.year()
                             days_ago = dayjs().diff(filtered_date, 'day')
-                            console.log(days_ago)
                             f_epoch_date = new Date(filtered_date).getTime()
 
                         }
