@@ -115,7 +115,7 @@ export const dbService = async () => {
 // Retreive all entries in the db
 export const dbGetAll = (unauth = false) => {
   if (unauth) {
-    const last48 = Date.now() - (60 * 60 * 24 * 90 * 1000)
+    const last48 = Date.now() - (60 * 60 * 24 * 7 * 1000)
     return db.query((doc) => {
       const createdDate = doc.created.substr(0, 10).split(' ')[0]
 
