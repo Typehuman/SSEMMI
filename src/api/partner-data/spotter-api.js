@@ -14,13 +14,13 @@ import User, { schema } from '../user/model'
  */
 
 // Specify current date to put into the API parameter
-var currentDate = new Date()
-var dd = String(currentDate.getDate()).padStart(2, '0')
-var mm = String(currentDate.getMonth() + 1).padStart(2, '0') // January is 0
-var yyyy = currentDate.getFullYear()
+var yesterdaysDate = new Date(Date.now() - 24 * 60 * 60 * 1000)
+var dd = String(yesterdaysDate.getDate()).padStart(2, '0')
+var mm = String(yesterdaysDate.getMonth() + 1).padStart(2, '0') // January is 0
+var yyyy = yesterdaysDate.getFullYear()
 
 // Convert the current date to string for JSON load - refer to the source_input date variable
-currentDate = String(currentDate)
+yesterdaysDate = String(yesterdaysDate)
 
 // Formatting on current date for API parameter
 var currentDayFormat = `${yyyy}-${mm}-${dd}`

@@ -374,8 +374,8 @@ export default {
                 .setHTML(
                             '<div class="container">'
                                 +'<h5><b>'+e.features[0].properties.comments+'</b></h5>'
-                                +'<p><b>Date: </b>'+e.features[0].properties.created+'</p>'
-                                +'<p><b>Type: </b>'+e.features[0].properties.type+'</p>'
+                                +'<p><b>Date: </b>'+e.features[0].properties.created+' (UTC +0)</p>'
+                                +'<p><b>Species: </b>'+e.features[0].properties.type+'</p>'
                                 +'<p><b>No Sighted: </b>'+e.features[0].properties.no_sighted+'</p>'
                                 +'<p><b>Witness: </b>'+e.features[0].properties.witness+'</p>'
                                 +'<p><b>Submitter: </b> '+e.features[0].properties.entity+'</p>'

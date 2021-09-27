@@ -8,7 +8,7 @@
               Let’s work together to monitor and map marine wildlife -- from plankton to orcas!
             </p>
             <p>
-              This page shows all species located in the last 48 hours
+              This page shows all species located in the last 7 days
             </p>
             <mdb-btn outline="black" tag="a" href="/about">Learn More</mdb-btn>
         </card-component>
