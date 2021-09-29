@@ -9,7 +9,7 @@
           <mdb-navbar-nav right>
             <mdb-nav-item router to="/about" >About</mdb-nav-item>
             <mdb-nav-item router to="/dashboard" v-if="isAuth" >Contribute</mdb-nav-item>
-            <mdb-nav-item router to="/integrate" v-if="isAuth" >Integrate with Acartia</mdb-nav-item>
+            <mdb-nav-item router to="/integrate" v-if="isAuth" >How to Contribute</mdb-nav-item>
             <mdb-dropdown tag="li" class="nav-item" v-if="isAuth">
               <mdb-dropdown-toggle tag="a" navLink slot="toggle" >Browse</mdb-dropdown-toggle>
               <mdb-dropdown-menu>
