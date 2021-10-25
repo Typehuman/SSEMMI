@@ -41,7 +41,7 @@ if (isSSL) {
         'GET'
       ],
       'Access-Control-Allow-Origin': [
-        'https://demo.acartia.io'
+        'https://demo.acartia.io', 'demo.acartia.io'
       ]
     }
   }
