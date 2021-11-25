@@ -10,7 +10,7 @@ During phase one (2021-22), data providers include: [Orca Network](https://orcan
 If you wish to contribute to, or integrate with, our open access data - follow the steps;
 
 ### Sign up to SSEMMI Project
-1. Go to the [SSEEMMI Project website](https://acartia.io) and click on register
+1. Go to the [project website](https://acartia.io) and click on register
 2. Fill out the registration form and click 'Sign up'
 3. An administrator will review your request and notify you when your account is set up.
 
@@ -69,7 +69,11 @@ only data that fits in this format will be stored. The format is shown below:
 From an API query of recent data
 ```
 {"ssemmi_id":"SPOTTER138809","data_source_name":"Spotter-API","data_source_entity":"Conserve.io","data_source_id":138809,"created":"2021-11-19 19:54:37","photo_url":"","no_sighted":1,"latitude":34.304557056,"longitude":-119.867284608,"type":"Humpback","data_source_witness":"whalealert","trusted":1,"data_source_comments":"<br><br>Submitted by a Trusted Observer","profile":{"name":"spotter"},"entry_id":"aedfd0a5-72b2-445d-a12b-6f4c07793548","ssemmi_date_added":"Sat Nov 20 2021 00:05:01 GMT+0000 (Coordinated Universal Time)","submitter_did":"did:ethr:0x20fd1096eaafb242a88272e20d7a77b552fa6cd8","signature":
+```
 
+Breaking this out to be more readable, you can see the cooperative's data schema includes a few fields beyond what is required when posting a new record:
+
+```
 > "ssemmi_id":"SPOTTER138809"
 > "data_source_name":"Spotter-API"
 > "data_source_entity":"Conserve.io"
