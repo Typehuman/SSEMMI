@@ -1,6 +1,6 @@
 # SSEMMI
 ## Salish Sea Ecosystem Monitoring and Modeling Infrastructure
-This is the public repository for the SSEMMI project: A decentralised and communitarian project aiming at pooling citizen science data in support of whale and environmental observations
+This is the public repository for the SSEMMI project: A decentralised and communitarian project aiming at pooling citizen science data in support of whale and environmental observations.
 
 <br>
 
