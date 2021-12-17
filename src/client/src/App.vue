@@ -3,7 +3,7 @@
     <div id="navbar-top">
       <mdb-navbar color="black" dark>
         <mdb-navbar-brand router to="/home">
-          Acartia Data Co-operative
+          Acartia
         </mdb-navbar-brand>
         <mdb-navbar-toggler>
           <mdb-navbar-nav right>

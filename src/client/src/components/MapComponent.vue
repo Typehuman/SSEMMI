@@ -3,7 +3,7 @@
         <div id='mapContainer'></div>
         <div id='widget'>
           <div v-if="getParent !== 'Heatmap'">
-            <h2>Sightings Age</h2>
+            <h2>Observation Age</h2>
             <div class='widget-row colors'></div>
             <div class='widget-row labels'>
                 <div class='label'>	&#60; 1 day</div>
@@ -266,13 +266,13 @@ export default {
                   },
                   //minzoom: 14,
                   paint: {
-                    // Set size of circle pinpoint based on how large the sighting is
+                    // Set size of circle pinpoint based on how large the sighting is (all made same size for now, was 0 4 5 12)
                     'circle-radius': [
                       'interpolate',
                       ['linear'],
                       ['to-number', ['get', 'no_sighted']],
-                      0, 4,
-                      5, 12
+                      0, 5,
+                      5, 5
                     ],
                     // Set colour of circle pinpoint based of number of sightings
                     'circle-color': [

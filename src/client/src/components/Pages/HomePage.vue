@@ -3,6 +3,7 @@
         <Map id="home-map"></Map>
         <card-component id="home-about-card" :withHeader="false">
             <h1>Acartia</h1>
+          <div class="text-left">
             <p>
               A decentralized data cooperative for sharing marine animal locations within the Salish Sea.
               Let’s work together to monitor and map marine wildlife -- from plankton to orcas!
@@ -10,6 +11,7 @@
             <p>
               This page shows all species located in the last 7 days
             </p>
+          </div>
             <mdb-btn outline="black" tag="a" href="/about">Learn More</mdb-btn>
         </card-component>
     </div>

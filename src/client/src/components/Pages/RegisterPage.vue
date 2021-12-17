@@ -64,6 +64,7 @@
                 <li>Responsible use of data and a pledge to promote and demonstrate responsible human interaction with marine wildlife, including adherence to these guidelines: bewhalewise.org, https://www.fisheries.noaa.gov/topic/marine-life-viewing-guidelines</li>
               </ol>
             </mdb-card-text>
+            <a href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons" aria-hidden="true"></i></a> Attribution should include a link to acartia.io and listing of providers of the data you use.
           </mdb-card-text>
         </mdb-card-body>
       </mdb-card>

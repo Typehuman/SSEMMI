@@ -12,6 +12,21 @@
               real-time observations from a growing ecosystem of applications and sharing archived observations
               from decades of monitoring effort.
             </p>
+
+          <p>
+            The current data cooperative was created by <a href="https://typehuman.com">TypeHuman</a> as open source code with an open API first utilized
+            by <a href="https://conserve.io/">Conserve.io</a> via the Whale Alert and Ocean Alert mobile apps. Initial data providers and beta-testers of
+            mobile and web apps, as well as the cooperative itself, are two open community science networks in
+            Puget Sound: <a href="https://www.orcanetwork.org/">Orca Network</a> and <a href="https://www.orcasound.net/">Orcasound</a>. Phase one of the project has been coordinated and funded by
+            <a href="https://www.resolveconservation.com/">Resolve Conservation</a> and <a href="https://beamreach.blue/">Beam Reach</a>.
+          </p>
+
+          <p>
+            P.S.: Acartia is a common type of zooplankton, a copepod at the bottom of the Salish Sea food chain that is
+            topped by killer whales. We welcome collaborators interested in monitoring, modeling, and conserving the
+            Salish Sea --  from biological oceanographers to marine biologists to birders to marine mammal stewards.
+            Drop us an email, contribute via our Github repository, or sign up to provide or utilize data.
+          </p>
         </div>
         <div id="about-links">
             <mdb-row>
