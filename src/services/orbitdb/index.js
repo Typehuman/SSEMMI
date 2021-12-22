@@ -117,11 +117,15 @@ export const dbGetAll = (unauth = false) => {
   if (unauth) {
     const lastWeek = Date.now() - (60 * 60 * 24 * 7 * 1000)
     return db.query((doc) => {
-      const createdDate = doc.created.substr(0, 10).split(' ')[0]
+      if (doc.created) {
+        const createdDate = doc.created.substr(0, 10).split(' ')[0]
 
-      const formattedCDate = dayjs(createdDate, ['YYYY-MM-DD', 'MM/DD/YY', 'DD/MM/YY', 'D/M/YY'])
-      if (formattedCDate.isSameOrAfter(dayjs(lastWeek)) && formattedCDate.isSameOrBefore(dayjs())) {
-        return doc
+        const formattedCDate = dayjs(createdDate, ['YYYY-MM-DD', 'MM/DD/YY', 'DD/MM/YY', 'D/M/YY'])
+        if (formattedCDate.isSameOrAfter(dayjs(lastWeek)) && formattedCDate.isSameOrBefore(dayjs())) {
+          return doc
+        }
+      } else {
+        console.log(doc)
       }
     })
   }
@@ -171,6 +175,10 @@ export const dbPost = (data, user) => {
     name: user.name,
     logo: user.ipfsLogo,
     website: user.website
+  }
+
+  if (!data.created) {
+    data.created = String(new Date())
   }
 
   // Regenerate the EC key and sign the object
