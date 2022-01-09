@@ -81,10 +81,11 @@ router.get('/v1/import',
  */
 
 // CRON job to pull from Spotter API every day at 12AM to extract data at the end of the day
-cron.schedule('05 00 * * * ', () => {
+// This has been removed as it is currently being pushed
+/* cron.schedule('05 00 * * * ', () => {
   console.log('Preparing scheduled load of SPOTTER API.................')
   loadApi(conserveApi)
-})
+}) */
 
 // CRON job to pull from Orca Map google spreadsheet every Sunday at 1AM
 cron.schedule('* 22 * * *', () => {
