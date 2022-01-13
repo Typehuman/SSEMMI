@@ -26,8 +26,8 @@ Contributor Profile now, or alternatively update it later.
 >Your Active Tokens shows your API tokens. Your first token, titled **Default**, is created automatically for you. 
 >If you wish to create another token, click **Create Token** and enter a name for the new token.
 
-4. Copy your token Avoid storing it directly in your code! Add it as a Bearer token when making requests to the 
-[Sightings Api](DOCS.md#markdown-header-sightings).
+4. Copy your token. Avoid storing it directly in your code! Add it as a Bearer token when making requests to the 
+[Sightings API](DOCS.md#markdown-header-sightings).
 
 ```
 # For example:
@@ -51,7 +51,7 @@ axios.get('https://acartia.io/v1/sightings', requestAuth)
 })
 ```    
 
-5. Finally, there is the structure of the data. When you send data to the [Sightings Api](DOCS.md#markdown-header-sightings),
+5. Finally, there is the structure of the data. When you send data to the [Sightings API](DOCS.md#markdown-header-sightings),
 only data that fits in this format will be stored. The format is shown below:
 
    >- **data_source_name:** The name of the data entry
@@ -60,8 +60,8 @@ only data that fits in this format will be stored. The format is shown below:
    >- **created:** When was the sighting record created
    >- **photo_url:** The URL of the photo sighting
    >- **no_sighted:** The number of whales sighted
-   >- **latitude:** Latitude of the sighting
-   >- **longitude:** Longitude of the sighting
+   >- **latitude:** Latitude of the sighting (decimal degrees)
+   >- **longitude:** Longitude of the sighting (decimal degrees)
    >- **data_source_witness:** The name of the witness
    >- **data_source_comments:** Any comments added by the witness
 
@@ -71,7 +71,7 @@ From an API query of recent data
 {"ssemmi_id":"SPOTTER138809","data_source_name":"Spotter-API","data_source_entity":"Conserve.io","data_source_id":138809,"created":"2021-11-19 19:54:37","photo_url":"","no_sighted":1,"latitude":34.304557056,"longitude":-119.867284608,"type":"Humpback","data_source_witness":"whalealert","trusted":1,"data_source_comments":"<br><br>Submitted by a Trusted Observer","profile":{"name":"spotter"},"entry_id":"aedfd0a5-72b2-445d-a12b-6f4c07793548","ssemmi_date_added":"Sat Nov 20 2021 00:05:01 GMT+0000 (Coordinated Universal Time)","submitter_did":"did:ethr:0x20fd1096eaafb242a88272e20d7a77b552fa6cd8","signature":
 ```
 
-Breaking this out to be more readable, you can see the cooperative's data schema includes a few fields beyond what is required when posting a new record:
+Breaking this out to be more readable, you can see the cooperative's data scheme includes a few fields beyond what is required when posting a new record:
 
 ```
 > "ssemmi_id":"SPOTTER138809"
