@@ -5,7 +5,7 @@ Hi there. Thanks for your interest in contributing to our data cooperative and o
 There are two ways to contribute data to the data cooperative. Once authenticated, the user interface allows you to directly add your data to
 using a comma-separated-variable spreadsheet template. Data can also be added through our API once you have become a data cooperative partner and obtained your unique digital identity and API tokens.
 
-During phase one (2021-22), data providers include: [Orca Network](https://orcanetwork.org), [Orcasound](https://orcasound.net), and [Conserve.io](https://conserve.io) -- developer of the Whale Alert and Ocean Alert mobile apps, and the Cascadia web app.
+During phase one (2021-22), data providers include: [Orca Network](https://orcanetwork.org) and [Orcasound](https://orcasound.net), and [Conserve.io](https://conserve.io) -- developer of the Whale Alert and Ocean Alert mobile apps, and the Cascadia web app.
 
 If you wish to contribute to, or integrate with, our open access data - follow the steps;
 
@@ -17,7 +17,7 @@ If you wish to contribute to, or integrate with, our open access data - follow t
 
 ### Integrate SSEMMI with your website
 These steps can be undertaken once your account has been approved.
-1. Go to the [project website](https://acartia.io) and click on Login
+1. Go to the [Acartia project website](https://acartia.io) and click on Login
 2. Enter your email and password and click 'login'
 3. You will see two sections; **Contributor Profile** and **Your Active Tokens**. You can add your information to 
 Contributor Profile now, or alternatively update it later.
@@ -55,7 +55,7 @@ axios.get('https://acartia.io/v1/sightings', requestAuth)
 only data that fits in this format will be stored. The format is shown below:
 
    >- **data_source_name:** The name of the data entry
-   >- **data_source_entity:** Your organisation 
+   >- **data_source_entity:** Your organization 
    >- **data_source_id:** the ID of the record in your system
    >- **created:** When was the sighting record created
    >- **photo_url:** The URL of the photo sighting
