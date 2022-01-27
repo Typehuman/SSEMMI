@@ -392,7 +392,7 @@ export default {
             .then( (currSights) => {
                 Object.values(currSights).forEach( (value) => {
                     // Create new array instance of two numbers for mapbox marker coordinate
-                    if(value) {
+                    if(value && value.created) {
                         // Check if the fields for the sighting is valid or compatible
                         let filtered_long = (isNaN(value.longitude)) ? 1 : value.longitude
                         let filtered_lat = (isNaN(value.latitude)) ? 1 : value.latitude
