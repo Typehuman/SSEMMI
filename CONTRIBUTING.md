@@ -1,13 +1,17 @@
 # Contributing to the project
-Hi there. Thanks for your interest in contributing to our data cooperative and open source software!
+Hi there. Thanks for your interest in contributing to our data cooperative and open source software! Our cooperative efforts will be strengthened the more our community engages in three activities:
 
-## Contributing data
-There are two ways to contribute data to the data cooperative. Once authenticated, the user interface allows you to directly add your data to
-using a comma-separated-variable spreadsheet template. Data can also be added through our API once you have become a data cooperative partner and obtained your unique digital identity and API tokens.
+1. Contributing data to the cooperative with provenance defined per the [Acartia data cooperative community guidelines](https://acartia.io/register)
+2. Utilizing data from the cooperative and attributing the use per the [Acartia data cooperative community guidelines](https://acartia.io/register)
+3. Improving our open source code and documentation
+
+## Contributing and utilizing data
+There are two ways to contribute data to the data cooperative, once authenticated. First, the Acartia user interface allows you to directly add your data to
+using a comma-separated-variable spreadsheet template. Alternatively, data can be added via our API once you have registered and obtained your unique digital identity and API tokens.
 
 During phase one (2021-22), data providers include: [Orca Network](https://orcanetwork.org) and [Orcasound](https://orcasound.net), and [Conserve.io](https://conserve.io) -- developer of the Whale Alert and Ocean Alert mobile apps, and the Cascadia web app.
 
-If you wish to contribute to, or integrate with, our open access data - follow the steps;
+If you wish to contribute to, utilize, or integrate programmatically with our open access data - follow the steps:
 
 ### Sign up to SSEMMI Project
 1. Go to the [project website](https://acartia.io) and click on register
