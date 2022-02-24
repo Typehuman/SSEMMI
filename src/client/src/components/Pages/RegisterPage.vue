@@ -55,13 +55,17 @@
         <mdb-card-body>
           <mdb-card-title>Community Guidelines</mdb-card-title>
           <mdb-card-text>
-            The goal of Acartia is to share data to further marine conservation across the Salish Sea.
-            Registration is free, but membership is contingent on three community rules:
+            The goal of Acartia is to advance marine conservation and science across the Salish Sea and Cascadia by
+            sharing animal locations -- both historical and real-time data. Registration is free, access is open and
+            free, and the code underlying the decentralized data cooperative is open source.
+            <br />
+            <b>Users of this data cooperative agree to these community rules:</b>
             <mdb-card-text>
             <ol>
-                <li>Any data use will include attribution of all sources and a link back acartia.io</li>
-                <li>Any data provided will be as accurate as possible, locate species only from within marine environments, and include only organisms that are part of the Salish Sea ecosystem.</li>
-                <li>Responsible use of data and a pledge to promote and demonstrate responsible human interaction with marine wildlife, including adherence to these guidelines: bewhalewise.org, https://www.fisheries.noaa.gov/topic/marine-life-viewing-guidelines</li>
+              <li>Shared data will only include animals observed in marine environments.</li>
+              <li>All data provided will align with the <a href="https://github.com/Typehuman/SSEMMI/blob/main/CONTRIBUTING.md">Acartia data scheme and standards</a>.</li>
+              <li>Any data use will heed our <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons BY license</a>. Proper attribution includes a link to acartia.io, acknowledgement of each data provider, and preservation of the provenance of each data point.</li>
+              <li>All data will be used with the intention of promoting marine conservation and responsible human interaction with marine wildlife, including adherence to U.S. and Canadian laws and the <a href="https://www.bewhalewise.org/">Be Whale Wise guidelines</a>.</li>
               </ol>
             </mdb-card-text>
             <a href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons" aria-hidden="true"></i></a> Attribution should include a link to acartia.io and listing of providers of the data you use.
