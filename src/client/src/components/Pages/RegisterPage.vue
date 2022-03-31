@@ -54,13 +54,13 @@
       <mdb-card>
         <mdb-card-body>
           <mdb-card-title>Community Guidelines</mdb-card-title>
-          <mdb-card-text>
+          <mdb-card-text align="left">
             The goal of Acartia is to advance marine conservation and science across the Salish Sea and Cascadia by
             sharing animal locations -- both historical and real-time data. Registration is free, access is open and
             free, and the code underlying the decentralized data cooperative is open source.
             <br />
             <b>Users of this data cooperative agree to these community rules:</b>
-            <mdb-card-text>
+            <mdb-card-text align="left">
             <ol>
               <li>Shared data will only include animals observed in marine environments.</li>
               <li>All data provided will align with the <a href="https://github.com/Typehuman/SSEMMI/blob/main/CONTRIBUTING.md">Acartia data scheme and standards</a>.</li>

@@ -8,7 +8,7 @@ export const exportCSV = async () => {
     const exportData = await dbGetAll()
     const fields = ['ssemmi_id', 'entry_id', 'data_source_name', 'data_source_entity',
       'created', 'photo_url', 'no_sighted', 'profile.name', 'profile.website', 'profile.logo',
-      'latitude', 'longitude', 'data_source_witness', 'data_source_comments']
+      'latitude', 'longitude', 'data_source_witness', 'type', 'data_source_comments']
     const transform = [transforms.unwind({ paths: ['profile'] })]
     const jsonParser = new Parser({
       fields,

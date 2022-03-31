@@ -28,8 +28,9 @@
               <input id='month-slider' class='widget-row' type="range" min="3" max="12" step="1" value="0" />
               <label for="year-list">Choose a year: </label>
               <select id="year-list">
-                <option value="2020" selected>2020</option>
-                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2021" selected>2021</option>
+                <option value="2022">2022</option>
               </select>
             </div>
           </div>
