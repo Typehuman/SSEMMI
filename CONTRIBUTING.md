@@ -61,7 +61,7 @@ only data that fits in this format will be stored. The format is shown below:
    >- **data_source_name:** The name of the data entry
    >- **data_source_entity:** Your organization 
    >- **data_source_id:** the ID of the record in your system
-   >- **created:** When was the sighting record created
+   >- **created:** The date and time when the observation occurred (in time zone local to the reported position)
    >- **photo_url:** The URL of the photo sighting
    >- **no_sighted:** The number of whales sighted
    >- **latitude:** Latitude of the sighting (decimal degrees)
