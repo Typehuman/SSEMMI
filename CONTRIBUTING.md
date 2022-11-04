@@ -104,5 +104,6 @@ The project is open source. We welcome anyone who would like to contribute.
 
 You can see the status of the development process on the [GitHub Projects](https://github.com/Typehuman/SSEMMI/projects).
 
-If you would like to contribute to an issue that has not been assigned yet, please add a comment to the issue indicating your interest. Thanks!
-If you have feature suggestions, please add them as an issue and add the "Enhancement" label. 
+If you would like to contribute to an issue that has not been assigned yet, please add a comment to the issue indicating your interest. To facilitate the review and merging process, we prefer to discuss potential solutions first within the issue. With a plan in place, you can then fork the repository and submit a pull request with a single, incremental contribution. Thanks!
+
+If you have feature suggestions, please add them as an issue and add the "Enhancement" label. If you find a bug, submit an issue and add the "Bug" label.
