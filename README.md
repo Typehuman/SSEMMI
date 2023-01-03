@@ -55,12 +55,11 @@ $ cd src/client && npm run serve
 <br>
 
 ## API
-Below are the sightings API endpoints that can be used to create and consume open source 
-data. Before using this API, you are required to create an account and generate an API key on 
-the [SSEMMI Project Dashboard](https://acartia.io/).
+Below are the sightings API endpoints that can be used to create and consume open access 
+data provided by the cooperative. Before using this API, you are required to create an account and generate an API key on 
+the [SSEMMI Project Dashboard](https://acartia.io/). Please also abide by the [Acartia community guidelines](https://acartia.io/register) and Creative Commons license governing these animal location data.
 
-More information on how to contribute data to the project can be found [here](CONTRIBUTING.md#contributing-data),
-and more information on contributing to the codebase can be found [here](CONTRIBUTING.md#contributing-code).
+More information on how to contribute data to or integrate your application with the cooperative can be found [here](CONTRIBUTING.md#contributing-data). Information about contributing to the codebase can be found [here](CONTRIBUTING.md#contributing-code).
 
 
 - [Sightings](#sightings)
