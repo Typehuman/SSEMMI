@@ -92,7 +92,7 @@ Breaking this out to be more readable, you can see the cooperative's data scheme
 > "trusted":1
 > "data_source_comments":"<br><br>Submitted by a Trusted Observer"
 > "profile":{"name":"spotter"}
-. "entry_id":"aedfd0a5-72b2-445d-a12b-6f4c07793548"
+> "entry_id":"aedfd0a5-72b2-445d-a12b-6f4c07793548"
 > "ssemmi_date_added":"Sat Nov 20 2021 00:05:01 GMT+0000 (Coordinated Universal Time)"
 > "submitter_did":"did:ethr:0x20fd1096eaafb242a88272e20d7a77b552fa6cd8"
 > "signature":{"r":"e23d0799aa3e4a2de8b1862e9f2d1042f3318e4df18b9775b24d24ce68c56118","s":"c084231bcffab60fb8a598ba9e7bc30246cf16e399554e17c5a00ae76ccc6f95"}
