@@ -100,9 +100,9 @@ Breaking this out to be more readable, you can see the cooperative's data scheme
 
 
 ## Contributing code
-The project is open source. We welcome anyone who would like to contribute.
+The project is open source. We welcome anyone who would like to contribute under the MIT license.
 
-You can see the status of the development process on the [GitHub Projects](https://github.com/Typehuman/SSEMMI/projects).
+You can see the status of the development process in the [Acartia project management board](https://github.com/orgs/salish-sea/projects/1/views/1). Use [Acartia discussions](https://github.com/salish-sea/acartia/discussions) to ask questions, make a proposal, or get feedback on your ideas.
 
 If you would like to contribute to an issue that has not been assigned yet, please add a comment to the issue indicating your interest. To facilitate the review and merging process, we prefer to discuss potential solutions first within the issue. With a plan in place, you can then fork the repository and submit a pull request with a single, incremental contribution. Thanks!
 
