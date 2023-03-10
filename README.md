@@ -2,9 +2,13 @@
 ## Salish Sea Ecosystem Monitoring and Modeling Infrastructure
 This is the public repository for the SSEMMI project: A decentralised and communitarian project aiming at pooling citizen science data in support of whale and environmental observations. We welcome your help designing and developing this open source code that demonstrates the ecological, scientific, and societal advantages of a a web3 technologies (see our [contributing guidance](https://github.com/Typehuman/SSEMMI/blob/main/CONTRIBUTING.md#contributing-code)).
 
-In 2020-22, phase 1 of the project developed a working prototype of [Acartia](https://acartia.io), a distributed open data cooperative sharing marine animal location data in real time across the range of the endangered orcas (from California to Alaska, USA). Phase 2 in 2023 aims to add features to the prototype and diversify the data providers and end uses in the U.S. Phase 3 will aspire to share data across the US-Canada border and integrate with other applications to enhance regional ecosystem understanding and management for marine conservation.
+**Phase 1 (2020-22)** developed a working prototype of [Acartia](https://acartia.io), a distributed open data cooperative sharing marine animal location data in real time across the range of the endangered orcas (from California to Alaska, USA). 
 
-For project context and updates, don't miss the [Acartia wiki](https://github.com/Typehuman/SSEMMI/wiki). There you will also find additional information for design-UXers, open source developers, devops leads, and system administrators.
+**Phase 2 (2023-24)** aims to add features to the prototype and diversify both the data providers and end users in the U.S. 
+
+**Phase 3 (>2024)** will aspire to share data across the US-Canada border and integrate with other applications to enhance regional ecosystem understanding and management for marine conservation.
+
+**NOTE:** development is active on a 2023 fork of this repo at the **[Acartia repository](https://github.com/salish-sea/acartia)**. For project context and updates, don't miss the [Acartia wiki](https://github.com/Typehuman/SSEMMI/wiki). There you will also find additional information for design-UXers, open source developers, devops leads, and system administrators.
 
 <br>
 
