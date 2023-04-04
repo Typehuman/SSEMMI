@@ -70,7 +70,7 @@ $ cd src/client && npm run serve
 ## API
 Below are the sightings API endpoints that can be used to create and consume open access 
 data provided by the cooperative. Before using this API, you are required to create an account and generate an API key on 
-the [SSEMMI Project Dashboard](https://acartia.io/). Please also abide by the [Acartia community guidelines](https://acartia.io/register) and Creative Commons license governing these animal location data.
+the [Acartia Project Dashboard](https://acartia.io/). Please also abide by the [Acartia community guidelines](https://acartia.io/register) and Creative Commons license governing these animal location data.
 
 More information on how to contribute data to or integrate your application with the cooperative can be found [here](CONTRIBUTING.md#contributing-data). Information about contributing to the codebase can be found [here](CONTRIBUTING.md#contributing-code).
 
@@ -200,6 +200,6 @@ GET https://acartia.io/api/v1/sightings/:id
 A complete version of the API documentation can be found in [DOCS.md](DOCS.md).
 # Direct Interactions With OrbitDB
 
-The following is a link to the github repository of Orbit DB. There you can find the API documentation to the docs type Orbit DB database which is used with SSEMMI, along with the full documentation of the database.
+The following is a link to the github repository of Orbit DB. There you can find the API documentation to the docs type Orbit DB database which is used with SSEMMI/Acartia, along with the full documentation of the database.
 
 https://github.com/orbitdb/orbit-db/blob/master/API.md#orbitdbdocsnameaddress-options
