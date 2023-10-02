@@ -72,7 +72,7 @@ Below are the sightings API endpoints that can be used to create and consume ope
 data provided by the cooperative. Before using this API, you are required to create an account and generate an API key on 
 the [Acartia Project Dashboard](https://acartia.io/). Please also abide by the [Acartia community guidelines](https://acartia.io/register) and Creative Commons license governing these animal location data.
 
-More information on how to contribute data to or integrate your application with the cooperative can be found [here](CONTRIBUTING.md#contributing-data). Information about contributing to the codebase can be found [here](CONTRIBUTING.md#contributing-code).
+If you are a data provider or end user, we can offer you more detailed information about [how to contribute data to or integrate your application with the Acartia cooperative](CONTRIBUTING.md#contributing-data). If you are a developer, we invite you to learn [how to contribute to the Acartia open source codebase](CONTRIBUTING.md#contributing-code).
 
 
 - [Sightings](#sightings)
