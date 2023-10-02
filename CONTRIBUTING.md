@@ -9,7 +9,7 @@ Hi there. Thanks for your interest in contributing to our data cooperative and o
 There are two ways to contribute data to the data cooperative, once authenticated. First, the Acartia user interface allows you to directly add your data to
 using a comma-separated-variable spreadsheet template. Alternatively, data can be added via our API once you have registered and obtained your unique digital identity and API tokens.
 
-During phase one (2021-22), data providers include: [Orca Network](https://orcanetwork.org) and [Orcasound](https://orcasound.net), and [Conserve.io](https://conserve.io) -- developer of the Whale Alert and Ocean Alert mobile apps, and the Cascadia web app.
+During phase one (2021-23), data providers include: [Orca Network](https://orcanetwork.org) and [Orcasound](https://orcasound.net), and [Conserve.io](https://conserve.io) -- developer of the Whale Alert and Ocean Alert mobile apps, and the Cascadia web app.
 
 If you wish to contribute to, utilize, or integrate programmatically with our open access data - follow the steps:
 
