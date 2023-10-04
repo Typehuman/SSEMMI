@@ -10,8 +10,8 @@ The documentation for the SSEMMI open API project.
 - [Sightings](#sightings)
 	- [Delete specific sightings](#delete-specific-sightings)
 	- [Contribute sightings](#contribute-sightings)
-	- [Retrieve current sightings](#retrieve-current-sightings)
-	- [Retrieve current sightings](#retrieve-current-sightings)
+	- [Retrieve current sightings](#retrieve-current-sightings) (without token)
+	- [Retrieve current sightings](#retrieve-current-sightings) (with token)
 	- [Retrieve specific sightings](#retrieve-specific-sightings)
 	- [Retrieve sightings marked as trusted](#retrieve-sightings-marked-as-trusted)
 	
@@ -91,16 +91,16 @@ The documentation for the SSEMMI open API project.
 |---------|-----------|--------------------------------------|
 | access_token			| String			|  <p>User access_token.</p>							|
 
-## Retrieve current sightings
+## Retrieve current sightings (without token)
 
-
+Current sightings include any observations made in the most recent 7 days.
 
 	GET https://acartia.io/api/v1/sightings/current
 
 
-## Retrieve current sightings
+## Retrieve current sightings (with token)
 
-
+Current sightings include any observations made in the most recent 7 days.
 
 	GET https://acartia.io/api/v1/sightings
 
