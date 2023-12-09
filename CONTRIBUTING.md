@@ -10,7 +10,7 @@ Hi there. Thanks for your interest in contributing to our data cooperative and o
 The fastest way to experiment with Acartia data is to `GET` data via the "current" sightings API endpoint:
 
 - [HTTP request: https://acartia.io/api/v1/sightings/current](https://acartia.io/api/v1/sightings/current)
-- `GET acartia.io/api/v1/sightings/current` (e.g. via [Postman](https://web.postman.co/)
+- `GET acartia.io/api/v1/sightings/current` (e.g. via [Postman](https://web.postman.co/))
 
 The current endpoint returns the last week of marine animal locations from the entire [geographic domain of Acartia](https://github.com/salish-sea/acartia/wiki/1.-Context-for-SSEMMI-&-Acartia#spatial-boundaries-related-to-acartia) (all species; visual _and_ acoustic observations; all providers; all trust levels; etc.)
 
