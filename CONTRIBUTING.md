@@ -5,6 +5,18 @@ Hi there. Thanks for your interest in contributing to our data cooperative and o
 2. Utilizing data from the cooperative and attributing the use per the [Acartia data cooperative community guidelines](https://acartia.io/register)
 3. Improving our open source code and documentation
 
+## Accessing recent data without registration
+
+The fastest way to experiment with Acartia data is to `GET` data via the "current" sightings API endpoint:
+
+- [HTTP request: https://acartia.io/api/v1/sightings/current](https://acartia.io/api/v1/sightings/current)
+- `GET acartia.io/api/v1/sightings/current` (e.g. via [Postman](https://web.postman.co/)
+
+The current endpoint returns the last week of marine animal locations from the entire [geographic domain of Acartia](https://github.com/salish-sea/acartia/wiki/1.-Context-for-SSEMMI-&-Acartia#spatial-boundaries-related-to-acartia) (all species; visual _and_ acoustic observations; all providers; all trust levels; etc.)
+
+See the Acartia wiki section on [Open source code for retrieving and parsing "current" Acartia data](https://github.com/salish-sea/acartia/wiki/3.-Dev-resources#open-source-repos-and-sample-code).
+
+
 ## Contributing and utilizing data
 There are two ways to contribute data to the data cooperative, once authenticated. First, the Acartia user interface allows you to directly add your data to
 using a comma-separated-variable spreadsheet template. Alternatively, data can be added via our API once you have registered and obtained your unique digital identity and API tokens.
