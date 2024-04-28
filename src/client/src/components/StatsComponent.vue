@@ -22,7 +22,6 @@ export default {
     },
     props: {
         componentHeader: String
-    }
-    
+    }    
 }
 </script>
