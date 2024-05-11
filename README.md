@@ -12,12 +12,12 @@ This is the public repository for the SSEMMI project: A decentralised and commun
 
 <br>
 
-## Installation and running locally
+## Installation and running locally 
   
 Install all dependencies and packages of the backend
 ```
 
-$ npm install
+$ npm install (or npm ci)
 
 ```
 
