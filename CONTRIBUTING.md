@@ -25,13 +25,13 @@ During phase one (2021-23), data providers include: [Orca Network](https://orcan
 
 If you wish to contribute to, utilize, or integrate programmatically with our open access data - follow the steps:
 
-### Sign up to SSEMMI Project
+### Join the Acartia data cooperative
 1. Go to the [project website](https://acartia.io) and click on register
 2. Fill out the registration form and click 'Sign up'
 3. An administrator will review your request and notify you when your account is set up.
 
 
-### Integrate SSEMMI with your website
+### Integrate Acartia with your website or web app
 These steps can be undertaken once your account has been approved.
 1. Go to the [Acartia project website](https://acartia.io) and click on Login
 2. Enter your email and password and click 'login'
