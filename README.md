@@ -1,6 +1,10 @@
-# SSEMMI
-## Salish Sea Ecosystem Monitoring and Modeling Infrastructure
-This is the public repository for the SSEMMI project: A decentralised and communitarian project aiming at pooling citizen science data in support of whale and environmental observations. We welcome your help designing and developing this open source code that demonstrates the ecological, scientific, and societal advantages of a a web3 technologies (see our [contributing guidance](https://github.com/Typehuman/SSEMMI/blob/main/CONTRIBUTING.md#contributing-code)).
+# Acartia: A decentralized data cooperative for sharing marine animal locations in real time
+
+**Let’s work together to monitor and map marine wildlife -- from plankton to orcas -- within the Salish Sea and across coastal Cascadia, the range of endangered Southern Resident killer whales.**
+
+## Acartia
+
+This is the public repository for the Acartia data cooperative. Acartia is a decentralised and communitarian project aimed at pooling community science data in support of (killer) whale conservation first and ecosystem monitoring second. We welcome your help designing and developing this open source code that demonstrates the ecological, scientific, and societal advantages of web3 technologies (see our [contributing guidance](https://github.com/salish-sea/acartia/blob/main/CONTRIBUTING.md#contributing-code)).
 
 **Phase 1 (2020-22)** developed a working prototype of [Acartia](https://acartia.io), a distributed open data cooperative sharing marine animal location data in real time across the range of the endangered orcas (from California to Alaska, USA). 
 
@@ -8,6 +12,13 @@ This is the public repository for the SSEMMI project: A decentralised and commun
 
 **Phase 3 (>2024)** will aspire to share data across the US-Canada border and integrate with other applications to enhance regional ecosystem understanding and management for marine conservation.
 
+For project context and updates, don't miss the [Acartia wiki](https://github.com/salish-sea/acartia/wiki). There you will also find additional information for design-UXers, open source developers, devops leads, and system administrators.
+
+## SSEMMI
+**Salish Sea Ecosystem Monitoring and Modeling Infrastructure**
+
+Acartia is part of a transboundary (U.S./Canada) effort to build open infrastructure to understand, monitor, model, and conserve the marine ecosystem known as the Salish Sea. SSEMMI was initially proposed by members of the Puget Sound Ecosystem Monitoring Program's Marine Mammal Work Group ([PSEMP](https://https://www.psp.wa.gov/PSEMP-overview.php)/[MMWG](https://psemp.net/mmwg)).
+=======
 **NOTE:** development is active on a 2023 fork of this repo at the **[Acartia repository](https://github.com/salish-sea/acartia)**. For project context and updates, don't miss the [Acartia wiki](https://github.com/Typehuman/SSEMMI/wiki). There you will also find additional information for design-UXers, open source developers, devops leads, and system administrators.
 
 <br>
@@ -61,9 +72,9 @@ $ cd src/client && npm run serve
 ## API
 Below are the sightings API endpoints that can be used to create and consume open access 
 data provided by the cooperative. Before using this API, you are required to create an account and generate an API key on 
-the [SSEMMI Project Dashboard](https://acartia.io/). Please also abide by the [Acartia community guidelines](https://acartia.io/register) and Creative Commons license governing these animal location data.
+the [Acartia Project Dashboard](https://acartia.io/). Please also abide by the [Acartia community guidelines](https://acartia.io/register) and Creative Commons license governing these animal location data.
 
-More information on how to contribute data to or integrate your application with the cooperative can be found [here](CONTRIBUTING.md#contributing-data). Information about contributing to the codebase can be found [here](CONTRIBUTING.md#contributing-code).
+If you are a data provider or end user, we can offer you more detailed information about [how to contribute data to or integrate your application with the Acartia cooperative](CONTRIBUTING.md#contributing-data). If you are a developer, we invite you to learn [how to contribute to the Acartia open source codebase](CONTRIBUTING.md#contributing-code).
 
 
 - [Sightings](#sightings)
@@ -191,6 +202,6 @@ GET https://acartia.io/api/v1/sightings/:id
 A complete version of the API documentation can be found in [DOCS.md](DOCS.md).
 # Direct Interactions With OrbitDB
 
-The following is a link to the github repository of Orbit DB. There you can find the API documentation to the docs type Orbit DB database which is used with SSEMMI, along with the full documentation of the database.
+The following is a link to the github repository of Orbit DB. There you can find the API documentation to the docs type Orbit DB database which is used with SSEMMI/Acartia, along with the full documentation of the database.
 
 https://github.com/orbitdb/orbit-db/blob/master/API.md#orbitdbdocsnameaddress-options

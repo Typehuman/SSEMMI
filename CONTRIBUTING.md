@@ -5,21 +5,33 @@ Hi there. Thanks for your interest in contributing to our data cooperative and o
 2. Utilizing data from the cooperative and attributing the use per the [Acartia data cooperative community guidelines](https://acartia.io/register)
 3. Improving our open source code and documentation
 
+## Accessing recent data without registration
+
+The fastest way to experiment with Acartia data is to `GET` data via the "current" sightings API endpoint:
+
+- [HTTP request: https://acartia.io/api/v1/sightings/current](https://acartia.io/api/v1/sightings/current)
+- `GET acartia.io/api/v1/sightings/current` (e.g. via [Postman](https://web.postman.co/))
+
+The current endpoint returns the last week of marine animal locations from the entire [geographic domain of Acartia](https://github.com/salish-sea/acartia/wiki/1.-Context-for-SSEMMI-&-Acartia#spatial-boundaries-related-to-acartia) (all species; visual _and_ acoustic observations; all providers; all trust levels; etc.)
+
+See the Acartia wiki section on [Open source code for retrieving and parsing "current" Acartia data](https://github.com/salish-sea/acartia/wiki/3.-Dev-resources#open-source-repos-and-sample-code).
+
+
 ## Contributing and utilizing data
 There are two ways to contribute data to the data cooperative, once authenticated. First, the Acartia user interface allows you to directly add your data to
 using a comma-separated-variable spreadsheet template. Alternatively, data can be added via our API once you have registered and obtained your unique digital identity and API tokens.
 
-During phase one (2021-22), data providers include: [Orca Network](https://orcanetwork.org) and [Orcasound](https://orcasound.net), and [Conserve.io](https://conserve.io) -- developer of the Whale Alert and Ocean Alert mobile apps, and the Cascadia web app.
+During phase one (2021-23), data providers include: [Orca Network](https://orcanetwork.org) and [Orcasound](https://orcasound.net), and [Conserve.io](https://conserve.io) -- developer of the Whale Alert and Ocean Alert mobile apps, and the Cascadia web app.
 
 If you wish to contribute to, utilize, or integrate programmatically with our open access data - follow the steps:
 
-### Sign up to SSEMMI Project
+### Join the Acartia data cooperative
 1. Go to the [project website](https://acartia.io) and click on register
 2. Fill out the registration form and click 'Sign up'
 3. An administrator will review your request and notify you when your account is set up.
 
 
-### Integrate SSEMMI with your website
+### Integrate Acartia with your website or web app
 These steps can be undertaken once your account has been approved.
 1. Go to the [Acartia project website](https://acartia.io) and click on Login
 2. Enter your email and password and click 'login'
@@ -100,9 +112,9 @@ Breaking this out to be more readable, you can see the cooperative's data scheme
 
 
 ## Contributing code
-The project is open source. We welcome anyone who would like to contribute.
+The project is open source. We welcome anyone who would like to contribute under the MIT license.
 
-You can see the status of the development process on the [GitHub Projects](https://github.com/Typehuman/SSEMMI/projects).
+You can see the status of the development process in the [Acartia project management board](https://github.com/orgs/salish-sea/projects/1/views/1). Use [Acartia discussions](https://github.com/salish-sea/acartia/discussions) to ask questions, make a proposal, or get feedback on your ideas.
 
 If you would like to contribute to an issue that has not been assigned yet, please add a comment to the issue indicating your interest. To facilitate the review and merging process, we prefer to discuss potential solutions first within the issue. With a plan in place, you can then fork the repository and submit a pull request with a single, incremental contribution. Thanks!
 
