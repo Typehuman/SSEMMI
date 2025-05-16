@@ -1,4 +1,8 @@
-# Acartia: A decentralized data cooperative for sharing marine animal locations in real time
+# NOTE! Active development is underway at https://github.com/salish-sea/acartia -- a fork of this old repo!
+
+=======
+
+**Acartia: A decentralized data cooperative for sharing marine animal locations in real time**
 
 **Let’s work together to monitor and map marine wildlife -- from plankton to orcas -- within the Salish Sea and across coastal Cascadia, the range of endangered Southern Resident killer whales.**
 
